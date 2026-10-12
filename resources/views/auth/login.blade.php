@@ -8,7 +8,7 @@
         <i class="bi bi-terminal-fill fs-2"></i>
     </div>
     <h3 class="fw-bold mb-1 font-monospace" style="letter-spacing: -0.5px;">ctrl + c</h3>
-    <p class="text-muted small">Inventory Management System</p>
+    <p class="text-muted small">Sistem Inventori Elektronik</p>
 </div>
 
 @include('components.alert')
@@ -62,9 +62,7 @@
 </form>
 
 <div class="mt-4 pt-3 border-top">
-    <div class="text-center mb-2">
-        <span class="badge bg-light text-secondary border px-3 py-1">Akun Demo Cepat</span>
-    </div>
+
     <div class="d-grid gap-2">
         <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDemo('admin@inventory.com', 'password')">
             <i class="bi bi-shield-lock me-1"></i> Masuk Sebagai <strong>Admin</strong>

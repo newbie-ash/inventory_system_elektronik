@@ -10,18 +10,18 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to dashboard (if authenticated) or login
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-// Guest Routes
+// guest
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
 });
 
-// Authenticated Routes
+//auth
 Route::middleware('auth')->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
