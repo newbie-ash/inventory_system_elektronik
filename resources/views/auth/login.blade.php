@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="text-center mb-4">
-    <div class="bg-primary text-white rounded-3 p-3 d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 54px; height: 54px;">
-        <i class="bi bi-box-seam-fill fs-3"></i>
+    <div class="text-white rounded-3 p-3 d-inline-flex align-items-center justify-content-center mb-3 shadow" style="background: var(--accent-gradient); width: 56px; height: 56px;">
+        <i class="bi bi-terminal-fill fs-2"></i>
     </div>
-    <h4 class="fw-bold mb-1">Login</h4>
+    <h3 class="fw-bold mb-1 font-monospace" style="letter-spacing: -0.5px;">ctrl + c</h3>
     <p class="text-muted small">Inventory Management System</p>
 </div>
 
@@ -19,7 +19,7 @@
     <div class="mb-3">
         <label for="email" class="form-label fw-semibold small">Alamat Email</label>
         <div class="input-group">
-            <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
             <input type="email" 
                    name="email" 
                    id="email" 
@@ -37,7 +37,7 @@
     <div class="mb-3">
         <label for="password" class="form-label fw-semibold small">Kata Sandi</label>
         <div class="input-group">
-            <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
             <input type="password" 
                    name="password" 
                    id="password" 
@@ -56,21 +56,21 @@
         <label for="remember" class="form-check-label small text-muted">Ingat sesi saya</label>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+        <i class="bi bi-box-arrow-in-right me-1"></i> Masuk ke Sistem
     </button>
 </form>
 
 <div class="mt-4 pt-3 border-top">
     <div class="text-center mb-2">
-        <span class="badge bg-light text-secondary border"></span>
+        <span class="badge bg-light text-secondary border px-3 py-1">Akun Demo Cepat</span>
     </div>
     <div class="d-grid gap-2">
         <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDemo('admin@inventory.com', 'password')">
-            <i class="bi bi-shield-lock me-1"></i> Login Sebagai <strong>Admin</strong>
+            <i class="bi bi-shield-lock me-1"></i> Masuk Sebagai <strong>Admin</strong>
         </button>
         <button type="button" class="btn btn-sm btn-outline-success" onclick="setDemo('staff@inventory.com', 'password')">
-            <i class="bi bi-person me-1"></i> Login Sebagai <strong>Staff Gudang</strong>
+            <i class="bi bi-person me-1"></i> Masuk Sebagai <strong>Staff Gudang</strong>
         </button>
     </div>
 </div>

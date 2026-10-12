@@ -36,7 +36,7 @@
     <div class="col-12 col-md-8">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-bold">Katalog Produk Dari Supplier Ini (Many-to-Many)</h6>
+                <h6 class="mb-0 fw-bold">Katalog Produk Dari Supplier Ini</h6>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">

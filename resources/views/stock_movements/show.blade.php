@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Transaksi Stok #' . $stockMovement->id)
+@section('title', 'Detail Transaksi Stok ID ' . $stockMovement->id)
 @section('page_heading', 'Bukti Transaksi Pergerakan Stok')
 
 @section('content')
@@ -10,7 +10,7 @@
             <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-receipt text-primary fs-5"></i>
-                    <h6 class="mb-0 fw-bold">Bukti Audit Mutasi Stok #{{ str_pad($stockMovement->id, 5, '0', STR_PAD_LEFT) }}</h6>
+                    <h6 class="mb-0 fw-bold">Bukti Audit Mutasi Stok ID {{ str_pad($stockMovement->id, 5, '0', STR_PAD_LEFT) }}</h6>
                 </div>
                 <a href="{{ route('stock-movements.index') }}" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-arrow-left me-1"></i> Kembali

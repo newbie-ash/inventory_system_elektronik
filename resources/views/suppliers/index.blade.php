@@ -47,7 +47,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light text-uppercase text-secondary small">
                     <tr>
-                        <th style="width: 50px;" class="text-center">#</th>
+                        <th style="width: 50px;" class="text-center">No.</th>
                         <th>Nama Supplier</th>
                         <th>Kontak & Email</th>
                         <th>Alamat</th>

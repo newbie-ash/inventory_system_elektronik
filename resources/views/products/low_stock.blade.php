@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Daftar Produk Stok Kritis')
-@section('page_heading', 'Monitoring Stok Kritis (&le; Batas Minimum)')
+@section('page_heading', 'Monitoring Stok Kritis (Batas Minimum)')
 
 @section('content')
 <!-- Banner Peringatan -->
@@ -75,7 +75,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light text-uppercase text-secondary small">
                     <tr>
-                        <th style="width: 50px;" class="text-center">#</th>
+                        <th style="width: 50px;" class="text-center">No.</th>
                         <th>SKU & Nama Produk</th>
                         <th>Kategori</th>
                         <th class="text-center">Sisa Stok</th>

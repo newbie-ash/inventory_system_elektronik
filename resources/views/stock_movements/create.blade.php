@@ -131,7 +131,7 @@
                                   id="notes" 
                                   rows="3" 
                                   class="form-control @error('notes') is-invalid @enderror" 
-                                  placeholder="Contoh: Penerimaan PO #INV-2026/01 dari Supplier, Pengambilan barang untuk divisi IT, dll...">{{ old('notes') }}</textarea>
+                                  placeholder="Contoh: Penerimaan PO INV-2026/01 dari Supplier, Pengambilan barang untuk divisi IT, dll...">{{ old('notes') }}</textarea>
                         @error('notes')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
