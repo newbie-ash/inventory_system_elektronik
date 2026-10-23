@@ -32,7 +32,7 @@ class StockMovementController extends Controller
                 return $query->where(function ($q) use ($search) {
                     $q->whereHas('product', function ($pQuery) use ($search) {
                         $pQuery->where('name', 'like', "%{$search}%")
-                               ->orWhere('sku', 'like', "%{$search}%");
+                            ->orWhere('sku', 'like', "%{$search}%");
                     })->orWhere('notes', 'like', "%{$search}%");
                 });
             })
@@ -126,7 +126,7 @@ class StockMovementController extends Controller
 
             return back()
                 ->withInput()
-                ->with('error', 'Gagal memproses transaksi stok: ' . $e->getMessage());
+                ->with('error', 'Gagal memproses transaksi stok: '.$e->getMessage());
         }
     }
 

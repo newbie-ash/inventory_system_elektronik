@@ -16,7 +16,7 @@ class ProductFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'name' => fake()->words(3, true),
-            'sku' => strtoupper('PRD-' . fake()->unique()->bothify('###??')),
+            'sku' => strtoupper('PRD-'.fake()->unique()->bothify('###??')),
             'description' => fake()->sentence(8),
             'price' => fake()->numberBetween(10, 500) * 1000, // e.g. 10.000 - 500.000 IDR
             'stock' => fake()->numberBetween(10, 100),

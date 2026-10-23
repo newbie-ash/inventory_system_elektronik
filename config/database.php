@@ -5,7 +5,6 @@ use Pdo\Mysql;
 
 return [
 
-
     'default' => env('DB_CONNECTION', 'sqlite'),
 
     'connections' => [
@@ -96,7 +95,6 @@ return [
         'table' => 'migrations',
         'update_date_on_publish' => true,
     ],
-
 
     'redis' => [
 

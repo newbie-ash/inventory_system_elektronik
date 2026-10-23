@@ -4,11 +4,7 @@ use Illuminate\Support\Str;
 
 return [
 
- 
-
     'driver' => env('SESSION_DRIVER', 'database'),
-
- 
 
     'lifetime' => (int) env('SESSION_LIFETIME', 120),
 
@@ -30,7 +26,6 @@ return [
         'SESSION_COOKIE',
         Str::slug((string) env('APP_NAME', 'laravel')).'-session'
     ),
-
 
     'path' => env('SESSION_PATH', '/'),
 

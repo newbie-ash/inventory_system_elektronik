@@ -55,7 +55,7 @@ class ReportController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('products.name', 'like', "%{$search}%")
-                      ->orWhere('products.sku', 'like', "%{$search}%");
+                        ->orWhere('products.sku', 'like', "%{$search}%");
                 });
             })
             ->groupBy(

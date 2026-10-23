@@ -6,7 +6,6 @@ return [
 
     'default' => env('CACHE_STORE', 'database'),
 
-
     'stores' => [
 
         'array' => [

@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -65,18 +66,58 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is pembeli (customer).
+     */
+    public function isPembeli(): bool
+    {
+        return $this->role === 'pembeli';
+    }
+
+    /**
+     * Check if user has any of the given roles.
+     */
+    public function hasRole(string ...$roles): bool
+    {
+        return in_array($this->role, $roles, true);
+    }
+
+    /**
+     * User's profile (One-to-One relationship).
+     */
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    /**
+     * Purchases created by this user (staff/admin).
+     */
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    /**
+     * Sales recorded by this user (staff/admin or buyer self-order).
+     */
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    /**
+     * Sales where this user is the registered buyer.
+     */
+    public function buyerSales(): HasMany
+    {
+        return $this->hasMany(Sale::class, 'buyer_id');
+    }
+
+    /**
      * User's stock movements history.
      */
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class);
-    }
-
-    /**
-     * User's profile (One-to-One relationship as in P4 Slide 6).
-     */
-    public function profile(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(UserProfile::class);
     }
 }

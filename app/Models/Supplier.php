@@ -6,6 +6,7 @@ use Database\Factories\SupplierFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Supplier extends Model
 {
@@ -18,6 +19,14 @@ class Supplier extends Model
         'phone',
         'address',
     ];
+
+    /**
+     * Purchases supplied by this vendor (One-to-Many).
+     */
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
 
     /**
      * The products that belong to the supplier (Many-to-Many).

@@ -4,20 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\Sale;
 use App\Models\StockMovement;
 use App\Models\Supplier;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     /**
-     * Display the visual dashboard with charts and real-time statistics.
+     * Display the visual dashboard tailored for the authenticated user's role.
      */
     public function index(): View
     {
+        $user = Auth::user();
+
+        if ($user && $user->isPembeli()) {
+            $myOrdersCount = Sale::where('buyer_id', $user->id)->count();
+            $myOrdersPending = Sale::where('buyer_id', $user->id)
+                ->where('payment_status', 'pending')
+                ->where('status', 'completed')
+                ->latest('sold_at')
+                ->first();
+            $recentOrders = Sale::with('items.product')
+                ->where('buyer_id', $user->id)
+                ->latest('sold_at')
+                ->take(5)
+                ->get();
+            $latestProducts = Product::availableForBuyer()
+                ->latest()
+                ->take(8)
+                ->get();
+
+            return view('dashboard.customer', compact(
+                'myOrdersCount',
+                'myOrdersPending',
+                'recentOrders',
+                'latestProducts'
+            ));
+        }
+
         $data = $this->getDashboardData();
 
         return view('dashboard.index', $data);
@@ -35,7 +64,10 @@ class DashboardController extends Controller
             'timestamp' => now()->translatedFormat('H:i:s'),
             'kpis' => [
                 'total_products' => number_format($data['totalProducts']),
-                'total_inventory_value' => 'Rp ' . number_format($data['totalInventoryValue'], 0, ',', '.'),
+                'total_inventory_value' => 'Rp '.number_format($data['totalInventoryValue'], 0, ',', '.'),
+                'sales_today' => 'Rp '.number_format($data['salesToday'], 0, ',', '.'),
+                'sales_this_month' => 'Rp '.number_format($data['salesThisMonth'], 0, ',', '.'),
+                'total_transactions' => number_format($data['totalTransactions']),
                 'total_stock_in' => number_format($data['totalStockIn']),
                 'total_stock_out' => number_format($data['totalStockOut']),
                 'low_stock_count' => $data['lowStockCount'],
@@ -66,21 +98,39 @@ class DashboardController extends Controller
         // 1. Total Produk
         $totalProducts = Product::count();
 
-        // 2. Total Nilai Inventory (Aggregate SUM(stock * price))
-        $totalInventoryValue = (float) (Product::selectRaw('SUM(stock * price) as total_val')->value('total_val') ?? 0);
+        // 2. Total Penjualan Hari Ini & Bulan Ini (Aktual database)
+        $salesToday = (float) Sale::where('status', 'completed')
+            ->whereDate('sold_at', today())
+            ->sum('total');
 
-        // 3. Total Barang Masuk & Keluar (Aggregate SUM(quantity))
+        $salesThisMonth = (float) Sale::where('status', 'completed')
+            ->whereMonth('sold_at', now()->month)
+            ->whereYear('sold_at', now()->year)
+            ->sum('total');
+
+        // 3. Total Jumlah Transaksi Penjualan
+        $totalTransactions = Sale::where('status', 'completed')->count();
+
+        // 4. Total Nilai Inventory (Aggregate SUM(stock * purchase_price/price))
+        $totalInventoryValue = (float) (Product::selectRaw('SUM(stock * CASE WHEN purchase_price > 0 THEN purchase_price ELSE price END) as total_val')->value('total_val') ?? 0);
+
+        // 5. Total Mutasi Barang Masuk & Keluar
         $totalStockIn = (int) StockMovement::where('type', 'in')->sum('quantity');
         $totalStockOut = (int) StockMovement::where('type', 'out')->sum('quantity');
 
-        // 4. Jumlah Produk dengan Stok Rendah (stock <= min_stock)
+        // 6. Produk dengan Stok Rendah
+        $lowStockProducts = Product::lowStock()->take(5)->get();
         $lowStockCount = Product::lowStock()->count();
 
-        // Additional counts
+        // Master counts
         $totalCategories = Category::count();
         $totalSuppliers = Supplier::count();
 
-        // 5. Tren Mutasi Stok 7 Hari Terakhir (Line / Area Chart)
+        // Transaksi Terkini
+        $recentSales = Sale::with(['user', 'buyer'])->latest('sold_at')->take(5)->get();
+        $recentPurchases = Purchase::with(['supplier', 'user'])->latest('purchased_at')->take(5)->get();
+
+        // Tren Mutasi Stok 7 Hari Terakhir (Chart)
         $trendLabels = [];
         $trendStockIn = [];
         $trendStockOut = [];
@@ -98,7 +148,7 @@ class DashboardController extends Controller
                 ->sum('quantity');
         }
 
-        // 6. Distribusi Stok Berdasarkan Kategori (Doughnut Chart)
+        // Distribusi Stok Berdasarkan Kategori
         $categoryDistribution = Category::withSum('products as total_stock', 'stock')
             ->orderByDesc('total_stock')
             ->get();
@@ -106,8 +156,8 @@ class DashboardController extends Controller
         $catLabels = $categoryDistribution->pluck('name')->toArray();
         $catStocks = $categoryDistribution->map(fn ($cat) => (int) ($cat->total_stock ?? 0))->toArray();
 
-        // 7. Top 5 Produk Berdasarkan Nilai Inventaris Tertinggi (Bar Chart)
-        $topProducts = Product::select('id', 'name', 'stock', 'price', DB::raw('(stock * price) as val'))
+        // Top 5 Produk Berdasarkan Nilai Inventaris Tertinggi
+        $topProducts = Product::select('id', 'name', 'stock', 'price', 'purchase_price', DB::raw('(stock * CASE WHEN purchase_price > 0 THEN purchase_price ELSE price END) as val'))
             ->orderByDesc('val')
             ->take(5)
             ->get();
@@ -117,10 +167,16 @@ class DashboardController extends Controller
 
         return compact(
             'totalProducts',
+            'salesToday',
+            'salesThisMonth',
+            'totalTransactions',
             'totalInventoryValue',
             'totalStockIn',
             'totalStockOut',
             'lowStockCount',
+            'lowStockProducts',
+            'recentSales',
+            'recentPurchases',
             'totalCategories',
             'totalSuppliers',
             'trendLabels',

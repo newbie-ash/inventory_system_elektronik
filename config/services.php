@@ -2,8 +2,6 @@
 
 return [
 
-
-
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
@@ -23,6 +21,14 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    'midtrans' => [
+        'server_key' => env('MIDTRANS_SERVER_KEY', 'SB-Mid-server-test-demo-key'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-test-demo-key'),
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'is_sanitized' => env('MIDTRANS_IS_SANITIZED', true),
+        'is_3ds' => env('MIDTRANS_IS_3DS', true),
     ],
 
 ];

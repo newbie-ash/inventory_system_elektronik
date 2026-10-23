@@ -35,7 +35,7 @@ class ProductController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('sku', 'like', "%{$search}%");
+                        ->orWhere('sku', 'like', "%{$search}%");
                 });
             })
             // Filter by Category
@@ -113,7 +113,7 @@ class ProductController extends Controller
                 'min_stock' => $validated['min_stock'],
             ]);
 
-            if (!empty($validated['supplier_ids'])) {
+            if (! empty($validated['supplier_ids'])) {
                 $product->suppliers()->sync($validated['supplier_ids']);
             }
 
@@ -135,7 +135,7 @@ class ProductController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
 
-            return back()->withInput()->with('error', 'Gagal menyimpan produk: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Gagal menyimpan produk: '.$e->getMessage());
         }
     }
 
@@ -214,7 +214,7 @@ class ProductController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
 
-            return back()->withInput()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Gagal memperbarui produk: '.$e->getMessage());
         }
     }
 
@@ -224,14 +224,14 @@ class ProductController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
-        // Cegah penghapusan jika ada histori transaksi
-        if ($product->stockMovements()->exists()) {
+        // Cegah penghapusan jika ada histori transaksi (Stock Movement, Purchase, atau Sale)
+        if ($product->stockMovements()->exists() || $product->purchaseItems()->exists() || $product->saleItems()->exists()) {
             return back()->with('error', 'Produk tidak dapat dihapus karena sudah memiliki riwayat transaksi/pergerakan stok.');
         }
 
         try {
             $product->suppliers()->detach();
-            $product->delete();
+            $product->delete(); // Soft delete
 
             return redirect()->route('products.index')
                 ->with('success', 'Produk berhasil dihapus.');
@@ -253,7 +253,7 @@ class ProductController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('sku', 'like', "%{$search}%");
+                        ->orWhere('sku', 'like', "%{$search}%");
                 });
             })
             ->when($categoryId, function ($query, $categoryId) {
