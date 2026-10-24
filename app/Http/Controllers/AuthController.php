@@ -79,21 +79,19 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'confirmed', Password::min(6)],
-            'role' => ['required', 'string', 'in:pembeli,staff,admin'],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'email.unique' => 'Email ini sudah terdaftar. Silakan gunakan email lain atau login.',
             'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'role.in' => 'Role yang dipilih tidak valid.',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => strtolower($validated['email']),
             'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
+            'role' => 'pembeli',
         ]);
 
         Auth::login($user);

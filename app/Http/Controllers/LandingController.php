@@ -31,7 +31,7 @@ class LandingController extends Controller
         $products = $query->latest()->paginate(12)->withQueryString();
         $categories = Category::withCount(['products' => function ($q) {
             $q->where('stock', '>', 0);
-        }])->get();
+        }])->orderByDesc('products_count')->get();
 
         $featuredProducts = Product::availableForBuyer()->where('stock', '>', 3)->latest()->take(3)->get();
         if ($featuredProducts->isEmpty()) {

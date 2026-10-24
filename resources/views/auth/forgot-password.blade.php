@@ -3,32 +3,20 @@
 @section('title', 'Lupa Kata Sandi')
 
 @section('content')
-<div class="auth-centered-card">
-    <div class="mb-4 text-center">
-        <a href="{{ route('landing') }}" class="auth-brand-logo mb-3 justify-content-center text-dark">
-            <span class="auth-brand-dot"></span>
-            <span>Ctrl + C</span>
-        </a>
-        <h3 class="fw-bold text-dark mb-1">Pemulihan Kata Sandi</h3>
-        <p class="text-secondary small mb-0 font-monospace">Masukkan email Anda untuk instruksi reset</p>
-    </div>
+<div class="glass-auth-card">
+    <div class="auth-heading">RESET PASSWORD</div>
+    <div class="auth-subtitle">Masukkan email Anda untuk menerima instruksi pemulihan</div>
 
     @if(session('status'))
-        <div class="p-3 mb-3 rounded-3 text-start small font-monospace" style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.35); color: #15803d;">
-            <div class="d-flex align-items-start gap-2">
-                <i class="bi bi-check-circle-fill text-success fs-5 mt-n1"></i>
-                <div>
-                    <div class="fw-bold text-dark mb-0.5">STATUS</div>
-                    {{ session('status') }}
-                </div>
-            </div>
+        <div class="p-2.5 mb-3 text-start small" style="background: rgba(71, 73, 115, 0.25); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--accent-cream); font-size: 0.8rem;">
+            <i class="bi bi-check-circle me-1"></i> {{ session('status') }}
         </div>
     @endif
 
     @if(session('demo_reset_url'))
-        <div class="p-3 mb-4 rounded-3 text-start small font-monospace" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35);">
-            <div class="text-secondary mb-1" style="font-size: 0.72rem;">Klik tautan untuk langsung reset:</div>
-            <a href="{{ session('demo_reset_url') }}" class="text-break fw-bold text-decoration-underline" style="color: var(--accent-blue);">
+        <div class="p-2.5 mb-3 text-start small" style="background: rgba(22, 27, 51, 0.9); border: 1px solid var(--border-glass); border-radius: 8px;">
+            <div class="mb-1" style="font-size: 0.75rem; color: var(--text-secondary);">Tautan Reset Langsung:</div>
+            <a href="{{ session('demo_reset_url') }}" class="text-break fw-semibold" style="color: var(--accent-cream); font-size: 0.8rem;">
                 {{ session('demo_reset_url') }}
             </a>
         </div>
@@ -43,25 +31,23 @@
             <input type="email" 
                    name="email" 
                    id="email" 
-                   class="form-control-minimal @error('email') is-invalid @enderror" 
+                   class="form-control-glass @error('email') is-invalid @enderror" 
                    value="{{ old('email') }}" 
-                   placeholder="Enter your email" 
+                   placeholder="Email Address" 
                    required 
                    autofocus>
             @error('email')
-                <div class="text-danger small mt-1 font-monospace">{{ $message }}</div>
+                <div class="small mt-1 text-danger" style="font-size: 0.78rem;">{{ $message }}</div>
             @enderror
         </div>
 
-        <button type="submit" class="btn-auth-blue mb-3">
+        <button type="submit" class="btn-cream-cta mb-2">
             Kirim Tautan Pemulihan
         </button>
     </form>
+</div>
 
-    <div class="pt-3 border-top border-secondary border-opacity-25 text-center">
-        <a href="{{ route('login') }}" class="text-decoration-none small text-secondary">
-            &larr; Kembali ke Log in
-        </a>
-    </div>
+<div class="auth-footer">
+    Ingat kata sandi? <a href="{{ route('login') }}">Sign In</a>
 </div>
 @endsection

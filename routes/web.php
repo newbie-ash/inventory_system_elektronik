@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Customer\CatalogController;
 use App\Http\Controllers\Customer\OrderController;
+use App\Http\Controllers\Customer\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PaymentController;
@@ -51,6 +52,10 @@ Route::middleware('auth')->group(function () {
     // Dashboard & Real-Time Analytics
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/realtime-data', [DashboardController::class, 'realtimeData'])->name('dashboard.realtime');
+
+    // Account Profile & Settings (All Authenticated Roles)
+    Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('customer.settings');
+    Route::put('/settings/profile', [ProfileController::class, 'update'])->name('customer.settings.update');
 
     // --- PEMBELI (CUSTOMER) ROUTES ---
     Route::middleware('role:pembeli')->group(function () {

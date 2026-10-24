@@ -16,6 +16,7 @@ class UserProfile extends Model
         'phone_number',
         'department',
         'bio',
+        'avatar',
     ];
 
     /**

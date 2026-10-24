@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Riwayat Pesanan Saya - REDMAGIC STORE')
-@section('page_heading', 'Riwayat Transaksi Saya (My Purchases)')
+@section('title', 'Riwayat Aktivitas - Ctrl+R')
+@section('page_heading', 'Riwayat Aktivitas')
 
 @section('content')
 <div class="container-fluid px-0">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
-            <h4 class="fw-bold mb-1 text-white" style="font-family: 'Outfit', sans-serif;">Riwayat Pesanan Saya</h4>
+            <h4 class="mb-1 text-white" style="letter-spacing: -0.5px;">Riwayat Aktivitas</h4>
             <p class="text-secondary small font-monospace mb-0">Daftar transaksi pesanan barang dan status verifikasi Midtrans Snap Anda.</p>
         </div>
         <div>
-            <a href="{{ route('customer.catalog') }}" class="btn btn-rm-primary btn-sm font-monospace">
+            <a href="{{ route('customer.catalog') }}" class="btn btn-primary btn-sm font-monospace text-uppercase">
                 <i class="bi bi-cart3 me-1"></i> Buka Katalog Belanja &rarr;
             </a>
         </div>
     </div>
 
-    <div class="glass-card">
+    <div class="card p-0" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
         <div class="table-responsive">
             <table class="table mb-0">
                 <thead>
@@ -61,7 +61,7 @@
                             </td>
                             <td>
                                 @if($order->status === 'completed')
-                                    <span class="badge bg-primary bg-opacity-20 text-primary border border-primary border-opacity-25 font-monospace">DIPROSES</span>
+                                    <span class="badge bg-white bg-opacity-10 text-white font-monospace">DIPROSES</span>
                                 @else
                                     <span class="badge bg-secondary font-monospace">DIBATALKAN</span>
                                 @endif
@@ -84,7 +84,7 @@
             </table>
         </div>
         @if($orders->hasPages())
-            <div class="p-3 border-top border-white border-opacity-10 d-flex justify-content-center">
+            <div class="p-3 border-top d-flex justify-content-center" style="border-color: var(--colors-hairline) !important;">
                 {{ $orders->links('pagination::bootstrap-5') }}
             </div>
         @endif

@@ -32,18 +32,60 @@ class DashboardController extends Controller
             $recentOrders = Sale::with('items.product')
                 ->where('buyer_id', $user->id)
                 ->latest('sold_at')
-                ->take(5)
+                ->take(4)
                 ->get();
-            $latestProducts = Product::availableForBuyer()
-                ->latest()
-                ->take(8)
-                ->get();
+
+            $productQuery = Product::availableForBuyer()->with('category');
+
+            if (request()->has('categories') && is_array(request('categories')) && ! empty(request('categories'))) {
+                $productQuery->whereIn('category_id', request('categories'));
+            } elseif (request('category_id')) {
+                $productQuery->where('category_id', request('category_id'));
+            }
+
+            if (request('search')) {
+                $search = request('search');
+                $productQuery->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('sku', 'like', "%{$search}%");
+                });
+            }
+
+            if (request('min_price')) {
+                $minPrice = (float) request('min_price');
+                $productQuery->where(function ($q) use ($minPrice) {
+                    $q->where('selling_price', '>=', $minPrice)
+                        ->orWhere(function ($sub) use ($minPrice) {
+                            $sub->where('selling_price', 0)->where('price', '>=', $minPrice);
+                        });
+                });
+            }
+
+            if (request('max_price')) {
+                $maxPrice = (float) request('max_price');
+                $productQuery->where(function ($q) use ($maxPrice) {
+                    $q->where('selling_price', '<=', $maxPrice)
+                        ->orWhere(function ($sub) use ($maxPrice) {
+                            $sub->where('selling_price', 0)->where('price', '<=', $maxPrice);
+                        });
+                });
+            }
+
+            if (request('in_stock')) {
+                $productQuery->where('stock', '>', 0);
+            }
+
+            $products = $productQuery->latest()->paginate(12)->withQueryString();
+            $categories = Category::withCount(['products' => function ($q) {
+                $q->where('stock', '>', 0);
+            }])->orderBy('name')->get();
 
             return view('dashboard.customer', compact(
                 'myOrdersCount',
                 'myOrdersPending',
                 'recentOrders',
-                'latestProducts'
+                'products',
+                'categories'
             ));
         }
 

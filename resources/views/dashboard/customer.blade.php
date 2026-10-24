@@ -1,233 +1,456 @@
 @extends('layouts.app')
 
-@section('title', 'Buyer Dashboard - Ctrl + C')
-@section('page_heading', 'Dashboard Pelanggan')
+@section('title', 'Beranda & Katalog Gear - Ctrl+R')
+@section('page_heading', 'Beranda')
+
+@push('styles')
+<style>
+    /* Promo Banner Card */
+    .promo-banner-card {
+        background: linear-gradient(135deg, rgba(22, 27, 51, 0.98) 0%, rgba(71, 73, 115, 0.4) 55%, rgba(22, 27, 51, 0.98) 100%) !important;
+        border: 1px solid rgba(166, 156, 172, 0.22) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5) !important;
+        min-height: 140px;
+    }
+
+    .promo-banner-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 45%;
+        background: radial-gradient(circle at 75% 50%, rgba(241, 218, 196, 0.12) 0%, transparent 65%);
+        pointer-events: none;
+    }
+
+    .promo-tag {
+        color: var(--colors-muted);
+        font-size: 0.76rem;
+        letter-spacing: 0.75px;
+    }
+
+    .carousel-dots .dot {
+        width: 18px;
+        height: 5px;
+        border-radius: 4px;
+        background: rgba(166, 156, 172, 0.35);
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+
+    .carousel-dots .dot.active {
+        width: 26px;
+        background: var(--colors-accent);
+        box-shadow: 0 0 10px rgba(241, 218, 196, 0.4);
+    }
+
+    /* Left Sidebar Filter (Image 1 Style) */
+    .filter-sidebar-card {
+        background: linear-gradient(160deg, rgba(71, 73, 115, 0.22) 0%, rgba(22, 27, 51, 0.85) 100%) !important;
+        border: 1px solid rgba(166, 156, 172, 0.22) !important;
+        border-radius: 20px !important;
+    }
+
+    .filter-section-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.2px;
+    }
+
+    .filter-checkbox {
+        background-color: rgba(13, 12, 29, 0.8) !important;
+        border: 1px solid rgba(166, 156, 172, 0.35) !important;
+        border-radius: 6px !important;
+        cursor: pointer;
+    }
+
+    .filter-checkbox:checked {
+        background-color: var(--colors-accent) !important;
+        border-color: var(--colors-accent) !important;
+    }
+
+    /* Product Cards in Grid */
+    .product-grid-card {
+        background: linear-gradient(150deg, rgba(71, 73, 115, 0.2) 0%, rgba(22, 27, 51, 0.75) 100%) !important;
+        border: 1px solid rgba(166, 156, 172, 0.22) !important;
+        border-radius: 16px !important;
+        padding: 12px !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .product-grid-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(241, 218, 196, 0.45) !important;
+        box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.65), 0 0 20px -4px rgba(241, 218, 196, 0.15) !important;
+    }
+
+    .product-visual-box {
+        background: radial-gradient(circle at 50% 30%, rgba(71, 73, 115, 0.35) 0%, rgba(13, 12, 29, 0.85) 100%);
+        border: 1px solid rgba(166, 156, 172, 0.16);
+        border-radius: 12px;
+        height: 130px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+        color: var(--colors-accent);
+        transition: all 0.25s ease;
+    }
+
+    .product-grid-card:hover .product-visual-box {
+        border-color: rgba(241, 218, 196, 0.3);
+    }
+
+    .product-grid-card:hover .product-visual-box i {
+        transform: scale(1.08);
+        color: #FFFFFF;
+    }
+
+    .product-visual-box i {
+        transition: transform 0.25s ease, color 0.25s ease;
+    }
+
+    /* Range slider custom track */
+    .form-range::-webkit-slider-thumb {
+        background: #FFFFFF;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+    }
+
+    /* Slide Page Pagination (Image 2 Style) */
+    .slide-pagination-wrap {
+        margin: 2.5rem 0 1rem;
+    }
+
+    .slide-nav-btn {
+        background: rgba(22, 27, 51, 0.7);
+        border: 1px solid rgba(166, 156, 172, 0.25);
+        color: #FFFFFF;
+        font-size: 0.84rem;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide-nav-btn:hover:not(.disabled) {
+        background: rgba(71, 73, 115, 0.4);
+        border-color: rgba(241, 218, 196, 0.4);
+        color: var(--colors-accent);
+        transform: translateY(-1px);
+    }
+
+    .slide-nav-btn.disabled {
+        color: rgba(166, 156, 172, 0.35);
+        border-color: rgba(166, 156, 172, 0.12);
+        background: rgba(22, 27, 51, 0.35);
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .slide-nav-page {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(22, 27, 51, 0.7);
+        border: 1px solid rgba(166, 156, 172, 0.25);
+        color: #FFFFFF;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .slide-nav-page:hover:not(.active) {
+        background: rgba(71, 73, 115, 0.4);
+        border-color: rgba(241, 218, 196, 0.4);
+        color: var(--colors-accent);
+        transform: translateY(-1px);
+    }
+
+    .slide-nav-page.active {
+        background: rgba(71, 73, 115, 0.45);
+        border: 1.5px solid rgba(255, 255, 255, 0.85);
+        color: #FFFFFF;
+        font-weight: 700;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+    }
+
+    .slide-nav-dots {
+        color: var(--colors-muted);
+        padding: 0 4px;
+        font-weight: 600;
+    }
+</style>
+@endpush
 
 @section('content')
-<div class="container px-0 px-md-2">
-    <!-- 1. Hero Showcase Banner (Clean Light with Blue Accent) -->
-    <div class="card mb-4 p-4 p-md-5 position-relative overflow-hidden bg-white" style="border: 1px solid var(--border-subtle); box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.05);">
-        <div class="row align-items-center g-4">
-            <div class="col-12 col-md-8">
-                <div class="d-inline-flex align-items-center gap-2 mb-3">
-                    <span class="badge-blue">
-                        <i class="bi bi-patch-check-fill me-1"></i> VERIFIED BUYER PORTAL
-                    </span>
-                    <span class="badge bg-light text-secondary border font-monospace" style="font-size: 0.68rem; border-color: var(--border-subtle) !important;">
-                        MIDTRANS SNAP 3D-SECURE
-                    </span>
-                </div>
-                <h2 class="fw-bold display-6 mb-2 text-dark">
-                    Selamat Datang, {{ Auth::user()->name }}
+<div class="container-fluid px-0" style="max-width: 1380px;">
+
+    <!-- 1. Top Promo Banner (Home Layout Style) -->
+    <div class="card p-4 mb-4 promo-banner-card position-relative overflow-hidden" id="promo">
+        <div class="row align-items-center g-3 position-relative" style="z-index: 2;">
+            <div class="col-12 col-md-8 col-lg-8">
+                <span class="promo-tag text-uppercase fw-semibold mb-1 d-block">
+                    PROMO SPESIAL GAJIAN:
+                </span>
+                <h2 class="fw-bold text-white mb-3" style="font-size: clamp(1.25rem, 2.3vw, 1.8rem); letter-spacing: -0.5px; line-height: 1.25;">
+                    Potongan hingga 15% untuk kategori PC & Gadget
                 </h2>
-                <p class="text-secondary mb-4 fs-6 lh-base" style="max-width: 540px;">
-                    Eksplorasi hardware dan peripheral turnamen resmi. Stok produk diamankan secara atomik dengan garansi resmi distributor.
-                </p>
-                <div class="d-flex flex-wrap gap-2.5">
-                    <a href="{{ route('customer.catalog') }}" class="btn btn-blue-primary py-2.5 px-4">
-                        <i class="bi bi-cart3 me-1"></i> Buka Katalog Lengkap &rarr;
-                    </a>
-                    <a href="{{ route('customer.orders.index') }}" class="btn btn-glass-outline py-2.5 px-3">
-                        <i class="bi bi-bag-check me-1"></i> Riwayat Pesanan ({{ $myOrdersCount }})
-                    </a>
+                <div class="d-flex align-items-center gap-1.5 carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
                 </div>
             </div>
-
-            <div class="col-md-4 d-none d-md-flex justify-content-center">
-                <div class="text-center p-4 rounded-4" style="background: #EFF6FF; border: 1px solid #BFDBFE;">
-                    <i class="bi bi-laptop display-1" style="color: var(--accent-blue);"></i>
-                    <div class="fw-bold mt-2 font-monospace small text-dark">Ctrl + C ECOSYSTEM</div>
-                    <div class="text-secondary" style="font-size: 0.72rem;">ZERO OVERSELLING SUPPLY</div>
-                </div>
+            <div class="col-12 col-md-4 col-lg-4 text-md-end">
+                <a href="#katalog-grid" class="btn btn-primary px-4 py-2" style="border-radius: 10px;">
+                    Klaim Voucher
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- 2. Real-Time Pending Midtrans Order Alert -->
-    @if($myOrdersPending)
-        <div class="card p-4 mb-4 bg-white" style="border-left: 4px solid var(--accent-blue); border-color: var(--border-subtle);">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div class="d-flex align-items-center gap-3">
-                    <span class="p-2.5 rounded-3 d-inline-flex align-items-center justify-content-center" style="background: #EFF6FF; color: var(--accent-blue); width: 44px; height: 44px;">
-                        <i class="bi bi-wallet2 fs-4"></i>
-                    </span>
-                    <div>
-                        <div class="fw-bold text-dark fs-6">
-                            Menunggu Pembayaran Midtrans Snap: <span class="font-monospace text-primary">#{{ $myOrdersPending->sale_number }}</span>
-                        </div>
-                        <div class="small text-secondary font-monospace">
-                            Total Tagihan: <span class="fw-bold text-dark">Rp {{ number_format($myOrdersPending->total, 0, ',', '.') }}</span> &bull; Stok produk telah diamankan di sistem.
+    <!-- 2. Main 2-Column Grid (Left: Image 1 Filter Sidebar, Right: Full Catalog Grid) -->
+    <div class="row g-4 mb-4" id="katalog-grid">
+        <!-- Left Filter Column (Image 1 Style) -->
+        <div class="col-12 col-lg-3 col-xl-3">
+            <div class="card p-3 p-xl-4 filter-sidebar-card">
+                <form action="{{ route('dashboard') }}" method="GET" id="filterSidebarForm">
+                    @if(request('search'))
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                    @endif
+
+                    <!-- Section: Kategori (Checkboxes) -->
+                    <div class="mb-4">
+                        <div class="filter-section-title">Kategori</div>
+                        <div class="d-flex flex-column gap-1.5">
+                            @foreach($categories as $cat)
+                                @php
+                                    $isSelected = (request()->has('categories') && in_array($cat->id, (array) request('categories'))) || request('category_id') == $cat->id;
+                                @endphp
+                                <div class="form-check d-flex align-items-center gap-2 mb-1">
+                                    <input class="form-check-input filter-checkbox m-0" 
+                                           type="checkbox" 
+                                           name="categories[]" 
+                                           value="{{ $cat->id }}" 
+                                           id="cat_{{ $cat->id }}"
+                                           {{ $isSelected ? 'checked' : '' }}>
+                                    <label class="form-check-label text-white small" for="cat_{{ $cat->id }}" style="font-size: 0.86rem; cursor: pointer;">
+                                        {{ $cat->name }}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-                </div>
 
-                <div class="d-flex gap-2">
-                    <a href="{{ route('customer.orders.show', $myOrdersPending->id) }}" class="btn btn-blue-primary btn-sm py-2 px-3">
-                        <i class="bi bi-credit-card-2-front-fill me-1"></i> Bayar Sekarang (Midtrans)
-                    </a>
-                </div>
-            </div>
-        </div>
-    @endif
+                    <!-- Section: Rentang Harga (Image 1 Style) -->
+                    <div class="mb-4">
+                        <div class="filter-section-title">Rentang Harga</div>
+                        <input type="range" 
+                               class="form-range mb-2" 
+                               min="500000" 
+                               max="30000000" 
+                               step="500000" 
+                               id="priceSlider"
+                               value="{{ request('max_price', 30000000) }}" 
+                               oninput="updatePriceBoxes(this.value)">
 
-    <!-- 3. Quick Category Navigation Chips -->
-    <div class="row g-2 g-md-3 mb-4">
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog', ['search' => 'Laptop']) }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #EFF6FF; color: var(--accent-blue);">
-                    <i class="bi bi-laptop fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Laptop</div>
-            </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog', ['search' => 'Keyboard']) }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #EFF6FF; color: var(--accent-blue);">
-                    <i class="bi bi-keyboard fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Keyboard</div>
-            </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog', ['search' => 'Mouse']) }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #EFF6FF; color: var(--accent-blue);">
-                    <i class="bi bi-mouse fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Mouse</div>
-            </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog', ['search' => 'Monitor']) }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #EFF6FF; color: var(--accent-blue);">
-                    <i class="bi bi-display fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Monitor</div>
-            </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog', ['search' => 'SSD']) }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #EFF6FF; color: var(--accent-blue);">
-                    <i class="bi bi-device-hdd fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Storage SSD</div>
-            </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a href="{{ route('customer.catalog') }}" class="card text-center p-3 text-decoration-none h-100 d-block bg-white">
-                <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px; background: #F1F5F9; color: var(--text-primary);">
-                    <i class="bi bi-grid-fill fs-5"></i>
-                </div>
-                <div class="fw-semibold text-dark small text-truncate">Semua Produk</div>
-            </a>
-        </div>
-    </div>
-
-    <!-- 4. Real-Time Tracking & Riwayat Pesanan Terkini -->
-    <div class="card p-4 mb-4 bg-white">
-        <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom" style="border-color: var(--border-subtle) !important;">
-            <div>
-                <h5 class="fw-bold text-dark mb-0">
-                    <i class="bi bi-truck me-2" style="color: var(--accent-blue);"></i> Status Tracking Pesanan
-                </h5>
-                <span class="text-secondary small font-monospace">Pantau status transaksi dan pembayaran pesanan Anda secara real-time</span>
-            </div>
-            <a href="{{ route('customer.orders.index') }}" class="text-decoration-none small fw-semibold" style="color: var(--accent-blue);">
-                Lihat Semua ({{ $myOrdersCount }}) &rarr;
-            </a>
-        </div>
-
-        @if($recentOrders->isEmpty())
-            <div class="p-4 text-center text-secondary font-monospace small">
-                <i class="bi bi-bag-x fs-1 d-block mb-2 text-muted"></i>
-                Anda belum memiliki riwayat pesanan. Mulai belanja sekarang dari katalog!
-            </div>
-        @else
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Nomor Invoice</th>
-                            <th>Tanggal Transaksi</th>
-                            <th>Total Tagihan</th>
-                            <th>Status Bayar</th>
-                            <th>Status Pesanan</th>
-                            <th class="text-end">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($recentOrders as $order)
-                            <tr>
-                                <td class="font-monospace fw-semibold text-dark">
-                                    {{ $order->sale_number }}
-                                </td>
-                                <td class="text-secondary small font-monospace">
-                                    {{ \Carbon\Carbon::parse($order->sold_at)->translatedFormat('d M Y, H:i') }}
-                                </td>
-                                <td class="font-monospace fw-bold text-dark">
-                                    Rp {{ number_format($order->total, 0, ',', '.') }}
-                                </td>
-                                <td>
-                                    @if($order->payment_status === 'paid')
-                                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 font-monospace">LUNAS</span>
-                                    @elseif($order->payment_status === 'pending')
-                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 font-monospace">MENUNGGU BAYAR</span>
-                                    @else
-                                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 font-monospace">{{ strtoupper($order->payment_status ?? 'UNPAID') }}</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($order->status === 'completed')
-                                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 font-monospace">SELESAI</span>
-                                    @else
-                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 font-monospace">DIBATALKAN</span>
-                                    @endif
-                                </td>
-                                <td class="text-end">
-                                    <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-sm btn-glass-outline py-1 px-2.5 font-monospace" style="font-size: 0.75rem;">
-                                        Rincian & Bayar <i class="bi bi-arrow-right"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
-    </div>
-
-    <!-- 5. Katalog Produk Cepat (Ready Stock) -->
-    <div class="mb-4">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <div>
-                <h5 class="fw-bold text-dark mb-0">Hardware Unggulan Siap Kirim</h5>
-                <span class="text-secondary small font-monospace">Unit terbatas dengan stok real-time</span>
-            </div>
-            <a href="{{ route('customer.catalog') }}" class="text-decoration-none small fw-semibold" style="color: var(--accent-blue);">
-                Katalog Lengkap &rarr;
-            </a>
-        </div>
-
-        <div class="row g-3">
-            @foreach($catalogProducts as $p)
-                <div class="col-md-6 col-lg-3">
-                    <div class="card h-100 p-3 bg-white" style="border: 1px solid var(--border-subtle);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge-blue" style="font-size: 0.65rem;">{{ $p->category->name ?? 'GEAR' }}</span>
-                            <span class="text-secondary small font-monospace" style="font-size: 0.7rem;">Stok: {{ $p->stock }}</span>
+                        <div class="d-flex align-items-center justify-content-between gap-2">
+                            <input type="text" 
+                                   class="form-control form-control-sm text-center py-1 text-white font-monospace" 
+                                   style="background: rgba(13, 12, 29, 0.7); border: 1px solid rgba(166, 156, 172, 0.2); font-size: 0.78rem; border-radius: 8px;" 
+                                   value="Rp 500k" 
+                                   readonly>
+                            <span class="text-secondary">-</span>
+                            <input type="text" 
+                                   id="priceBoxMax"
+                                   class="form-control form-control-sm text-center py-1 text-white font-monospace" 
+                                   style="background: rgba(13, 12, 29, 0.7); border: 1px solid rgba(166, 156, 172, 0.2); font-size: 0.78rem; border-radius: 8px;" 
+                                   value="Rp {{ number_format(request('max_price', 30000000)/1000000, 0) }}jt" 
+                                   readonly>
                         </div>
-                        <h6 class="fw-bold text-dark text-truncate mb-1" title="{{ $p->name }}">{{ $p->name }}</h6>
-                        <div class="font-monospace fw-bold text-primary mb-3">
-                            Rp {{ number_format($p->selling_price, 0, ',', '.') }}
+                        <input type="hidden" name="min_price" value="500000">
+                        <input type="hidden" name="max_price" id="maxPriceInput" value="{{ request('max_price', 30000000) }}">
+                    </div>
+
+                    <!-- Section: Kondisi (Image 1 Style) -->
+                    <div class="mb-4">
+                        <div class="filter-section-title">Kondisi</div>
+                        <div class="form-check d-flex align-items-center gap-2 mb-1.5">
+                            <input class="form-check-input filter-checkbox m-0" type="checkbox" name="condition_new" id="condNew" checked>
+                            <label class="form-check-label text-white small" for="condNew" style="font-size: 0.86rem; cursor: pointer;">
+                                Baru
+                            </label>
                         </div>
-                        <div class="mt-auto">
-                            <a href="{{ route('customer.product.show', $p->id) }}" class="btn btn-blue-primary btn-sm w-100 py-1.5 font-monospace">
-                                <i class="bi bi-cart-plus me-1"></i> Beli Sekarang
-                            </a>
+                        <div class="form-check d-flex align-items-center gap-2">
+                            <input class="form-check-input filter-checkbox m-0" type="checkbox" name="condition_used" id="condUsed">
+                            <label class="form-check-label text-white small" for="condUsed" style="font-size: 0.86rem; cursor: pointer;">
+                                Bekas
+                            </label>
                         </div>
                     </div>
+
+                    <!-- Section: Rating Filter (Image 1 Style) -->
+                    <div class="mb-4">
+                        <div class="filter-section-title">Rating</div>
+                        <div class="d-flex align-items-center gap-2 text-warning mb-1" style="font-size: 0.78rem; cursor: pointer;">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <span class="text-white ms-1">5</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 text-warning" style="font-size: 0.78rem; cursor: pointer;">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star text-muted"></i>
+                            <i class="bi bi-star text-muted"></i>
+                            <span class="text-white ms-1">3</span>
+                        </div>
+                    </div>
+
+                    <!-- Section: Status Stok (Image 1 Style) -->
+                    <div class="mb-4">
+                        <div class="filter-section-title">Status Stok</div>
+                        <div class="form-check d-flex align-items-center gap-2">
+                            <input class="form-check-input filter-checkbox m-0" 
+                                   type="checkbox" 
+                                   name="in_stock" 
+                                   value="1" 
+                                   id="inStockCheck"
+                                   {{ request('in_stock') ? 'checked' : '' }}>
+                            <label class="form-check-label text-white small" for="inStockCheck" style="font-size: 0.86rem; cursor: pointer;">
+                                Tampilkan yang Ready saja
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons: Terapkan Filter & Reset -->
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="border-radius: 10px;">
+                        Terapkan Filter
+                    </button>
+                    <a href="{{ route('dashboard') }}" class="d-block text-center small text-secondary mt-2 text-decoration-none">
+                        Reset
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Product Grid Column -->
+        <div class="col-12 col-lg-9 col-xl-9">
+            <div class="row g-3 row-cols-2 row-cols-md-3 row-cols-xl-4">
+                @forelse($products as $p)
+                    @php
+                        $price = $p->selling_price > 0 ? $p->selling_price : $p->price;
+                        $lowerName = strtolower($p->name);
+                    @endphp
+                    <div class="col">
+                        <div class="card product-grid-card h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <!-- Visual Representation Box -->
+                                <div class="product-visual-box">
+                                    @if(str_contains($lowerName, 'phone') || str_contains($lowerName, 'smartphone') || str_contains($lowerName, 'redmagic'))
+                                        <i class="bi bi-phone" style="font-size: 3.4rem;"></i>
+                                    @elseif(str_contains($lowerName, 'laptop') || str_contains($lowerName, 'macbook') || str_contains($lowerName, 'asus'))
+                                        <i class="bi bi-laptop" style="font-size: 3.4rem;"></i>
+                                    @elseif(str_contains($lowerName, 'tws') || str_contains($lowerName, 'earbuds') || str_contains($lowerName, 'headset') || str_contains($lowerName, 'audio'))
+                                        <i class="bi bi-headphones" style="font-size: 3.4rem;"></i>
+                                    @elseif(str_contains($lowerName, 'monitor') || str_contains($lowerName, 'display'))
+                                        <i class="bi bi-display" style="font-size: 3.4rem;"></i>
+                                    @elseif(str_contains($lowerName, 'keyboard'))
+                                        <i class="bi bi-keyboard" style="font-size: 3.4rem;"></i>
+                                    @elseif(str_contains($lowerName, 'mouse'))
+                                        <i class="bi bi-mouse" style="font-size: 3.4rem;"></i>
+                                    @else
+                                        <i class="bi bi-cpu" style="font-size: 3.4rem;"></i>
+                                    @endif
+                                </div>
+
+                                <!-- Note: Rating stars removed per user request ("hapus dulu bintang pada product") -->
+
+                                <!-- Title -->
+                                <a href="{{ route('customer.catalog.show', $p->id) }}" 
+                                   class="fw-semibold text-white d-block text-truncate text-decoration-none mb-1.5" 
+                                   style="font-size: 0.9rem;"
+                                   title="{{ $p->name }}">
+                                    {{ $p->name }}
+                                </a>
+
+                                <!-- Price & Stock Status Row -->
+                                <div class="d-flex align-items-baseline justify-content-between mb-2">
+                                    <span class="fw-bold text-white" style="font-size: 0.9rem;">
+                                        Rp {{ number_format($price, 0, ',', '.') }}
+                                    </span>
+                                    <span style="color: #10B981; font-size: 0.72rem; font-weight: 600;">
+                                        {{ $p->stock > 0 ? 'Stok Ready' : 'Habis' }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Action Row: Tambah ke Keranjang + Beli -->
+                            <div class="d-flex align-items-center gap-1.5 pt-2 border-top" style="border-color: rgba(166, 156, 172, 0.15) !important;">
+                                <a href="{{ route('customer.catalog.show', $p->id) }}" 
+                                   class="btn btn-outline-glass btn-sm py-1 px-2.5 d-inline-flex align-items-center justify-content-center" 
+                                   style="font-size: 0.8rem; height: 32px;" 
+                                   title="Tambah ke Keranjang">
+                                    <i class="bi bi-cart3"></i>
+                                </a>
+
+                                <form action="{{ route('customer.checkout') }}" method="POST" class="d-inline flex-grow-1">
+                                    @csrf
+                                    <input type="hidden" name="items[0][product_id]" value="{{ $p->id }}">
+                                    <input type="hidden" name="items[0][quantity]" value="1">
+                                    <button type="submit" 
+                                            class="btn btn-primary btn-sm w-100 py-1 fw-bold" 
+                                            style="font-size: 0.8rem; height: 32px;"
+                                            {{ $p->stock <= 0 ? 'disabled' : '' }}>
+                                        Beli
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12 py-5 text-center text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        <p class="text-white mb-1">Tidak ada produk yang sesuai dengan filter.</p>
+                        <a href="{{ route('dashboard') }}" class="btn btn-primary btn-sm mt-2">Reset Filter</a>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Slide Page Pagination (Image 2 Style) -->
+            @if($products->hasPages())
+                <div class="d-flex justify-content-center">
+                    {{ $products->links('vendor.pagination.buyer-slide') }}
                 </div>
-            @endforeach
+            @endif
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function updatePriceBoxes(val) {
+        document.getElementById('maxPriceInput').value = val;
+        let millionVal = (val / 1000000).toFixed(0);
+        document.getElementById('priceBoxMax').value = 'Rp ' + millionVal + 'jt';
+    }
+</script>
+@endpush
 @endsection
