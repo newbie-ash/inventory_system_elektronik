@@ -29,7 +29,7 @@ Sistem ini dirancang untuk mengatasi permasalahan pencatatan manual pada usaha d
 
 ```bash
 # 1. Kloning repositori project
-git clone <repository-url>
+git clone (https://github.com/newbie-ash/inventory_system_elektronik.git)
 cd "inventory system fikri"
 
 # 2. Pasang dependensi backend PHP via Composer
