@@ -6,19 +6,19 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-12 col-lg-8">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
-                <h6 class="mb-0 fw-bold"><i class="bi bi-arrow-left-right me-2 text-primary"></i>Form Transaksi Pergerakan Stok</h6>
-                <a href="{{ route('stock-movements.index') }}" class="btn btn-outline-secondary btn-sm">
+        <div class="card glass-card">
+            <div class="card-header d-flex align-items-center justify-content-between py-3">
+                <h6 class="mb-0 fw-bold text-white"><i class="bi bi-arrow-left-right me-2 text-warning"></i>Form Transaksi Pergerakan Stok</h6>
+                <a href="{{ route('stock-movements.index') }}" class="btn btn-glass-outline btn-sm font-monospace">
                     <i class="bi bi-arrow-left me-1"></i> Kembali ke Riwayat
                 </a>
             </div>
 
             <div class="card-body p-4">
-                <div class="alert alert-info border-info-subtle d-flex align-items-start mb-4" role="alert">
-                    <i class="bi bi-info-circle-fill fs-5 me-2 mt-1"></i>
+                <div class="alert alert-info border-info-subtle d-flex align-items-start mb-4" role="alert" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.25); color: #BAE6FD;">
+                    <i class="bi bi-info-circle-fill fs-5 me-2 mt-1 text-info"></i>
                     <div class="small">
-                        <strong>Aturan Bisnis Transaksi Stok:</strong>
+                        <strong class="text-white">Aturan Bisnis Transaksi Stok:</strong>
                         <ul class="mb-0 ps-3 mt-1">
                             <li>Untuk transaksi <strong>Barang Masuk (In)</strong>: Stok produk akan bertambah.</li>
                             <li>Untuk transaksi <strong>Barang Keluar (Out)</strong>: Stok produk akan berkurang dan <strong>tidak boleh melebihi sisa stok fisik saat ini</strong> (mencegah stok bernilai negatif).</li>
@@ -32,7 +32,7 @@
 
                     <!-- Pilih Produk -->
                     <div class="mb-3">
-                        <label for="product_id" class="form-label fw-semibold small">Pilih Produk <span class="text-danger">*</span></label>
+                        <label for="product_id" class="form-label fw-semibold small text-white">Pilih Produk <span class="text-danger">*</span></label>
                         <select name="product_id" id="product_id" class="form-select @error('product_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Produk Inventaris --</option>
                             @foreach ($products as $p)
@@ -50,15 +50,15 @@
                         @enderror
 
                         <!-- Info Box Sisa Stok Produk Terpilih -->
-                        <div id="productInfoCard" class="card bg-light border-0 mt-2 d-none">
+                        <div id="productInfoCard" class="card glass-card border border-white-subtle mt-2 d-none">
                             <div class="card-body py-2 px-3 d-flex align-items-center justify-content-between">
                                 <div>
                                     <small class="text-muted d-block">Stok Tersedia Saat Ini:</small>
-                                    <span class="fs-5 fw-bold text-dark" id="currentStockDisplay">0</span> <span class="small text-muted">unit</span>
+                                    <span class="fs-5 fw-bold text-white" id="currentStockDisplay">0</span> <span class="small text-muted">unit</span>
                                 </div>
                                 <div class="text-end">
                                     <small class="text-muted d-block">Kategori:</small>
-                                    <span class="badge bg-secondary" id="categoryDisplay">-</span>
+                                    <span class="badge badge-gradient-accent font-monospace" id="categoryDisplay">-</span>
                                 </div>
                             </div>
                         </div>
@@ -66,8 +66,8 @@
 
                     <!-- Jenis Transaksi -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small">Jenis Transaksi <span class="text-danger">*</span></label>
-                        <div class="row g-2">
+                        <label class="form-label fw-semibold small text-white">Jenis Transaksi <span class="text-danger">*</span></label>
+                        <div class="row g-2.5">
                             <div class="col-6">
                                 <input type="radio" 
                                        class="btn-check" 
@@ -76,7 +76,7 @@
                                        value="in" 
                                        {{ old('type', $preselectedType) === 'in' ? 'checked' : '' }} 
                                        required>
-                                <label class="btn btn-outline-success w-100 py-2 d-flex align-items-center justify-content-center gap-2" for="type_in">
+                                <label class="btn btn-glass-outline btn-toggle-in w-100 py-2.5 d-flex align-items-center justify-content-center gap-2 font-monospace" for="type_in">
                                     <i class="bi bi-arrow-down-left-circle fs-5"></i>
                                     <span class="fw-bold">Barang Masuk (In)</span>
                                 </label>
@@ -89,7 +89,7 @@
                                        value="out" 
                                        {{ old('type', $preselectedType) === 'out' ? 'checked' : '' }} 
                                        required>
-                                <label class="btn btn-outline-danger w-100 py-2 d-flex align-items-center justify-content-center gap-2" for="type_out">
+                                <label class="btn btn-glass-outline btn-toggle-out w-100 py-2.5 d-flex align-items-center justify-content-center gap-2 font-monospace" for="type_out">
                                     <i class="bi bi-arrow-up-right-circle fs-5"></i>
                                     <span class="fw-bold">Barang Keluar (Out)</span>
                                 </label>
@@ -102,16 +102,16 @@
 
                     <!-- Kuantitas / Jumlah -->
                     <div class="mb-3">
-                        <label for="quantity" class="form-label fw-semibold small">Jumlah Kuantitas <span class="text-danger">*</span></label>
+                        <label for="quantity" class="form-label fw-semibold small text-white">Jumlah Kuantitas <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <input type="number" 
                                    min="1" 
                                    name="quantity" 
                                    id="quantity" 
-                                   class="form-control @error('quantity') is-invalid @enderror" 
+                                   class="form-control @error('quantity') is-invalid @enderror font-monospace" 
                                    value="{{ old('quantity', 1) }}" 
                                    required>
-                            <span class="input-group-text bg-light">Unit</span>
+                            <span class="input-group-text font-monospace">Unit</span>
                         </div>
                         <small class="text-muted" style="font-size: 0.75rem;">Kuantitas harus berupa angka positif (&gt; 0).</small>
                         @error('quantity')
@@ -126,7 +126,7 @@
 
                     <!-- Catatan / Keterangan -->
                     <div class="mb-3">
-                        <label for="notes" class="form-label fw-semibold small">Catatan / Referensi Transaksi</label>
+                        <label for="notes" class="form-label fw-semibold small text-white">Catatan / Referensi Transaksi</label>
                         <textarea name="notes" 
                                   id="notes" 
                                   rows="3" 
@@ -137,9 +137,9 @@
                         @enderror
                     </div>
 
-                    <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                        <a href="{{ route('stock-movements.index') }}" class="btn btn-light border px-4">Batal</a>
-                        <button type="submit" class="btn btn-primary px-4 fw-semibold" id="submitBtn">
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2" style="border-color: var(--colors-hairline) !important;">
+                        <a href="{{ route('stock-movements.index') }}" class="btn btn-glass-outline px-4 font-monospace">Batal</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-semibold font-monospace" id="submitBtn">
                             <i class="bi bi-check2-circle me-1"></i> Simpan Transaksi
                         </button>
                     </div>

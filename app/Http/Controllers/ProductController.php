@@ -6,11 +6,11 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\Supplier;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -84,6 +84,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'min_stock' => ['required', 'integer', 'min:0'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
             'supplier_ids' => ['nullable', 'array'],
             'supplier_ids.*' => ['exists:suppliers,id'],
         ], [
@@ -98,7 +99,24 @@ class ProductController extends Controller
             'stock.min' => 'Jumlah stok tidak boleh bernilai negatif.',
             'min_stock.required' => 'Batas minimum stok wajib diisi.',
             'min_stock.min' => 'Batas minimum stok tidak boleh negatif.',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau webp.',
+            'image.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $filename = 'product_'.time().'_'.uniqid().'.'.$imageFile->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/products');
+
+            if (! File::isDirectory($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+
+            $imageFile->move($destinationPath, $filename);
+            $imagePath = 'uploads/products/'.$filename;
+        }
 
         DB::beginTransaction();
 
@@ -111,6 +129,7 @@ class ProductController extends Controller
                 'price' => $validated['price'],
                 'stock' => $validated['stock'],
                 'min_stock' => $validated['min_stock'],
+                'image' => $imagePath,
             ]);
 
             if (! empty($validated['supplier_ids'])) {
@@ -179,6 +198,8 @@ class ProductController extends Controller
             'description' => ['nullable', 'string', 'max:1000'],
             'price' => ['required', 'numeric', 'min:0'],
             'min_stock' => ['required', 'integer', 'min:0'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'remove_image' => ['nullable', 'boolean'],
             'supplier_ids' => ['nullable', 'array'],
             'supplier_ids.*' => ['exists:suppliers,id'],
         ], [
@@ -191,7 +212,36 @@ class ProductController extends Controller
             'price.min' => 'Harga produk tidak boleh bernilai negatif.',
             'min_stock.required' => 'Batas minimum stok wajib diisi.',
             'min_stock.min' => 'Batas minimum stok tidak boleh negatif.',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau webp.',
+            'image.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
+
+        $imagePath = $product->image;
+
+        if ($request->boolean('remove_image')) {
+            if ($product->image && File::exists(public_path($product->image))) {
+                File::delete(public_path($product->image));
+            }
+            $imagePath = null;
+        }
+
+        if ($request->hasFile('image')) {
+            if ($product->image && File::exists(public_path($product->image))) {
+                File::delete(public_path($product->image));
+            }
+
+            $imageFile = $request->file('image');
+            $filename = 'product_'.time().'_'.uniqid().'.'.$imageFile->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/products');
+
+            if (! File::isDirectory($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+
+            $imageFile->move($destinationPath, $filename);
+            $imagePath = 'uploads/products/'.$filename;
+        }
 
         DB::beginTransaction();
 
@@ -203,6 +253,7 @@ class ProductController extends Controller
                 'description' => $validated['description'] ?? null,
                 'price' => $validated['price'],
                 'min_stock' => $validated['min_stock'],
+                'image' => $imagePath,
             ]);
 
             $product->suppliers()->sync($validated['supplier_ids'] ?? []);
@@ -219,24 +270,18 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified product from storage.
-     * Prevents deletion if product has stock movement history (Referential integrity RESTRICT).
+     * Remove the specified product from storage (Soft Delete).
+     * Hidden from admin/staff dashboards and buyer catalogs while keeping transaction history intact.
      */
     public function destroy(Product $product): RedirectResponse
     {
-        // Cegah penghapusan jika ada histori transaksi (Stock Movement, Purchase, atau Sale)
-        if ($product->stockMovements()->exists() || $product->purchaseItems()->exists() || $product->saleItems()->exists()) {
-            return back()->with('error', 'Produk tidak dapat dihapus karena sudah memiliki riwayat transaksi/pergerakan stok.');
-        }
-
         try {
-            $product->suppliers()->detach();
-            $product->delete(); // Soft delete
+            $product->delete();
 
             return redirect()->route('products.index')
-                ->with('success', 'Produk berhasil dihapus.');
-        } catch (QueryException $e) {
-            return back()->with('error', 'Gagal menghapus produk karena adanya batasan integritas database (Foreign Key RESTRICT).');
+                ->with('success', "Produk {$product->name} berhasil dihapus.");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghapus produk: '.$e->getMessage());
         }
     }
 

@@ -15,6 +15,11 @@
                 <span class="font-monospace fw-bold text-muted">{{ $product->sku }}</span>
             </div>
             <div class="card-body p-4">
+                @if($product->image_url)
+                    <div class="mb-3 text-center rounded border bg-light overflow-hidden d-flex align-items-center justify-content-center" style="max-height: 240px; min-height: 160px;">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-fluid object-fit-contain" style="max-height: 240px;">
+                    </div>
+                @endif
                 <h4 class="fw-bold text-dark mb-2">{{ $product->name }}</h4>
                 <p class="text-secondary small mb-4">{{ $product->description ?: 'Tidak ada deskripsi rinci untuk produk ini.' }}</p>
 
@@ -63,13 +68,11 @@
                             <a href="{{ route('products.edit', $product) }}" class="btn btn-outline-primary flex-grow-1">
                                 <i class="bi bi-pencil me-1"></i> Ubah
                             </a>
-                            <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus produk {{ $product->name }}?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">
-                                    <i class="bi bi-trash me-1"></i> Hapus
-                                </button>
-                            </form>
+                            <button type="button" 
+                                    class="btn btn-outline-danger"
+                                    onclick="confirmDeleteProduct('{{ route('products.destroy', $product) }}', '{{ addslashes($product->name) }}', '{{ $product->sku }}')">
+                                <i class="bi bi-trash me-1"></i> Hapus
+                            </button>
                         </div>
                     @endif
                 </div>
@@ -138,4 +141,6 @@
         </div>
     </div>
 </div>
+
+@include('components.delete-product-modal')
 @endsection

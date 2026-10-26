@@ -15,7 +15,7 @@
             </div>
 
             <div class="card-body p-4">
-                <form action="{{ route('products.update', $product) }}" method="POST">
+                <form action="{{ route('products.update', $product) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -150,6 +150,58 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <!-- Foto Produk -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-white">Foto Produk</label>
+                            <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(166, 156, 172, 0.35);">
+                                <!-- Square Preview -->
+                                <div id="imagePreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 88px; height: 88px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(166, 156, 172, 0.25);">
+                                    @if ($product->image_url)
+                                        <img id="imagePreview" src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover">
+                                        <i class="bi bi-image fs-3 d-none" id="placeholderIcon" style="color: var(--colors-muted);"></i>
+                                    @else
+                                        <i class="bi bi-image fs-3" id="placeholderIcon" style="color: var(--colors-muted);"></i>
+                                        <img id="imagePreview" src="" alt="Pratinjau Foto" class="d-none w-100 h-100 object-fit-cover">
+                                    @endif
+                                </div>
+
+                                <!-- Custom Upload Trigger & Status -->
+                                <div class="flex-grow-1" style="min-width: 220px;">
+                                    <input type="file" 
+                                           name="image" 
+                                           id="imageInput" 
+                                           class="d-none @error('image') is-invalid @enderror" 
+                                           accept="image/jpeg,image/png,image/jpg,image/webp"
+                                           onchange="previewProductImage(this)">
+
+                                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                        <label for="imageInput" class="btn btn-glass-outline btn-sm font-monospace d-inline-flex align-items-center gap-2 px-3 py-1.5 cursor-pointer mb-0">
+                                            <i class="bi bi-cloud-arrow-up-fill" style="color: var(--colors-accent);"></i>
+                                            <span>{{ $product->image ? 'Ganti Foto Produk' : 'Pilih Foto Produk' }}</span>
+                                        </label>
+                                        <span id="selectedFileName" class="small font-monospace" style="color: var(--colors-muted);">
+                                            {{ $product->image ? basename($product->image) : 'Belum ada file baru dipilih' }}
+                                        </span>
+                                    </div>
+
+                                    <small class="d-block" style="font-size: 0.76rem; color: var(--colors-muted);">Unggah gambar baru untuk mengganti foto saat ini. Format JPG, PNG, WEBP (Maks. 2MB).</small>
+
+                                    @if ($product->image)
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" name="remove_image" value="1" id="remove_image">
+                                            <label class="form-check-label small text-danger font-monospace" for="remove_image">
+                                                <i class="bi bi-trash me-1"></i>Hapus foto produk saat ini
+                                            </label>
+                                        </div>
+                                    @endif
+
+                                    @error('image')
+                                        <div class="text-danger small mt-1 font-monospace">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
@@ -163,4 +215,26 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewProductImage(input) {
+    const preview = document.getElementById('imagePreview');
+    const icon = document.getElementById('placeholderIcon');
+    const fileNameSpan = document.getElementById('selectedFileName');
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (fileNameSpan) {
+            fileNameSpan.textContent = file.name;
+            fileNameSpan.classList.add('text-white');
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.classList.remove('d-none');
+            if (icon) icon.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>
 @endsection

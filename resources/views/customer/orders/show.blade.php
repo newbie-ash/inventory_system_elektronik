@@ -1,129 +1,288 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Pesanan #' . $sale->sale_number)
-@section('page_heading', 'Detail Pesanan Pelanggan')
+@section('title', 'Detail Aktivitas & Faktur #' . $sale->sale_number)
+@section('page_heading', 'Riwayat Aktivitas & Faktur Pesanan')
 
 @section('content')
-<div class="container-fluid px-0">
+<div class="container-fluid px-0" style="max-width: 1200px;">
+    <!-- Breadcrumb & Header Title -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
-            <a href="{{ route('customer.orders.index') }}" class="text-decoration-none small text-secondary mb-2 d-inline-block font-monospace">
+            <a href="{{ route('customer.orders.index') }}" class="text-decoration-none small text-secondary mb-2 d-inline-flex align-items-center gap-1 font-monospace">
                 <i class="bi bi-arrow-left"></i> Kembali ke Riwayat Pesanan
             </a>
-            <div class="d-flex align-items-center gap-2">
-                <h4 class="mb-0 text-white font-monospace">{{ $sale->sale_number }}</h4>
+            <div class="d-flex align-items-center flex-wrap gap-2.5">
+                <h3 class="mb-0 text-white font-monospace fw-bold" style="letter-spacing: -0.5px;">{{ $sale->sale_number }}</h3>
                 @if($sale->payment_status === 'paid')
-                    <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-25 font-monospace">LUNAS (PAID)</span>
+                    <span class="badge badge-gradient-success font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5">
+                        <i class="bi bi-check-circle-fill"></i> LUNAS (PAID)
+                    </span>
+                @elseif($sale->payment_method === 'cod')
+                    <span class="badge font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4);">
+                        <i class="bi bi-cash-stack"></i> COD (BAYAR DI TEMPAT)
+                    </span>
                 @elseif($sale->payment_status === 'pending')
-                    <span class="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-25 font-monospace">MENUNGGU BAYAR</span>
+                    <span class="badge badge-gradient-warning font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5">
+                        <i class="bi bi-hourglass-split"></i> MENUNGGU PEMBAYARAN
+                    </span>
                 @elseif($sale->payment_status === 'refunded')
-                    <span class="badge bg-info bg-opacity-20 text-info border border-info border-opacity-25 font-monospace">REFUNDED</span>
+                    <span class="badge badge-gradient-info font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5">
+                        <i class="bi bi-arrow-counterclockwise"></i> REFUNDED
+                    </span>
                 @else
-                    <span class="badge bg-danger bg-opacity-20 text-danger border border-danger border-opacity-25 font-monospace">GAGAL</span>
+                    <span class="badge badge-gradient-danger font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5">
+                        <i class="bi bi-x-circle-fill"></i> GAGAL
+                    </span>
                 @endif
             </div>
         </div>
 
-        <div class="d-flex align-items-center gap-2">
-            <button onclick="window.print()" class="btn btn-glass-outline btn-sm font-monospace text-uppercase">
-                <i class="bi bi-printer me-1"></i> Cetak Invoice
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            @if($sale->payment_status === 'pending' && $sale->payment_method === 'midtrans')
+                <a href="{{ route('customer.orders.payment', $sale) }}" class="order-action-btn order-action-primary font-monospace fw-bold">
+                    <i class="bi bi-credit-card-2-front"></i>
+                    <span>Halaman Pembayaran</span>
+                </a>
+
+                <form action="{{ route('customer.orders.switch-to-cod', $sale) }}" 
+                      method="POST" 
+                      class="m-0"
+                      data-confirm="Ubah metode pembayaran menjadi Bayar di Tempat (COD)? Pesanan akan langsung masuk antrean pengemasan gudang."
+                      data-confirm-title="Ubah ke Bayar di Tempat (COD)?"
+                      data-confirm-item="Pesanan #{{ $sale->sale_number }}"
+                      data-confirm-type="success"
+                      data-confirm-icon="bi-cash-stack"
+                      data-confirm-btn="Ya, Ubah ke COD">
+                    @csrf
+                    <button type="submit" class="order-action-btn font-monospace border-0" style="background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.4) !important; color: #34D399;">
+                        <i class="bi bi-cash-stack"></i>
+                        <span>Ubah ke COD</span>
+                    </button>
+                </form>
+            @elseif($sale->shipping_status === 'shipped')
+                <form action="{{ route('customer.orders.confirm-delivery', $sale) }}" 
+                      method="POST" 
+                      class="m-0"
+                      data-confirm="Pastikan Anda telah menerima paket pesanan secara fisik dan isinya lengkap sebelum mengonfirmasi penerimaan."
+                      data-confirm-title="Konfirmasi Pesanan Diterima?"
+                      data-confirm-item="Pesanan #{{ $sale->sale_number }}"
+                      data-confirm-type="success"
+                      data-confirm-icon="bi-box2-heart-fill"
+                      data-confirm-btn="Ya, Pesanan Diterima">
+                    @csrf
+                    <button type="submit" class="order-action-btn order-action-success font-monospace border-0">
+                        <i class="bi bi-check2-circle"></i>
+                        <span>Pesanan Diterima</span>
+                    </button>
+                </form>
+            @elseif($sale->shipping_status === 'packing')
+                <span class="order-action-btn order-action-waiting font-monospace">
+                    <i class="bi bi-box-seam text-warning"></i>
+                    <span>Menunggu Pengiriman Gudang</span>
+                </span>
+            @elseif($sale->shipping_status === 'delivered')
+                <form action="{{ route('customer.cart.reorder', $sale) }}" method="POST" class="m-0">
+                    @csrf
+                    <button type="submit" class="order-action-btn order-action-primary font-monospace border-0">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Beli Lagi</span>
+                    </button>
+                </form>
+            @endif
+
+            @if($sale->status !== 'cancelled' && in_array($sale->shipping_status, ['pending', 'packing']))
+                <form action="{{ route('customer.orders.cancel', $sale) }}" 
+                      method="POST" 
+                      class="m-0"
+                      data-confirm="Apakah Anda yakin ingin membatalkan pesanan ini? Stok produk akan langsung dikembalikan ke inventaris."
+                      data-confirm-title="Batalkan Pesanan?"
+                      data-confirm-item="Pesanan #{{ $sale->sale_number }}"
+                      data-confirm-type="danger"
+                      data-confirm-icon="bi-x-circle-fill"
+                      data-confirm-btn="Ya, Batalkan Pesanan">
+                    @csrf
+                    <button type="submit" class="order-action-btn font-monospace border-0" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35) !important; color: #FCA5A5;">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Batalkan Pesanan</span>
+                    </button>
+                </form>
+            @endif
+
+            <button onclick="window.print()" class="order-action-btn order-action-outline font-monospace">
+                <i class="bi bi-printer"></i>
+                <span>Cetak Invoice</span>
             </button>
         </div>
     </div>
 
-    <!-- Payment Action Banner -->
-    @if($sale->payment_status === 'pending')
-        <div class="card mb-4 p-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-left: 3px solid var(--colors-accent) !important;">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+    <!-- Audit Log & Aktivitas Konsumen Banner (No Payment CTA) -->
+    <div class="card mb-4 p-3.5 p-md-4 rounded-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-left: 4px solid var(--colors-accent) !important; box-shadow: 0 10px 24px rgba(0,0,0,0.35);">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: rgba(241, 218, 196, 0.12); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.25);">
+                    <i class="bi bi-journal-check fs-4"></i>
+                </div>
                 <div>
-                    <h5 class="fw-semibold text-white mb-1 font-monospace">
-                        <i class="bi bi-credit-card-2-front me-2" style="color: var(--colors-accent);"></i>Menunggu Pembayaran Midtrans Snap
-                    </h5>
+                    <h6 class="fw-bold text-white mb-1 font-monospace">
+                        Audit Catatan Aktivitas Pesanan Konsumen
+                    </h6>
                     <p class="small text-secondary mb-0 font-monospace">
-                        Total Tagihan: <span class="fw-bold text-white fs-6">Rp {{ number_format($sale->total, 0, ',', '.') }}</span>. Stok produk telah diamankan di sistem inventaris.
+                        @if($sale->payment_status === 'paid')
+                            <span class="text-success"><i class="bi bi-check-circle me-1"></i>Transaksi telah lunas diverifikasi. Pesanan sedang disiapkan di gudang.</span>
+                        @elseif($sale->payment_method === 'cod')
+                            <span style="color: #34D399;"><i class="bi bi-truck me-1"></i>Metode Bayar di Tempat (COD). Siapkan uang tunai saat kurir tiba mengantarkan paket.</span>
+                        @else
+                            <span class="text-warning"><i class="bi bi-hourglass-split me-1"></i>Pesanan tercatat di sistem inventaris dan menunggu pembayaran online.</span>
+                            <a href="{{ route('customer.orders.payment', $sale) }}" class="ms-2 badge badge-gradient-accent text-decoration-none font-monospace py-1 px-2.5">
+                                Menuju Portal Pembayaran &rarr;
+                            </a>
+                        @endif
                     </p>
                 </div>
-                <div class="d-flex flex-column flex-sm-row gap-2">
-                    @if(!empty($sale->snap_token))
-                        <button id="pay-button" class="btn btn-primary font-monospace py-2 px-3 text-uppercase">
-                            <i class="bi bi-wallet2 me-1"></i> Bayar via Midtrans Snap
-                        </button>
-                    @endif
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="small font-monospace text-muted">ID Transaksi:</span>
+                <code class="text-white px-2 py-1 rounded" style="background: rgba(13, 12, 29, 0.8);">{{ $sale->sale_number }}</code>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Sandbox Simulator Button -->
-                    <form action="{{ route('customer.orders.simulate-payment', $sale) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-glass-outline font-monospace py-2 px-3 text-success border-success text-uppercase" title="Simulasi instan verifikasi pembayaran lunas mode sandbox">
-                            <i class="bi bi-check-circle me-1"></i> Simulasi Lunas (Sandbox)
-                        </button>
-                    </form>
+    <!-- 3 Summary Info Cards -->
+    <div class="row g-3 mb-4">
+        <!-- 1. Data Pemesan -->
+        <div class="col-12 col-md-4">
+            <div class="card p-3.5 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 14px;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-person-fill" style="color: var(--colors-accent);"></i>
+                    <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.75rem;">Data Konsumen</span>
+                </div>
+                <div class="fw-bold text-white fs-6 mb-1">{{ $sale->buyer->name ?? ($sale->user->name ?? 'Pelanggan') }}</div>
+                <div class="text-secondary small font-monospace d-flex align-items-center gap-1.5">
+                    <i class="bi bi-envelope"></i>
+                    <span>{{ $sale->buyer->email ?? ($sale->user->email ?? '-') }}</span>
                 </div>
             </div>
         </div>
-    @elseif($sale->payment_status === 'paid')
-        <div class="card p-3 mb-4 d-flex align-items-center gap-3" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-left: 3px solid #22c55e !important;">
-            <i class="bi bi-check-circle-fill text-success fs-3"></i>
-            <div>
-                <div class="fw-bold text-white font-monospace">Pembayaran Telah Diverifikasi (Lunas)</div>
-                <div class="small text-secondary font-monospace">Pesanan Anda telah selesai diproses oleh sistem dan stok barang telah terpotong secara resmi.</div>
-            </div>
-        </div>
-    @endif
 
-    <div class="row g-4 mb-4">
+        <!-- 2. Waktu & Metode Transaksi -->
         <div class="col-12 col-md-4">
-            <div class="card p-3 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
-                <div class="text-secondary small font-monospace">DATA PEMESAN</div>
-                <div class="fw-bold text-white fs-6 mt-1">{{ $sale->buyer->name ?? Auth::user()->name }}</div>
-                <div class="small text-secondary font-monospace mt-1"><i class="bi bi-envelope me-1"></i>{{ $sale->buyer->email ?? Auth::user()->email }}</div>
+            <div class="card p-3.5 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 14px;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-calendar-event" style="color: var(--colors-accent);"></i>
+                    <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.75rem;">Waktu & Metode Transaksi</span>
+                </div>
+                <div class="fw-bold text-white fs-6 mb-1 font-monospace">
+                    {{ $sale->sold_at ? $sale->sold_at->translatedFormat('d F Y – H:i') : '-' }}
+                </div>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <span class="small font-monospace text-secondary">Metode:</span>
+                    @if($sale->payment_method === 'cod')
+                        <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.7rem;">COD (BAYAR DI TEMPAT)</span>
+                    @else
+                        <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.7rem;">MIDTRANS SNAP (ONLINE)</span>
+                    @endif
+                </div>
             </div>
         </div>
+
+        <!-- 3. Catatan & Kupon Promo -->
         <div class="col-12 col-md-4">
-            <div class="card p-3 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
-                <div class="text-secondary small font-monospace">WAKTU TRANSAKSI</div>
-                <div class="fw-bold text-white fs-6 mt-1">{{ $sale->sold_at ? $sale->sold_at->format('d F Y - H:i') : '-' }}</div>
-                <div class="small text-secondary font-monospace mt-1">Metode: <span class="badge bg-white bg-opacity-10 text-white font-monospace text-uppercase">{{ $sale->payment_method }}</span></div>
-            </div>
-        </div>
-        <div class="col-12 col-md-4">
-            <div class="card p-3 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
-                <div class="text-secondary small font-monospace">CATATAN PESANAN</div>
-                <div class="small text-white fst-italic mt-1">{{ $sale->notes ?: 'Tidak ada catatan khusus.' }}</div>
+            <div class="card p-3.5 h-100" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 14px;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-chat-left-text" style="color: var(--colors-accent);"></i>
+                    <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.75rem;">Catatan & Voucher</span>
+                </div>
+                <div class="small text-white mb-1.5" style="line-height: 1.4;">
+                    {{ $sale->notes ?: 'Tidak ada catatan pesanan khusus.' }}
+                </div>
+                @if($sale->promo_code)
+                    <div class="mt-auto pt-1 d-flex align-items-center gap-1.5 font-monospace" style="font-size: 0.75rem;">
+                        <span class="text-secondary">Voucher:</span>
+                        <span class="badge badge-gradient-accent">{{ $sale->promo_code }} (-Rp {{ number_format($sale->discount_amount, 0, ',', '.') }})</span>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
     <!-- Items Table -->
-    <div class="card mb-4 p-0" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
-        <div class="card-header py-3 fw-semibold text-white font-monospace">
-            <i class="bi bi-boxes me-2" style="color: var(--colors-accent);"></i>Rincian Produk Pesanan
+    <div class="card mb-4 p-0" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 16px;">
+        <div class="p-3.5 px-4 d-flex align-items-center justify-content-between border-bottom" style="border-color: var(--colors-hairline) !important;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-boxes fs-5" style="color: var(--colors-accent);"></i>
+                <h5 class="fw-bold text-white mb-0">Rincian Produk Pesanan</h5>
+            </div>
+            <span class="badge badge-gradient-accent font-monospace">
+                {{ $sale->items->sum('quantity') }} Total Unit Barang
+            </span>
         </div>
         <div class="table-responsive">
-            <table class="table mb-0">
+            <table class="table align-middle mb-0">
                 <thead>
-                    <tr>
-                        <th class="ps-3">Produk</th>
-                        <th>SKU</th>
+                    <tr style="border-bottom: 1px solid var(--colors-hairline);">
+                        <th class="ps-4">Produk</th>
+                        <th>Kode SKU</th>
                         <th class="text-end">Harga Satuan</th>
                         <th class="text-center">Kuantitas</th>
-                        <th class="text-end pe-3">Subtotal</th>
+                        <th class="text-end pe-4">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($sale->items as $item)
-                        <tr>
-                            <td class="ps-3 fw-bold text-white">{{ $item->product->name ?? 'Produk Dihapus' }}</td>
-                            <td class="font-monospace text-secondary small">{{ $item->product->sku ?? '-' }}</td>
-                            <td class="text-end font-monospace text-secondary">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                            <td class="text-center font-monospace text-white">{{ $item->quantity }}</td>
-                            <td class="text-end pe-3 font-monospace fw-bold text-white">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                        @php
+                            $prod = $item->product;
+                        @endphp
+                        <tr style="border-bottom: 1px solid rgba(166, 156, 172, 0.08);">
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    @if($prod && $prod->image_url)
+                                        <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="object-fit-cover rounded-3 flex-shrink-0" style="width: 44px; height: 44px; border: 1px solid rgba(166, 156, 172, 0.25); background: var(--colors-card-alt);">
+                                    @else
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(166, 156, 172, 0.2); color: var(--colors-muted);">
+                                            <i class="bi bi-box-seam fs-5"></i>
+                                        </div>
+                                    @endif
+                                    <div class="d-flex flex-column justify-content-center" style="min-width: 0;">
+                                        <span class="fw-semibold text-white">{{ $prod->name ?? 'Produk Dihapus' }}</span>
+                                        <span class="badge bg-transparent border font-monospace text-muted align-self-start mt-0.5" style="border-color: rgba(166, 156, 172, 0.25) !important; font-size: 0.7rem;">
+                                            {{ $prod->category->name ?? 'Hardware' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="font-monospace text-secondary small">
+                                <code>{{ $prod->sku ?? '-' }}</code>
+                            </td>
+                            <td class="text-end font-monospace text-white small">
+                                Rp {{ number_format($item->unit_price, 0, ',', '.') }}
+                            </td>
+                            <td class="text-center font-monospace text-white fw-bold">
+                                {{ $item->quantity }}
+                            </td>
+                            <td class="text-end pe-4 font-monospace fw-bold" style="color: var(--colors-accent);">
+                                Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr class="border-top" style="border-color: var(--colors-hairline) !important;">
-                        <td colspan="4" class="text-end fw-semibold text-secondary font-monospace">GRAND TOTAL:</td>
-                        <td class="text-end pe-3 fs-5 fw-bold font-monospace" style="color: var(--colors-accent);">
+                    @if($sale->discount_amount > 0)
+                        <tr>
+                            <td colspan="4" class="text-end text-secondary font-monospace pt-3">Subtotal Produk:</td>
+                            <td class="text-end pe-4 text-white font-monospace pt-3">
+                                Rp {{ number_format($sale->subtotal > 0 ? $sale->subtotal : $sale->total, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-end text-success font-monospace py-1">Diskon Voucher ({{ $sale->promo_code }}):</td>
+                            <td class="text-end pe-4 text-success font-monospace fw-bold py-1">
+                                - Rp {{ number_format($sale->discount_amount, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
+                    <tr class="border-top" style="border-color: var(--colors-hairline) !important; background: rgba(0,0,0,0.15);">
+                        <td colspan="4" class="text-end fw-semibold text-secondary font-monospace py-3">TOTAL TAGIHAN:</td>
+                        <td class="text-end pe-4 fs-5 fw-bold font-monospace py-3" style="color: var(--colors-accent);">
                             Rp {{ number_format($sale->total, 0, ',', '.') }}
                         </td>
                     </tr>
@@ -133,40 +292,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-@if($sale->payment_status === 'pending' && !empty($sale->snap_token))
-    <!-- Midtrans Snap JS Integration -->
-    @php
-        $snapUrl = config('services.midtrans.is_production') 
-            ? 'https://app.midtrans.com/snap/snap.js' 
-            : 'https://app.sandbox.midtrans.com/snap/snap.js';
-        $clientKey = config('services.midtrans.client_key') ?? 'SB-Mid-client-sample';
-    @endphp
-    <script src="{{ $snapUrl }}" data-client-key="{{ $clientKey }}"></script>
-    <script>
-        const payButton = document.getElementById('pay-button');
-        if (payButton) {
-            payButton.addEventListener('click', function () {
-                window.snap.pay('{{ $sale->snap_token }}', {
-                    onSuccess: function (result) {
-                        alert('Pembayaran berhasil dikonfirmasi!');
-                        window.location.reload();
-                    },
-                    onPending: function (result) {
-                        alert('Menunggu penyelesaian pembayaran.');
-                        window.location.reload();
-                    },
-                    onError: function (result) {
-                        alert('Pembayaran gagal atau dibatalkan.');
-                        window.location.reload();
-                    },
-                    onClose: function () {
-                        console.log('Popup Snap ditutup oleh pengguna.');
-                    }
-                });
-            });
-        }
-    </script>
-@endif
-@endpush

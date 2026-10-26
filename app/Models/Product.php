@@ -21,6 +21,7 @@ class Product extends Model
         'sku',
         'name',
         'description',
+        'image',
         'purchase_price',
         'selling_price',
         'price',
@@ -28,6 +29,24 @@ class Product extends Model
         'minimum_stock',
         'min_stock',
     ];
+
+    /**
+     * Get accessible photo URL or null (prefers transparent PNG if available).
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if ($this->image) {
+            $pngCandidate = preg_replace('/\.jpe?g$/i', '.png', $this->image);
+            if (file_exists(public_path($pngCandidate))) {
+                return asset($pngCandidate);
+            }
+            if (file_exists(public_path($this->image))) {
+                return asset($this->image);
+            }
+        }
+
+        return null;
+    }
 
     protected function casts(): array
     {
@@ -162,5 +181,29 @@ class Product extends Model
         $cost = (float) ($this->purchase_price > 0 ? $this->purchase_price : $this->price);
 
         return (float) ($this->stock * $cost);
+    }
+
+    /**
+     * Customer reviews and ratings.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class)->latest();
+    }
+
+    /**
+     * Average rating out of 5.
+     */
+    public function averageRating(): float
+    {
+        return round((float) ($this->reviews()->avg('rating') ?? 0.0), 1);
+    }
+
+    /**
+     * Total review count.
+     */
+    public function reviewsCount(): int
+    {
+        return $this->reviews()->count();
     }
 }

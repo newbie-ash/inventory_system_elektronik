@@ -123,8 +123,68 @@ class CustomerSettingsTest extends TestCase
         $response = $this->actingAs($admin)->get('/dashboard');
         $response->assertStatus(200);
         $response->assertSee('id="sidebarToggle"', false);
-        $response->assertSee('sidebar-user-footer');
+        $response->assertSee('admin-nav-profile-btn');
         $response->assertSee('Pengaturan Akun');
         $response->assertSee('Admin Executive');
+        $response->assertDontSee('Storefront');
+    }
+
+    public function test_user_can_access_all_four_settings_pages(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin', 'name' => 'Fikri Admin']);
+
+        $this->actingAs($admin)->get('/settings/profile')
+            ->assertStatus(200)
+            ->assertSee('Profil Saya');
+
+        $this->actingAs($admin)->get('/settings/contact')
+            ->assertStatus(200)
+            ->assertSee('Kontak & Lokasi')
+            ->assertSee($admin->email);
+
+        $this->actingAs($admin)->get('/settings/security')
+            ->assertStatus(200)
+            ->assertSee('Keamanan Akun')
+            ->assertSee('Perbarui Kata Sandi');
+
+        $this->actingAs($admin)->get('/settings/preferences')
+            ->assertStatus(200)
+            ->assertSee('Preferensi Sistem')
+            ->assertSee('Dark Glassmorphic UI');
+    }
+
+    public function test_user_can_update_contact_and_security_separately(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'old_email@example.com',
+            'password' => Hash::make('secret123'),
+        ]);
+
+        // Update Contact
+        $this->actingAs($user)->put('/settings/contact', [
+            'email' => 'new_email@example.com',
+            'phone_number' => '089912345678',
+            'address' => 'Gudang Utama Blok B',
+        ])->assertRedirect('/settings/contact')
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new_email@example.com']);
+        $this->assertDatabaseHas('user_profiles', ['user_id' => $user->id, 'phone_number' => '089912345678']);
+
+        // Update Security
+        $this->actingAs($user)->put('/settings/security', [
+            'current_password' => 'secret123',
+            'new_password' => 'newpass456',
+            'new_password_confirmation' => 'newpass456',
+        ])->assertRedirect('/settings/security')
+            ->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertTrue(Hash::check('newpass456', $user->password));
+
+        // Update Preferences
+        $this->actingAs($user)->put('/settings/preferences', [])
+            ->assertRedirect('/settings/preferences')
+            ->assertSessionHas('success');
     }
 }

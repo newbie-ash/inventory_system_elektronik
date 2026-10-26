@@ -4,71 +4,70 @@
 @section('page_heading', 'Riwayat & Log Transaksi Stok')
 
 @section('content')
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body p-3">
-        <!-- Filter Form -->
-        <form method="GET" action="{{ route('stock-movements.index') }}" class="row g-2 align-items-center">
-            <div class="col-12 col-md-4">
-                <div class="input-group">
-                    <span class="input-group-text bg-light text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" 
-                           name="search" 
-                           class="form-control" 
-                           placeholder="Cari SKU, nama produk, catatan..." 
-                           value="{{ request('search') }}">
-                </div>
+<div class="card glass-card mb-3 p-3">
+    <!-- Filter Form -->
+    <form method="GET" action="{{ route('stock-movements.index') }}" class="row g-2.5 align-items-center">
+        <div class="col-12 col-md-4">
+            <div class="position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3" style="color: var(--colors-muted); pointer-events: none;"></i>
+                <input type="text" 
+                       name="search" 
+                       class="form-control ps-5" 
+                       placeholder="Cari SKU, nama produk, catatan..." 
+                       value="{{ request('search') }}">
             </div>
+        </div>
 
-            <!-- Filter Jenis Transaksi -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <select name="type" class="form-select">
-                    <option value="">Semua Jenis Transaksi</option>
-                    <option value="in" {{ request('type') === 'in' ? 'selected' : '' }}>Barang Masuk (In)</option>
-                    <option value="out" {{ request('type') === 'out' ? 'selected' : '' }}>Barang Keluar (Out)</option>
-                </select>
-            </div>
+        <!-- Filter Jenis Transaksi -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <select name="type" class="form-select">
+                <option value="">Semua Jenis Transaksi</option>
+                <option value="in" {{ request('type') === 'in' ? 'selected' : '' }}>Barang Masuk (In)</option>
+                <option value="out" {{ request('type') === 'out' ? 'selected' : '' }}>Barang Keluar (Out)</option>
+            </select>
+        </div>
 
-            <!-- Filter Produk Tertentu -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <select name="product_id" class="form-select">
-                    <option value="">Semua Produk</option>
-                    @foreach ($products as $p)
-                        <option value="{{ $p->id }}" {{ request('product_id') == $p->id ? 'selected' : '' }}>
-                            {{ $p->name }} ({{ $p->sku }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        <!-- Filter Produk Tertentu -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <select name="product_id" class="form-select">
+                <option value="">Semua Produk</option>
+                @foreach ($products as $p)
+                    <option value="{{ $p->id }}" {{ request('product_id') == $p->id ? 'selected' : '' }}>
+                        {{ $p->name }} ({{ $p->sku }})
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-            <div class="col-12 col-md-2 d-flex gap-2">
-                <button type="submit" class="btn btn-primary flex-grow-1">
-                    <i class="bi bi-funnel-fill me-1"></i> Filter
-                </button>
-                @if(request()->anyFilled(['search', 'type', 'product_id']))
-                    <a href="{{ route('stock-movements.index') }}" class="btn btn-outline-secondary" title="Reset">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                    </a>
-                @endif
-            </div>
-        </form>
-    </div>
+        <div class="col-12 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1 font-monospace">
+                <i class="bi bi-funnel-fill me-1"></i> Filter
+            </button>
+            @if(request()->anyFilled(['search', 'type', 'product_id']))
+                <a href="{{ route('stock-movements.index') }}" class="btn btn-glass-outline font-monospace" title="Reset Filter">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            @endif
+        </div>
+    </form>
 </div>
 
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white d-flex align-items-center justify-content-between py-3">
-        <div class="d-flex align-items-center gap-2">
-            <h6 class="mb-0 fw-bold">Daftar Transaksi Stok Inventaris</h6>
-            <span class="badge bg-secondary-subtle text-secondary">{{ $movements->total() }} Catatan</span>
+<div class="card glass-card">
+    <div class="card-header d-flex align-items-center justify-content-between py-3">
+        <div class="d-flex align-items-center gap-2.5">
+            <h6 class="mb-0 fw-bold text-white">Daftar Transaksi Stok Inventaris</h6>
+            <span class="badge badge-gradient-accent font-monospace">{{ $movements->total() }} Catatan</span>
         </div>
-        <a href="{{ route('stock-movements.create') }}" class="btn btn-success btn-sm">
-            <i class="bi bi-plus-lg me-1"></i> Catat Transaksi Baru
+        <a href="{{ route('stock-movements.create') }}" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1.5 px-3 py-2 font-monospace">
+            <i class="bi bi-plus-lg"></i>
+            <span>Catat Transaksi Baru</span>
         </a>
     </div>
 
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-light text-uppercase text-secondary small">
+                <thead>
                     <tr>
                         <th style="width: 50px;" class="text-center">No.</th>
                         <th>Waktu</th>
@@ -78,7 +77,7 @@
                         <th class="text-center">Kuantitas</th>
                         <th>Petugas</th>
                         <th>Keterangan / Catatan</th>
-                        <th class="text-end">Aksi</th>
+                        <th class="text-end pe-3">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,40 +92,42 @@
                             </td>
                             <td>
                                 @if ($item->type === 'in')
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                    <span class="badge badge-gradient-success font-monospace">
                                         <i class="bi bi-arrow-down-left"></i> Masuk (In)
                                     </span>
                                 @else
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                                    <span class="badge badge-gradient-danger font-monospace">
                                         <i class="bi bi-arrow-up-right"></i> Keluar (Out)
                                     </span>
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('products.show', $item->product) }}" class="fw-bold text-dark text-decoration-none">
+                                <a href="{{ route('products.show', $item->product) }}" class="fw-bold text-white text-decoration-none">
                                     {{ $item->product->name ?? 'Produk Dihapus' }}
                                 </a>
                                 <div class="small text-muted font-monospace">{{ $item->product->sku ?? '-' }}</div>
                             </td>
                             <td>
-                                <span class="badge bg-light text-secondary border">
+                                <span class="badge badge-gradient-info font-monospace">
                                     {{ $item->product->category->name ?? '-' }}
                                 </span>
                             </td>
-                            <td class="text-center fw-bold fs-6 {{ $item->type === 'in' ? 'text-success' : 'text-danger' }}">
+                            <td class="text-center fw-bold fs-6 font-monospace {{ $item->type === 'in' ? 'text-success' : 'text-danger' }}">
                                 {{ $item->type === 'in' ? '+' : '-' }}{{ $item->quantity }}
                             </td>
                             <td>
-                                <div class="small fw-semibold">{{ $item->user->name ?? 'Sistem' }}</div>
+                                <div class="small fw-semibold text-white">{{ $item->user->name ?? 'Sistem' }}</div>
                                 <div class="small text-muted" style="font-size: 0.72rem;">{{ ucfirst($item->user->role ?? '') }}</div>
                             </td>
                             <td class="small text-muted">
                                 {{ $item->notes ?: '-' }}
                             </td>
-                            <td class="text-end">
-                                <a href="{{ route('stock-movements.show', $item) }}" class="btn btn-sm btn-outline-info" title="Detail Transaksi">
-                                    <i class="bi bi-receipt"></i> Detail
-                                </a>
+                            <td class="text-end pe-3">
+                                <div class="d-inline-flex align-items-center justify-content-end gap-2">
+                                    <a href="{{ route('stock-movements.show', $item) }}" class="btn-action btn-action-view" title="Detail Transaksi">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -143,13 +144,8 @@
     </div>
 
     @if ($movements->hasPages())
-        <div class="card-footer bg-white d-flex align-items-center justify-content-between py-3 border-top">
-            <div class="small text-muted">
-                Menampilkan <strong>{{ $movements->firstItem() }}</strong> sampai <strong>{{ $movements->lastItem() }}</strong> dari <strong>{{ $movements->total() }}</strong> transaksi
-            </div>
-            <div>
-                {{ $movements->links('pagination::bootstrap-5') }}
-            </div>
+        <div class="card-footer py-3 border-top d-flex justify-content-center" style="background: transparent; border-color: var(--colors-hairline) !important;">
+            {{ $movements->links('vendor.pagination.buyer-slide') }}
         </div>
     @endif
 </div>

@@ -45,8 +45,8 @@ class MidtransService
      */
     public function createSnapToken(Sale $sale): string
     {
-        // If snap token already generated, reuse it
-        if (! empty($sale->snap_token)) {
+        // If real snap token already generated (not a mock token), reuse it
+        if (! empty($sale->snap_token) && ! str_starts_with($sale->snap_token, 'SNAP-MOCK-')) {
             return $sale->snap_token;
         }
 
@@ -64,6 +64,10 @@ class MidtransService
             ];
         }
 
+        $finishUrl = $sale->buyer_id
+            ? route('customer.orders.show', $sale)
+            : route('sales.show', $sale);
+
         $payload = [
             'transaction_details' => [
                 'order_id' => $sale->sale_number,
@@ -74,16 +78,27 @@ class MidtransService
                 'email' => $customer->email ?? 'customer@example.com',
             ],
             'item_details' => $items,
+            'callbacks' => [
+                'finish' => $finishUrl,
+                'unfinish' => $finishUrl,
+                'error' => $finishUrl,
+            ],
         ];
 
         try {
-            $response = Http::withBasicAuth($this->serverKey, '')
+            $http = Http::withBasicAuth($this->serverKey, '')
                 ->withHeaders([
                     'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
                 ])
-                ->timeout(5)
-                ->post($this->getApiUrl(), $payload);
+                ->timeout(10);
+
+            // Bypass SSL certificate check on local development / Windows when CA bundle is missing
+            if (app()->isLocal() || empty(ini_get('curl.cainfo')) || empty(ini_get('openssl.cafile'))) {
+                $http = $http->withoutVerifying();
+            }
+
+            $response = $http->post($this->getApiUrl(), $payload);
 
             if ($response->successful()) {
                 $snapToken = (string) $response->json('token');
@@ -94,12 +109,12 @@ class MidtransService
                 }
             }
 
-            Log::warning('Midtrans Snap API non-200 response, using sandbox simulation token.', [
+            Log::warning('Midtrans Snap API non-200 response: '.$response->body(), [
                 'order_id' => $sale->sale_number,
-                'body' => $response->body(),
+                'status' => $response->status(),
             ]);
         } catch (\Throwable $e) {
-            Log::info('Midtrans API unreachable, using local fallback token for offline demonstration: '.$e->getMessage());
+            Log::info('Midtrans API unreachable, using local fallback token: '.$e->getMessage());
         }
 
         // Deterministic mock token for offline demonstration & test suite
@@ -143,5 +158,39 @@ class MidtransService
             'payment_status' => $paymentStatus,
             'transaction_status' => $transactionStatus,
         ];
+    }
+
+    /**
+     * Query Midtrans API directly for transaction status.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function checkStatus(string $orderId): ?array
+    {
+        $baseUrl = $this->isProduction
+            ? 'https://api.midtrans.com'
+            : 'https://api.sandbox.midtrans.com';
+
+        try {
+            $http = Http::withBasicAuth($this->serverKey, '')
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                ])
+                ->timeout(10);
+
+            if (app()->isLocal() || empty(ini_get('curl.cainfo')) || empty(ini_get('openssl.cafile'))) {
+                $http = $http->withoutVerifying();
+            }
+
+            $response = $http->get("{$baseUrl}/v2/{$orderId}/status");
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+        } catch (\Throwable $e) {
+            Log::info("Midtrans checkStatus query failed for {$orderId}: ".$e->getMessage());
+        }
+
+        return null;
     }
 }

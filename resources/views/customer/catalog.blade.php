@@ -57,14 +57,26 @@
                     <div>
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <span class="badge font-monospace" style="background: rgba(255, 0, 61, 0.15); color: var(--colors-accent); border: 1px solid var(--colors-accent); font-size: 0.65rem;">{{ $prod->sku }}</span>
-                            <span class="badge bg-white bg-opacity-10 text-white font-monospace" style="font-size: 0.68rem;">
-                                Stok: {{ $prod->stock }} unit
-                            </span>
+                            @if($prod->stock <= 0)
+                                <span class="badge font-monospace" style="background: rgba(239, 68, 68, 0.2); color: #F87171; font-size: 0.68rem;">
+                                    Stok Habis
+                                </span>
+                            @elseif($prod->stock <= 5)
+                                <span class="badge font-monospace" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; font-size: 0.68rem;">
+                                    Sisa {{ $prod->stock }} unit
+                                </span>
+                            @else
+                                <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.68rem;">
+                                    Sisa {{ $prod->stock }} unit
+                                </span>
+                            @endif
                         </div>
 
-                        <!-- Visual Icon Representation -->
-                        <div class="p-3 mb-2 text-center d-flex align-items-center justify-content-center" style="height: 130px; background: var(--colors-card-alt); color: var(--colors-accent); border: 1px solid var(--colors-hairline);">
-                            @if(str_contains(strtolower($prod->name), 'laptop'))
+                        <!-- Visual Representation (Clickable Link) -->
+                        <a href="{{ route('customer.catalog.show', $prod) }}" class="p-2 mb-2 text-center d-flex align-items-center justify-content-center overflow-hidden text-decoration-none" style="height: 130px; background: var(--colors-card-alt); color: var(--colors-accent); border: 1px solid var(--colors-hairline); border-radius: 8px; cursor: pointer;" title="Lihat detail {{ $prod->name }}">
+                            @if($prod->image_url)
+                                <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="w-100 h-100 object-fit-cover rounded-2">
+                            @elseif(str_contains(strtolower($prod->name), 'laptop'))
                                 <i class="bi bi-laptop fs-1"></i>
                             @elseif(str_contains(strtolower($prod->name), 'keyboard'))
                                 <i class="bi bi-keyboard fs-1"></i>
@@ -75,13 +87,28 @@
                             @else
                                 <i class="bi bi-cpu fs-1"></i>
                             @endif
-                        </div>
+                        </a>
 
                         <h5 class="fw-semibold text-white fs-6 mb-1 text-truncate" title="{{ $prod->name }}" style="font-family: 'Roboto', sans-serif;">
                             <a href="{{ route('customer.catalog.show', $prod) }}" class="text-white text-decoration-none">
                                 {{ $prod->name }}
                             </a>
                         </h5>
+
+                        @php
+                            $catRating = $prod->averageRating();
+                            $catReviews = $prod->reviewsCount();
+                        @endphp
+                        <div class="d-flex align-items-center gap-1.5 mb-2 font-monospace" style="font-size: 0.72rem;">
+                            @if($catReviews > 0)
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <span class="text-white fw-bold">{{ number_format($catRating, 1) }}</span>
+                                <span class="text-secondary">({{ $catReviews }})</span>
+                            @else
+                                <i class="bi bi-star text-secondary" style="opacity: 0.5;"></i>
+                                <span class="text-secondary" style="font-size: 0.68rem;">Belum ada ulasan</span>
+                            @endif
+                        </div>
                         <p class="text-secondary small mb-3" style="font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.3rem; color: var(--colors-muted) !important;">
                             {{ $prod->description ?: 'Hardware resmi standar turnamen dengan garansi distributor original.' }}
                         </p>
@@ -93,7 +120,7 @@
                             <span class="fs-6 fw-bold font-monospace" style="color: var(--colors-accent);">Rp {{ number_format($price, 0, ',', '.') }}</span>
                         </div>
 
-                        <!-- Fast Checkout Form with REDMAGIC CTA Button -->
+                        <!-- Fast Checkout & Cart Form -->
                         <form action="{{ route('customer.checkout') }}" method="POST">
                             @csrf
                             <input type="hidden" name="items[0][product_id]" value="{{ $prod->id }}">
@@ -101,9 +128,21 @@
                                 <span class="input-group-text font-monospace small">Qty</span>
                                 <input type="number" name="items[0][quantity]" class="form-control text-center font-monospace" value="1" min="1" max="{{ $prod->stock }}" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm w-100 font-monospace py-1.5 d-flex align-items-center justify-content-center gap-1.5 text-uppercase">
-                                <i class="bi bi-credit-card-2-front"></i> Beli via Midtrans
-                            </button>
+                            <div class="d-flex gap-1.5">
+                                <button type="submit" 
+                                        formaction="{{ route('customer.cart.add') }}" 
+                                        class="btn btn-glass-outline btn-sm font-monospace py-1.5 px-2.5 d-flex align-items-center justify-content-center" 
+                                        style="border: 1px solid rgba(166, 156, 172, 0.35); color: #ffffff; background: rgba(71, 73, 115, 0.35);"
+                                        title="Tambah ke Keranjang"
+                                        {{ $prod->stock <= 0 ? 'disabled' : '' }}>
+                                    <i class="bi bi-cart-plus fs-6"></i>
+                                </button>
+                                <button type="submit" 
+                                        class="btn btn-primary btn-sm flex-grow-1 font-monospace py-1.5 d-flex align-items-center justify-content-center gap-1.5 text-uppercase"
+                                        {{ $prod->stock <= 0 ? 'disabled' : '' }}>
+                                    <i class="bi bi-credit-card-2-front"></i> Beli
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -118,11 +157,11 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
-    <div class="d-flex justify-content-center">
-        <div class="pagination-glass-wrap">
-            {{ $products->links('pagination::bootstrap-5') }}
+    <!-- Pagination (Centered Buyer Slide Style) -->
+    @if($products->hasPages())
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $products->links('vendor.pagination.buyer-slide') }}
         </div>
-    </div>
+    @endif
 </div>
 @endsection

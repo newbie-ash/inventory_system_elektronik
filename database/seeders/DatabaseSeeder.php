@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\PromoBanner;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\StockMovement;
@@ -312,6 +313,19 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $admin->id,
                 'type' => 'in',
                 'quantity' => 12,
+            ]
+        );
+
+        // 8. Default Active Promo Banner
+        PromoBanner::firstOrCreate(
+            ['id' => 1],
+            [
+                'tag' => 'PROMO SPESIAL GAJIAN:',
+                'title' => 'Potongan hingga 15% untuk kategori PC & Gadget',
+                'description' => 'Dapatkan penawaran terbatas untuk produk elektronik & hardware pilihan minggu ini.',
+                'button_text' => 'Klaim Voucher',
+                'button_url' => '#katalog-grid',
+                'is_active' => true,
             ]
         );
     }

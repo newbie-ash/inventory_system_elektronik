@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\PromoBanner;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\StockMovement;
@@ -79,13 +80,15 @@ class DashboardController extends Controller
             $categories = Category::withCount(['products' => function ($q) {
                 $q->where('stock', '>', 0);
             }])->orderBy('name')->get();
+            $activeBanner = PromoBanner::getActiveBanner();
 
             return view('dashboard.customer', compact(
                 'myOrdersCount',
                 'myOrdersPending',
                 'recentOrders',
                 'products',
-                'categories'
+                'categories',
+                'activeBanner'
             ));
         }
 

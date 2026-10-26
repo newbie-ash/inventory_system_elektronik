@@ -36,7 +36,14 @@
             </button>
 
             @if($sale->status === 'completed' && Auth::user()->isAdmin())
-                <form action="{{ route('sales.cancel', $sale) }}" method="POST" onsubmit="return confirm('PERINGATAN: Membatalkan transaksi ini akan otomatis mengembalikan (menambah kembali) stok produk ke inventaris. Lanjutkan pembatalan?')">
+                <form action="{{ route('sales.cancel', $sale) }}" 
+                      method="POST"
+                      data-confirm="Membatalkan transaksi ini akan otomatis mengembalikan (menambah kembali) stok produk ke inventaris."
+                      data-confirm-title="Batalkan Transaksi Penjualan?"
+                      data-confirm-item="Transaksi #{{ $sale->sale_number }}"
+                      data-confirm-type="warning"
+                      data-confirm-icon="bi-arrow-counterclockwise"
+                      data-confirm-btn="Ya, Batalkan Transaksi">
                     @csrf
                     <button type="submit" class="btn btn-danger btn-sm">
                         <i class="bi bi-x-circle me-1"></i> Batalkan Transaksi (Admin)
@@ -45,6 +52,73 @@
             @endif
         </div>
     </div>
+
+    @if($sale->status !== 'cancelled')
+        <!-- Operational Fulfillment Control Bar (Staff Gudang & Admin) -->
+        <div class="card mb-4 p-3.5 border-0 shadow-sm" style="background: rgba(22, 27, 51, 0.95); border: 1px solid var(--colors-hairline) !important; border-radius: 14px;">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(71, 73, 115, 0.35); color: var(--colors-accent);">
+                        <i class="bi bi-box-seam fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-white fs-6 font-monospace">Operasional Gudang & Logistik Pengiriman</div>
+                        <div class="small text-secondary font-monospace mt-0.5">
+                            Status saat ini:
+                            @if($sale->shipping_status === 'shipped')
+                                <span class="badge bg-info text-white font-monospace"><i class="bi bi-truck me-1"></i> Sedang Dalam Perjalanan Kurir</span>
+                            @elseif($sale->shipping_status === 'delivered')
+                                <span class="badge bg-success text-white font-monospace"><i class="bi bi-check2-circle me-1"></i> Pesanan Selesai / Telah Diterima</span>
+                            @elseif($sale->shipping_status === 'packing')
+                                <span class="badge font-monospace" style="background: rgba(241, 218, 196, 0.2); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.35);"><i class="bi bi-box-seam me-1"></i> Sedang Dikemas di Gudang</span>
+                            @else
+                                <span class="badge bg-warning text-dark font-monospace">Menunggu Pembayaran</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operational Action Buttons for Staff & Admin -->
+                <div class="d-flex align-items-center gap-2">
+                    @if($sale->shipping_status === 'packing' || ($sale->shipping_status === 'pending' && $sale->payment_status === 'paid'))
+                        <form action="{{ route('sales.update-shipping-status', $sale) }}" 
+                              method="POST"
+                              data-confirm="Konfirmasi pengiriman ke kurir? Status di akun pembeli otomatis berubah menjadi Sedang Dikirim."
+                              data-confirm-title="Serahkan Pesanan ke Kurir?"
+                              data-confirm-item="Pesanan #{{ $sale->sale_number }}"
+                              data-confirm-type="success"
+                              data-confirm-icon="bi-truck"
+                              data-confirm-btn="Ya, Kirim Pesanan">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="shipping_status" value="shipped">
+                            <button type="submit" class="btn btn-primary btn-sm font-monospace d-inline-flex align-items-center gap-1.5">
+                                <i class="bi bi-truck"></i>
+                                <span>Kirim Pesanan (Serahkan ke Kurir)</span>
+                            </button>
+                        </form>
+                    @elseif($sale->shipping_status === 'shipped')
+                        <form action="{{ route('sales.update-shipping-status', $sale) }}" 
+                              method="POST"
+                              data-confirm="Tandai pesanan telah sampai di tangan pembeli secara fisik dan status pengiriman diselesaikan."
+                              data-confirm-title="Konfirmasi Pesanan Selesai?"
+                              data-confirm-item="Pesanan #{{ $sale->sale_number }}"
+                              data-confirm-type="success"
+                              data-confirm-icon="bi-check2-circle"
+                              data-confirm-btn="Ya, Selesaikan Pesanan">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="shipping_status" value="delivered">
+                            <button type="submit" class="btn btn-success btn-sm font-monospace d-inline-flex align-items-center gap-1.5">
+                                <i class="bi bi-check2-circle"></i>
+                                <span>Konfirmasi Pesanan Selesai (Diterima)</span>
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
 
     @if($sale->payment_status === 'pending')
         <div class="alert alert-warning border d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3 mb-4 shadow-sm">
@@ -146,12 +220,12 @@
     document.getElementById('pay-button')?.addEventListener('click', function () {
         snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
-                alert("Pembayaran berhasil!");
-                location.reload();
+                const trxStatus = (result && result.transaction_status) ? result.transaction_status : 'settlement';
+                window.location.href = "{{ route('sales.show', $sale) }}?transaction_status=" + encodeURIComponent(trxStatus);
             },
             onPending: function(result){
-                alert("Menunggu pembayaran Anda!");
-                location.reload();
+                const trxStatus = (result && result.transaction_status) ? result.transaction_status : 'pending';
+                window.location.href = "{{ route('sales.show', $sale) }}?transaction_status=" + encodeURIComponent(trxStatus);
             },
             onError: function(result){
                 alert("Pembayaran gagal!");

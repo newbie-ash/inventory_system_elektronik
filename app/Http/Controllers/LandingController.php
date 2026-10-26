@@ -40,7 +40,33 @@ class LandingController extends Controller
 
         $totalAvailableProducts = Product::availableForBuyer()->count();
 
-        return view('landing', compact('products', 'categories', 'featuredProducts', 'totalAvailableProducts'));
+        // Flagship Hero & Apple-Style Spotlight Hardware Showcases
+        $heroProduct = Product::availableForBuyer()
+            ->whereNotNull('image')
+            ->where('price', '>=', 3000000)
+            ->latest()
+            ->first()
+            ?? Product::availableForBuyer()->whereNotNull('image')->latest()->first()
+            ?? Product::availableForBuyer()->latest()->first();
+
+        $spotlightProducts = Product::availableForBuyer()
+            ->whereNotNull('image')
+            ->when($heroProduct, fn ($q) => $q->where('id', '!=', $heroProduct->id))
+            ->latest()
+            ->take(4)
+            ->get();
+
+        if ($spotlightProducts->count() < 4) {
+            $more = Product::availableForBuyer()
+                ->when($heroProduct, fn ($q) => $q->where('id', '!=', $heroProduct->id))
+                ->whereNotIn('id', $spotlightProducts->pluck('id'))
+                ->latest()
+                ->take(4 - $spotlightProducts->count())
+                ->get();
+            $spotlightProducts = $spotlightProducts->concat($more);
+        }
+
+        return view('landing', compact('products', 'categories', 'featuredProducts', 'totalAvailableProducts', 'heroProduct', 'spotlightProducts'));
     }
 
     /**

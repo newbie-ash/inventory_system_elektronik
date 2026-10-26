@@ -47,6 +47,10 @@ class SaleController extends Controller
             $query->where('payment_status', $request->input('payment_status'));
         }
 
+        if ($request->filled('shipping_status')) {
+            $query->where('shipping_status', $request->input('shipping_status'));
+        }
+
         if ($request->filled('date_from')) {
             $query->whereDate('sold_at', '>=', $request->input('date_from'));
         }
@@ -161,12 +165,37 @@ class SaleController extends Controller
     /**
      * Display the specified sale details.
      */
-    public function show(Sale $sale): View
+    public function show(Request $request, Sale $sale): View
     {
         $sale->load(['user', 'buyer', 'items.product']);
 
+        if ($sale->payment_method === 'midtrans' && $sale->payment_status !== 'paid') {
+            $trxStatus = $request->query('transaction_status');
+            if ($trxStatus) {
+                $statusData = $this->midtransService->parseNotificationStatus($trxStatus, $request->query('fraud_status'));
+                if ($statusData['payment_status'] === 'paid') {
+                    $sale->update(['payment_status' => 'paid']);
+                    session()->flash('success', 'Pembayaran Midtrans berhasil diverifikasi (Lunas)!');
+                }
+            }
+
+            if ($sale->payment_status !== 'paid' && ! empty($sale->snap_token) && ! str_starts_with($sale->snap_token, 'SNAP-MOCK-')) {
+                $statusResponse = $this->midtransService->checkStatus($sale->sale_number);
+                if ($statusResponse && isset($statusResponse['transaction_status'])) {
+                    $parsed = $this->midtransService->parseNotificationStatus(
+                        $statusResponse['transaction_status'],
+                        $statusResponse['fraud_status'] ?? null
+                    );
+                    if ($parsed['payment_status'] === 'paid') {
+                        $sale->update(['payment_status' => 'paid']);
+                        session()->flash('success', 'Pembayaran Midtrans berhasil diverifikasi (Lunas)!');
+                    }
+                }
+            }
+        }
+
         $snapToken = $sale->snap_token;
-        if (empty($snapToken) && $sale->payment_method === 'midtrans' && $sale->payment_status !== 'paid') {
+        if ((empty($snapToken) || str_starts_with($snapToken, 'SNAP-MOCK-')) && $sale->payment_method === 'midtrans' && $sale->payment_status !== 'paid') {
             $snapToken = $this->midtransService->createSnapToken($sale);
         }
 
@@ -215,6 +244,37 @@ class SaleController extends Controller
 
         return redirect()->route('sales.show', $sale)
             ->with('success', "Transaksi Penjualan #{$sale->sale_number} berhasil dibatalkan dan stok produk telah dipulihkan.");
+    }
+
+    /**
+     * Update shipping and fulfillment status (Staff Gudang & Admin).
+     */
+    public function updateShippingStatus(Request $request, Sale $sale): RedirectResponse
+    {
+        $validated = $request->validate([
+            'shipping_status' => ['required', 'string', 'in:packing,shipped,delivered'],
+        ]);
+
+        $newStatus = $validated['shipping_status'];
+
+        $updateData = [
+            'shipping_status' => $newStatus,
+            'status' => $newStatus === 'delivered' ? 'completed' : $sale->status,
+        ];
+
+        if ($newStatus === 'delivered' && $sale->payment_method === 'cod') {
+            $updateData['payment_status'] = 'paid';
+        }
+
+        $sale->update($updateData);
+
+        $messages = [
+            'packing' => "Pesanan #{$sale->sale_number} sekarang ditandai 'Sedang Dikemas' oleh staf gudang.",
+            'shipped' => "Pesanan #{$sale->sale_number} berhasil diserahkan ke kurir logistik dan ditandai 'Sedang Dikirim'.",
+            'delivered' => "Pesanan #{$sale->sale_number} telah berhasil dikonfirmasi sampai dan berstatus 'Selesai'.",
+        ];
+
+        return back()->with('success', $messages[$newStatus] ?? 'Status logistik berhasil diperbarui.');
     }
 
     /**

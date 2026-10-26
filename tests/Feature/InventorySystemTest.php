@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -282,9 +283,9 @@ class InventorySystemTest extends TestCase
     }
 
     /**
-     * 10. Test Cegah Penghapusan Sembarangan: Produk dengan riwayat transaksi tidak boleh dihapus.
+     * 10. Test Soft Delete: Produk dengan riwayat transaksi dapat di-soft delete dan disembunyikan.
      */
-    public function test_product_with_stock_movements_cannot_be_deleted(): void
+    public function test_product_with_stock_movements_can_be_soft_deleted(): void
     {
         $product = Product::create([
             'category_id' => $this->category->id,
@@ -302,15 +303,22 @@ class InventorySystemTest extends TestCase
             'quantity' => 4,
         ]);
 
-        // Coba hapus produk
+        // Hapus produk
         $response = $this->actingAs($this->admin)->delete("/products/{$product->id}");
 
-        $response->assertSessionHas('error');
+        $response->assertRedirect('/products');
+        $response->assertSessionHas('success');
 
-        // Pastikan produk tetap ada di database
-        $this->assertDatabaseHas('products', [
+        // Pastikan produk berstatus soft deleted di database
+        $this->assertSoftDeleted('products', [
             'id' => $product->id,
         ]);
+
+        // Pastikan produk tersembunyi dari query produk aktif admin & staff
+        $this->assertFalse(Product::where('id', $product->id)->exists());
+
+        // Pastikan produk tersembunyi dari katalog pembeli
+        $this->assertFalse(Product::availableForBuyer()->where('id', $product->id)->exists());
     }
 
     /**
@@ -647,7 +655,12 @@ class InventorySystemTest extends TestCase
     public function test_pembeli_cannot_access_admin_or_staff_routes(): void
     {
         // Akses admin master
-        $this->actingAs($this->pembeli)->get('/users')->assertStatus(403);
+        $response = $this->actingAs($this->pembeli)->get('/users');
+        $response->assertStatus(403);
+        $response->assertSee('Kembali ke Beranda');
+        $response->assertDontSee('Dashboard Saya');
+        $response->assertDontSee('(Role Admin)');
+
         $this->actingAs($this->pembeli)->get('/categories')->assertStatus(403);
         $this->actingAs($this->pembeli)->get('/suppliers')->assertStatus(403);
 
@@ -868,5 +881,89 @@ class InventorySystemTest extends TestCase
         $response->assertRedirect(route('dashboard'));
         $this->assertAuthenticated();
         $this->assertEquals('pembeli', Auth::user()->role);
+    }
+
+    /**
+     * 32. Test Upload, Ganti, dan Hapus Foto Produk oleh Admin.
+     */
+    public function test_admin_can_upload_product_photo_on_create_and_update(): void
+    {
+        $fakeImage = UploadedFile::fake()->image('gaming-laptop.png', 300, 300);
+
+        $response = $this->actingAs($this->admin)->post('/products', [
+            'category_id' => $this->category->id,
+            'sku' => 'LAP-001',
+            'name' => 'Laptop Gaming Titan',
+            'description' => 'Laptop spek tinggi',
+            'price' => 15000000,
+            'stock' => 10,
+            'min_stock' => 2,
+            'image' => $fakeImage,
+        ]);
+
+        $response->assertRedirect('/products');
+        $product = Product::where('sku', 'LAP-001')->firstOrFail();
+
+        $this->assertNotNull($product->image);
+        $this->assertFileExists(public_path($product->image));
+        $this->assertNotNull($product->image_url);
+
+        // Update: Ganti dengan foto baru
+        $newFakeImage = UploadedFile::fake()->image('gaming-laptop-v2.png', 400, 400);
+        $oldImagePath = public_path($product->image);
+
+        $updateResponse = $this->actingAs($this->admin)->put("/products/{$product->id}", [
+            'category_id' => $this->category->id,
+            'sku' => 'LAP-001',
+            'name' => 'Laptop Gaming Titan V2',
+            'price' => 16000000,
+            'min_stock' => 2,
+            'image' => $newFakeImage,
+        ]);
+
+        $updateResponse->assertRedirect('/products');
+        $product->refresh();
+
+        $this->assertFileDoesNotExist($oldImagePath);
+        $this->assertFileExists(public_path($product->image));
+
+        // Update: Hapus foto
+        $currentImagePath = public_path($product->image);
+        $deleteImageResponse = $this->actingAs($this->admin)->put("/products/{$product->id}", [
+            'category_id' => $this->category->id,
+            'sku' => 'LAP-001',
+            'name' => 'Laptop Gaming Titan V2',
+            'price' => 16000000,
+            'min_stock' => 2,
+            'remove_image' => '1',
+        ]);
+
+        $deleteImageResponse->assertRedirect('/products');
+        $product->refresh();
+
+        $this->assertNull($product->image);
+        $this->assertNull($product->image_url);
+        $this->assertFileDoesNotExist($currentImagePath);
+    }
+
+    /**
+     * Test Logout: Saat user keluar (admin, staff, pembeli), otomatis diarahkan ke landing page.
+     */
+    public function test_logout_redirects_to_landing_page_for_all_roles(): void
+    {
+        // 1. Admin Logout
+        $adminResponse = $this->actingAs($this->admin)->post('/logout');
+        $adminResponse->assertRedirect('/');
+        $this->assertGuest();
+
+        // 2. Staff Logout
+        $staffResponse = $this->actingAs($this->staff)->post('/logout');
+        $staffResponse->assertRedirect('/');
+        $this->assertGuest();
+
+        // 3. Buyer Logout
+        $buyerResponse = $this->actingAs($this->pembeli)->post('/logout');
+        $buyerResponse->assertRedirect('/');
+        $this->assertGuest();
     }
 }

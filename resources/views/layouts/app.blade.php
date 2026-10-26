@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - Ctrl+R</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -62,14 +63,15 @@
             z-index: 1060;
         }
 
-        /* Sidebar for Admin & Staff (Modern Glassmorphic #161B33) */
+        /* Sidebar for Admin & Staff (Modern Glassmorphic Contrast) */
         .sidebar {
             width: var(--sidebar-width);
             height: calc(100vh - 2px);
-            background: linear-gradient(180deg, rgba(22, 27, 51, 0.96) 0%, rgba(13, 12, 29, 0.98) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--colors-hairline);
+            background: linear-gradient(175deg, rgba(71, 73, 115, 0.32) 0%, rgba(22, 27, 51, 0.72) 40%, rgba(13, 12, 29, 0.88) 100%);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-right: 1px solid rgba(71, 73, 115, 0.55);
+            box-shadow: 12px 0 35px -5px rgba(0, 0, 0, 0.45), inset -1px 0 0 0 rgba(241, 218, 196, 0.18);
             color: var(--colors-faint);
             position: fixed;
             top: 2px;
@@ -87,41 +89,91 @@
             overflow-y: auto;
         }
 
-        /* Collapsed Sidebar on Desktop */
+        /* Collapsed Sidebar on Desktop (Compact Rail) */
         body.sidebar-collapsed .sidebar {
-            margin-left: calc(-1 * var(--sidebar-width));
+            width: 70px !important;
         }
 
         body.sidebar-collapsed .main-wrapper {
-            margin-left: 0 !important;
+            margin-left: 70px !important;
         }
 
-        .sidebar-user-footer {
-            background: rgba(13, 12, 29, 0.65);
-            border-top: 1px solid var(--colors-hairline);
+        body.sidebar-collapsed .sidebar .brand-title,
+        body.sidebar-collapsed .sidebar .brand small,
+        body.sidebar-collapsed .sidebar .brand-dot,
+        body.sidebar-collapsed .sidebar .section-heading,
+        body.sidebar-collapsed .sidebar .nav-link span,
+        body.sidebar-collapsed .sidebar .badge {
+            display: none !important;
         }
 
-        .sidebar-profile-card {
+        body.sidebar-collapsed .sidebar .sidebar-brand-wrap {
+            padding: 0 !important;
+            justify-content: center !important;
+        }
+
+        body.sidebar-collapsed .sidebar .brand {
+            display: none !important;
+        }
+
+        body.sidebar-collapsed .sidebar .nav-link {
+            justify-content: center !important;
+            padding: 0.75rem 0 !important;
+            text-align: center;
+        }
+
+        body.sidebar-collapsed .sidebar .nav-link i {
+            margin-right: 0 !important;
+            font-size: 1.25rem;
+        }
+
+        .admin-nav-profile-btn {
             background: rgba(71, 73, 115, 0.2) !important;
             border: 1px solid rgba(166, 156, 172, 0.2) !important;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .sidebar-profile-card:hover,
-        .sidebar-profile-card[aria-expanded="true"] {
+        .admin-nav-profile-btn:hover,
+        .admin-nav-profile-btn.active-profile {
             background: rgba(71, 73, 115, 0.4) !important;
             border-color: var(--colors-accent) !important;
             transform: translateY(-1px);
         }
 
+        .sidebar-brand-wrap {
+            height: 70px;
+            padding: 0 1.25rem 0 1.4rem;
+            box-sizing: border-box;
+            background: linear-gradient(180deg, rgba(71, 73, 115, 0.2) 0%, rgba(22, 27, 51, 0.35) 100%);
+            border-bottom: 1px solid rgba(71, 73, 115, 0.5);
+            box-shadow: inset 0 -1px 0 0 rgba(241, 218, 196, 0.22);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .sidebar .brand {
-            padding: 1.35rem 1.4rem;
-            border-bottom: 1px solid var(--colors-hairline);
             display: flex;
             align-items: center;
             gap: 0.75rem;
             text-decoration: none;
             color: var(--colors-accent);
+        }
+
+        .sidebar-toggle-btn,
+        .sidebar-toggle-top {
+            background: rgba(71, 73, 115, 0.25) !important;
+            border: 1px solid rgba(166, 156, 172, 0.25) !important;
+            color: #FFFFFF !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar-toggle-btn:hover,
+        .sidebar-toggle-top:hover {
+            background: rgba(71, 73, 115, 0.5) !important;
+            border-color: var(--colors-accent) !important;
+            color: var(--colors-accent) !important;
+            transform: scale(1.05);
         }
 
         .brand-dot {
@@ -152,20 +204,23 @@
             font-size: 14px;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
+            border: 1px solid transparent;
             border-left: 3px solid transparent;
         }
 
         .sidebar .nav-link:hover {
             color: #FFFFFF;
-            background: rgba(71, 73, 115, 0.3);
+            background: rgba(71, 73, 115, 0.35);
+            border-color: rgba(166, 156, 172, 0.18);
             transform: translateX(3px);
         }
 
         .sidebar .nav-link.active {
             color: var(--colors-accent);
-            background: linear-gradient(90deg, rgba(241, 218, 196, 0.18) 0%, rgba(71, 73, 115, 0.18) 100%);
+            background: linear-gradient(90deg, rgba(241, 218, 196, 0.2) 0%, rgba(71, 73, 115, 0.28) 100%);
+            border: 1px solid rgba(241, 218, 196, 0.25);
             border-left: 3px solid var(--colors-accent);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.32), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
             font-weight: 600;
         }
 
@@ -194,17 +249,17 @@
 
         /* Navigation Bar for Customer (Image 2 Modern E-commerce Layout) */
         .customer-top-navbar {
-            background: rgba(22, 27, 51, 0.82);
+            background: rgba(22, 27, 51, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(166, 156, 172, 0.2);
+            border-bottom: 1px solid rgba(71, 73, 115, 0.5);
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.55), inset 0 -1px 0 0 rgba(241, 218, 196, 0.22);
             position: sticky;
             top: 0;
             z-index: 1050;
             height: 70px;
             display: flex;
             align-items: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
         }
 
         .customer-top-navbar .brand-title {
@@ -421,20 +476,22 @@
             scrollbar-width: none;
         }
 
-        /* Top Navbar for Admin & Staff (#161B33) */
+        /* Top Navbar for Admin & Staff (Deep Midnight Slate Contrast) */
         .top-navbar {
-            background: rgba(22, 27, 51, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--colors-hairline);
-            padding: 0.75rem 2rem;
+            background: rgba(16, 20, 38, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(71, 73, 115, 0.5);
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.55), inset 0 -1px 0 0 rgba(241, 218, 196, 0.22);
+            padding: 0 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: sticky;
             top: 2px;
             z-index: 1020;
-            height: 64px;
+            height: 70px;
+            box-sizing: border-box;
         }
 
         .content-area {
@@ -476,17 +533,105 @@
             padding: 16px 24px;
         }
 
+        /* KPI Cards Theme & Layout */
+        .kpi-card {
+            padding: 20px !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(241, 218, 196, 0.45) !important;
+            box-shadow: 0 20px 42px -10px rgba(0, 0, 0, 0.65), 0 0 26px -6px rgba(241, 218, 196, 0.2) !important;
+        }
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: -35px;
+            right: -35px;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(28px);
+            opacity: 0.6;
+            transition: opacity 0.25s ease;
+        }
+        .kpi-card:hover::after {
+            opacity: 1;
+        }
+
+        .kpi-card.theme-accent::after { background: rgba(241, 218, 196, 0.35); }
+        .kpi-card.theme-emerald::after { background: rgba(52, 211, 153, 0.35); }
+        .kpi-card.theme-blue::after { background: rgba(96, 165, 250, 0.35); }
+        .kpi-card.theme-purple::after { background: rgba(192, 132, 252, 0.35); }
+
+        .kpi-icon-squircle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            transition: transform 0.25s ease;
+        }
+        .kpi-card:hover .kpi-icon-squircle {
+            transform: scale(1.08) rotate(2deg);
+        }
+
+        .icon-accent {
+            background: linear-gradient(135deg, rgba(241, 218, 196, 0.25) 0%, rgba(71, 73, 115, 0.4) 100%);
+            border: 1px solid rgba(241, 218, 196, 0.35);
+            color: var(--colors-accent);
+        }
+        .icon-emerald {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            color: #34D399;
+        }
+        .icon-blue {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            color: #60A5FA;
+        }
+        .icon-purple {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.25) 0%, rgba(147, 51, 234, 0.15) 100%);
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            color: #C084FC;
+        }
+
+        .kpi-value {
+            font-size: clamp(1.1rem, 1.35vw, 1.45rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            color: #FFFFFF;
+            white-space: nowrap;
+        }
+
+        .card-footer .slide-pagination-wrap {
+            margin: 0.35rem 0 !important;
+        }
+
         /* Form Controls */
         .form-control, .form-select, .form-control-minimal, .form-select-minimal, .minimal-input {
             background-color: rgba(22, 27, 51, 0.85) !important;
             border: 1px solid var(--colors-hairline) !important;
             color: #FFFFFF !important;
             font-size: 15px;
-            border-radius: 12px !important;
+            border-radius: 12px;
             height: 44px;
             padding: 0 16px;
             box-shadow: none !important;
             transition: all 0.2s ease;
+        }
+
+        textarea.form-control {
+            height: auto !important;
+            min-height: 80px;
+            padding: 10px 16px;
         }
 
         .form-control::placeholder, .form-control-minimal::placeholder, .minimal-input::placeholder {
@@ -506,11 +651,67 @@
             color: #FFFFFF !important;
         }
 
+        /* Input Groups: Precision Radius & Border Collapsing */
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .input-group > .form-control,
+        .input-group > .form-select {
+            position: relative;
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+        }
+
+        .input-group > :first-child {
+            border-top-left-radius: 12px !important;
+            border-bottom-left-radius: 12px !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .input-group > :last-child {
+            border-top-right-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            margin-left: -1px !important;
+        }
+
+        .input-group > :not(:first-child):not(:last-child) {
+            border-radius: 0 !important;
+            margin-left: -1px !important;
+        }
+
+        .input-group > .btn,
+        .input-group > .btn-glass-outline,
+        .input-group > .btn-outline-primary,
+        .input-group > .btn-outline-secondary {
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group-sm > .btn,
+        .input-group-sm > .form-control,
+        .input-group-sm > .input-group-text {
+            height: 38px !important;
+        }
+
         .input-group-text {
-            background-color: var(--colors-primary) !important;
+            background-color: rgba(71, 73, 115, 0.28) !important;
             border: 1px solid var(--colors-hairline) !important;
-            color: var(--colors-faint) !important;
-            border-radius: 12px 0 0 12px !important;
+            color: var(--colors-muted) !important;
+            height: 44px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         /* Buttons (Cream CTA #F1DAC4 with Gradient) */
@@ -564,7 +765,7 @@
             transform: translateY(-1px);
         }
 
-        .btn-outline-primary, .btn-outline-secondary, .btn-glass-outline, .btn-minimal-outline {
+        .btn-outline-primary, .btn-outline-secondary, .btn-glass-outline, .btn-outline-glass, .btn-minimal-outline {
             background: rgba(71, 73, 115, 0.15) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -583,12 +784,158 @@
             transition: all 0.2s ease;
         }
 
-        .btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-glass-outline:hover, .btn-minimal-outline:hover {
+        .btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-glass-outline:hover, .btn-outline-glass:hover, .btn-minimal-outline:hover {
             background: rgba(71, 73, 115, 0.35) !important;
             color: var(--colors-accent) !important;
             border-color: var(--colors-accent) !important;
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        /* Unified Table Action Buttons (Squircle & Consistent Gaps) */
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            padding: 0 !important;
+            border-radius: 8px !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+        .btn-action + .btn-action,
+        .btn-action + form,
+        form + .btn-action,
+        form + form {
+            margin-left: 8px !important;
+        }
+        .gap-1\.5 {
+            gap: 8px !important;
+        }
+        .btn-action-view {
+            background: rgba(56, 189, 248, 0.15) !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            color: #7DD3FC !important;
+        }
+        .btn-action-view:hover {
+            background: rgba(56, 189, 248, 0.35) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3) !important;
+        }
+        .btn-action-move {
+            background: rgba(52, 211, 153, 0.15) !important;
+            border: 1px solid rgba(52, 211, 153, 0.35) !important;
+            color: #6EE7B7 !important;
+        }
+        .btn-action-move:hover {
+            background: rgba(52, 211, 153, 0.35) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3) !important;
+        }
+        .btn-action-edit {
+            background: rgba(241, 218, 196, 0.18) !important;
+            border: 1px solid rgba(241, 218, 196, 0.35) !important;
+            color: var(--colors-accent) !important;
+        }
+        .btn-action-edit:hover {
+            background: rgba(241, 218, 196, 0.35) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(241, 218, 196, 0.3) !important;
+        }
+        .btn-action-delete {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border: 1px solid rgba(239, 68, 68, 0.35) !important;
+            color: #FCA5A5 !important;
+        }
+        .btn-action-delete:hover {
+            background: rgba(239, 68, 68, 0.35) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+        }
+
+        /* Standardized Order & Logistics Action Containers */
+        .order-action-btn {
+            height: 38px !important;
+            min-height: 38px !important;
+            padding: 0 16px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            border-radius: 10px !important;
+            white-space: nowrap !important;
+            text-decoration: none !important;
+            box-sizing: border-box !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .order-action-btn i {
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+        .order-action-outline {
+            background: rgba(71, 73, 115, 0.2) !important;
+            border: 1px solid rgba(166, 156, 172, 0.25) !important;
+            color: #FFFFFF !important;
+        }
+        .order-action-outline:hover {
+            background: rgba(71, 73, 115, 0.4) !important;
+            border-color: var(--colors-accent) !important;
+            color: var(--colors-accent) !important;
+            transform: translateY(-1px);
+        }
+        .order-action-waiting {
+            background: rgba(22, 27, 51, 0.85) !important;
+            border: 1px solid rgba(166, 156, 172, 0.25) !important;
+            color: var(--colors-muted) !important;
+            cursor: default;
+        }
+        .order-action-success {
+            background: #10B981 !important;
+            border: 1px solid #10B981 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+            cursor: pointer;
+        }
+        .order-action-success:hover {
+            background: #059669 !important;
+            border-color: #059669 !important;
+            transform: translateY(-1px);
+        }
+        .order-action-primary {
+            background: linear-gradient(135deg, var(--colors-accent) 0%, #E2C2A4 100%) !important;
+            border: 1px solid var(--colors-accent) !important;
+            color: #0D0C1D !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 14px rgba(241, 218, 196, 0.25) !important;
+            cursor: pointer;
+        }
+        .order-action-primary:hover {
+            background: linear-gradient(135deg, #FFF0E2 0%, #E2C2A4 100%) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Radio / Segmented Button Toggles */
+        .btn-check:checked + .btn-toggle-in {
+            background: rgba(16, 185, 129, 0.22) !important;
+            border-color: #10B981 !important;
+            color: #34D399 !important;
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.25) !important;
+        }
+        .btn-check:checked + .btn-toggle-out {
+            background: rgba(239, 68, 68, 0.22) !important;
+            border-color: #EF4444 !important;
+            color: #F87171 !important;
+            box-shadow: 0 0 16px rgba(239, 68, 68, 0.25) !important;
         }
 
         /* Tables */
@@ -656,6 +1003,11 @@
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.1) 100%) !important;
             color: #FCA5A5 !important;
         }
+        .bg-secondary-subtle {
+            background: rgba(71, 73, 115, 0.32) !important;
+            border-color: rgba(166, 156, 172, 0.3) !important;
+            color: #FFFFFF !important;
+        }
 
         /* Dropdowns */
         .dropdown-menu {
@@ -716,6 +1068,53 @@
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(14, 165, 233, 0.1) 100%) !important;
             border: 1px solid rgba(56, 189, 248, 0.45) !important;
             color: #7DD3FC !important;
+        }
+
+        .badge-gradient-neutral {
+            background: linear-gradient(135deg, rgba(71, 73, 115, 0.35) 0%, rgba(22, 27, 51, 0.5) 100%) !important;
+            border: 1px solid rgba(166, 156, 172, 0.35) !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Settings Sub-Navigation Items */
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 18px;
+            min-height: 52px;
+            border-radius: 12px;
+            background: rgba(71, 73, 115, 0.16);
+            border: 1px solid rgba(166, 156, 172, 0.2);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .settings-nav-item i {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+        .settings-nav-item:hover {
+            background: rgba(71, 73, 115, 0.35);
+            border-color: var(--colors-accent);
+            color: var(--colors-accent);
+            transform: translateX(3px);
+        }
+        .settings-nav-item.active {
+            background: linear-gradient(135deg, var(--colors-accent) 0%, #ebd0b4 100%) !important;
+            border-color: var(--colors-accent) !important;
+            color: #0D0C1D !important;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(241, 218, 196, 0.25);
+        }
+        .settings-nav-item.active i {
+            color: #0D0C1D !important;
         }
 
         /* Responsive Sidebar */
@@ -812,6 +1211,93 @@
             color: var(--colors-accent) !important;
             font-weight: 700 !important;
         }
+
+        /* Buyer Slide Pagination (Image 2 Style - Universal) */
+        .slide-pagination-wrap {
+            margin: 2.5rem 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .slide-nav-btn {
+            background: rgba(22, 27, 51, 0.85) !important;
+            border: 1px solid rgba(166, 156, 172, 0.25) !important;
+            color: #FFFFFF !important;
+            font-size: 0.95rem;
+            font-weight: 600;
+            width: 38px;
+            height: 38px;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            text-decoration: none !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .slide-nav-btn:hover:not(.disabled) {
+            background: rgba(71, 73, 115, 0.5) !important;
+            border-color: var(--colors-accent) !important;
+            color: var(--colors-accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .slide-nav-btn.disabled {
+            color: rgba(166, 156, 172, 0.35) !important;
+            border-color: rgba(166, 156, 172, 0.12) !important;
+            background: rgba(22, 27, 51, 0.4) !important;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none !important;
+        }
+
+        .slide-nav-page {
+            min-width: 38px;
+            height: 38px;
+            padding: 0 10px;
+            border-radius: 12px !important;
+            background: rgba(22, 27, 51, 0.85) !important;
+            border: 1px solid rgba(166, 156, 172, 0.25) !important;
+            color: #FFFFFF !important;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .slide-nav-page:hover:not(.active) {
+            background: rgba(71, 73, 115, 0.5) !important;
+            border-color: var(--colors-accent) !important;
+            color: var(--colors-accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .slide-nav-page.active {
+            background: linear-gradient(135deg, var(--colors-accent) 0%, var(--colors-accent-hover) 100%) !important;
+            border-color: var(--colors-accent) !important;
+            color: var(--colors-accent-text) !important;
+            font-weight: 800 !important;
+            box-shadow: 0 4px 16px rgba(241, 218, 196, 0.35) !important;
+            transform: translateY(-1px);
+        }
+
+        .slide-nav-dots {
+            color: var(--colors-muted);
+            padding: 0 6px;
+            font-weight: 700;
+            user-select: none;
+        }
     </style>
     @stack('styles')
 </head>
@@ -827,15 +1313,24 @@
     @if(!$isCustomer)
         <!-- Sidebar for Admin & Staff (#161B33) -->
         <aside class="sidebar d-flex flex-column" id="sidebar">
-            <a href="{{ route('dashboard') }}" class="brand flex-shrink-0">
-                <span class="brand-dot"></span>
-                <div>
-                    <div class="brand-title">Ctrl+R</div>
-                    <small style="font-size: 0.7rem; color: var(--colors-muted); font-weight: 600;">
-                        {{ $isAdmin ? 'ADMIN // OWNER' : 'STAFF // GUDANG' }}
-                    </small>
-                </div>
-            </a>
+            <div class="sidebar-brand-wrap flex-shrink-0">
+                <a href="{{ route('dashboard') }}" class="brand">
+                    <img src="{{ asset('images/logo.png') }}" alt="Ctrl+R" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0;">
+                    <div>
+                        <div class="brand-title">Ctrl+R</div>
+                        <small style="font-size: 0.7rem; color: var(--colors-muted); font-weight: 600;">
+                            {{ $isAdmin ? 'ADMIN // OWNER' : 'STAFF // GUDANG' }}
+                        </small>
+                    </div>
+                </a>
+                <button class="btn btn-outline-secondary sidebar-toggle-btn" 
+                        type="button" 
+                        id="sidebarToggle"
+                        title="Sembunyikan / Tampilkan Sidebar"
+                        style="height: 36px; width: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px;">
+                    <i class="bi bi-layout-sidebar-inset" style="font-size: 1.15rem;"></i>
+                </button>
+            </div>
 
             <div class="sidebar-nav-body py-2 no-scrollbar">
                 <div class="section-heading">Navigasi Utama</div>
@@ -861,6 +1356,10 @@
                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span>Kelola Pengguna</span>
+                    </a>
+                    <a href="{{ route('banners.index') }}" class="nav-link {{ request()->routeIs('banners.*') ? 'active' : '' }}">
+                        <i class="bi bi-card-image"></i>
+                        <span>Banner Promo</span>
                     </a>
                 @endif
 
@@ -909,69 +1408,17 @@
                 @endif
 
                 <div class="section-heading">Akun & Sistem</div>
-                <a href="{{ route('customer.settings') }}" class="nav-link {{ request()->routeIs('customer.settings*') ? 'active' : '' }}">
+                <a href="{{ route('customer.settings') }}" class="nav-link {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active' : '' }}">
                     <i class="bi bi-gear"></i>
                     <span>Pengaturan Akun</span>
                 </a>
-            </div>
-
-            <!-- Sidebar User & Account Profile Card (Bottom Sticky) -->
-            <div class="sidebar-user-footer p-3 border-top flex-shrink-0">
-                <div class="dropdown dropup">
-                    <button class="btn w-100 d-flex align-items-center justify-content-between p-2 text-start border-0 text-white rounded-3 sidebar-profile-card"
-                            type="button" 
-                            data-bs-toggle="dropdown" 
-                            aria-expanded="false"
-                            title="Menu Akun & Pengaturan">
-                        <div class="d-flex align-items-center gap-2 overflow-hidden">
-                            @if(Auth::user()->profile && Auth::user()->profile->avatar && file_exists(public_path(Auth::user()->profile->avatar)))
-                                <img src="{{ asset(Auth::user()->profile->avatar) }}" alt="Avatar" class="rounded-circle object-fit-cover flex-shrink-0" style="width: 34px; height: 34px; border: 1.5px solid var(--colors-accent);">
-                            @else
-                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold flex-shrink-0" 
-                                     style="width: 34px; height: 34px; background: linear-gradient(135deg, var(--colors-accent) 0%, #ebd0b4 100%); font-size: 0.85rem; color: #0D0C1D !important;">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                            @endif
-                            <div class="overflow-hidden" style="min-width: 0;">
-                                <div class="fw-bold text-white text-truncate" style="font-size: 0.84rem; line-height: 1.2;">
-                                    {{ Auth::user()->name }}
-                                </div>
-                                <div class="text-truncate" style="font-size: 0.72rem; color: var(--colors-accent); font-weight: 600;">
-                                    {{ $isAdmin ? 'Administrator' : 'Staff Gudang' }}
-                                </div>
-                            </div>
-                        </div>
-                        <i class="bi bi-three-dots-vertical" style="color: var(--colors-muted); font-size: 0.9rem;"></i>
+                <form action="{{ route('logout') }}" method="POST" class="m-0 mt-1">
+                    @csrf
+                    <button type="submit" class="nav-link border-0 w-100 text-start bg-transparent d-flex align-items-center gap-2" style="cursor: pointer; color: #ff8599 !important;">
+                        <i class="bi bi-box-arrow-right text-danger"></i>
+                        <span>Keluar Akun</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark w-100 shadow-lg border small mb-2" style="background: rgba(22, 27, 51, 0.98); border-color: var(--colors-hairline) !important; border-radius: 14px;">
-                        <li class="px-3 py-2 border-bottom" style="border-color: var(--colors-hairline) !important;">
-                            <div class="fw-semibold text-white text-truncate">{{ Auth::user()->name }}</div>
-                            <div class="text-truncate" style="color: var(--colors-muted); font-size: 11px;">{{ Auth::user()->email }}</div>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{{ route('customer.settings') }}">
-                                <i class="bi bi-gear" style="color: var(--colors-accent) !important;"></i>
-                                <span>Pengaturan Akun</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{{ route('landing') }}" target="_blank">
-                                <i class="bi bi-shop text-info"></i>
-                                <span>Kunjungi Storefront</span>
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider my-1" style="border-color: var(--colors-hairline);"></li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger py-2 d-flex align-items-center gap-2" onclick="return confirm('Keluar dari sesi?')">
-                                    <i class="bi bi-box-arrow-right"></i>
-                                    <span>Keluar (Logout)</span>
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                </form>
             </div>
         </aside>
 
@@ -986,18 +1433,25 @@
                 <div class="container-fluid px-3 px-lg-4 d-flex align-items-center justify-content-between gap-3">
                     <!-- Left: Brand + Nav Links (Home, Catalog, Promo, My Orders) -->
                     <div class="d-flex align-items-center">
-                        <a href="{{ route('dashboard') }}" class="brand-title">
-                            Ctrl+R
+                        <a href="{{ route('dashboard') }}" class="brand-title d-flex align-items-center gap-2">
+                            <img src="{{ asset('images/logo.png') }}" alt="Ctrl+R" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0;">
+                            <span>Ctrl+R</span>
                         </a>
 
                         <div class="d-none d-md-flex align-items-center cust-nav-links">
                             <a href="{{ route('dashboard') }}" class="cust-nav-link {{ request()->routeIs('dashboard') || request()->routeIs('customer.catalog*') ? 'active' : '' }}">
                                 Beranda
                             </a>
-                            <a href="{{ route('dashboard') }}#promo" class="cust-nav-link">
+                            <a href="{{ route('customer.promo') }}" class="cust-nav-link {{ request()->routeIs('customer.promo*') ? 'active' : '' }}">
                                 Promo
                             </a>
                             <a href="{{ route('customer.orders.index') }}" class="cust-nav-link {{ request()->routeIs('customer.orders*') ? 'active' : '' }}">
+                                Pesanan Saya
+                                @if($pendingOrdersCount > 0)
+                                    <span class="badge badge-gradient-warning font-monospace ms-1" style="font-size: 0.65rem; padding: 2px 6px;">{{ $pendingOrdersCount }}</span>
+                                @endif
+                            </a>
+                            <a href="{{ route('customer.activity') }}" class="cust-nav-link {{ request()->routeIs('customer.activity*') ? 'active' : '' }}">
                                 Riwayat Aktivitas
                             </a>
                         </div>
@@ -1023,11 +1477,14 @@
                             @endif
                         </form>
 
-                        <!-- Shopping Cart Icon with Badge -->
-                        <a href="{{ route('customer.orders.index') }}" class="cust-action-icon" title="Pesanan & Keranjang">
+                        <!-- Shopping Cart Icon with Dedicated Cart Page -->
+                        @php
+                            $cartCount = array_sum(session('cart', []));
+                        @endphp
+                        <a href="{{ route('customer.cart') }}" class="cust-action-icon {{ request()->routeIs('customer.cart*') ? 'active-profile' : '' }}" title="Keranjang Belanja">
                             <i class="bi bi-cart3"></i>
-                            @if($pendingOrdersCount > 0)
-                                <span class="cust-action-badge">{{ $pendingOrdersCount }}</span>
+                            @if($cartCount > 0)
+                                <span class="cust-action-badge">{{ $cartCount }}</span>
                             @endif
                         </a>
 
@@ -1048,7 +1505,7 @@
                         </div>
 
                         <!-- User Profile Direct Link to Account Settings (No Dropdown Menu) -->
-                        <a href="{{ route('customer.settings') }}" class="cust-profile-btn border-0 text-decoration-none {{ request()->routeIs('customer.settings*') ? 'active-profile' : '' }}" title="Pengaturan Akun & Profil">
+                        <a href="{{ route('customer.settings') }}" class="cust-profile-btn border-0 text-decoration-none {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active-profile' : '' }}" title="Pengaturan Akun & Profil">
                             @if(Auth::user()->profile && Auth::user()->profile->avatar && file_exists(public_path(Auth::user()->profile->avatar)))
                                 <img src="{{ asset(Auth::user()->profile->avatar) }}" alt="Avatar" class="cust-avatar-circle object-fit-cover" style="object-fit: cover;">
                             @else
@@ -1068,9 +1525,11 @@
             <!-- Top Bar for Admin & Staff (#161B33) -->
             <header class="top-navbar">
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-secondary" id="sidebarToggle" type="button" 
-                            title="Sembunyikan / Tampilkan Sidebar"
-                            style="height: 38px; width: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px;">
+                    <button class="btn btn-outline-secondary sidebar-toggle-top d-inline-flex d-lg-none" 
+                            id="sidebarToggleTop" 
+                            type="button" 
+                            title="Buka Sidebar"
+                            style="height: 36px; width: 36px; padding: 0; align-items: center; justify-content: center; border-radius: 10px;">
                         <i class="bi bi-layout-sidebar-inset" style="font-size: 1.15rem;"></i>
                     </button>
                     <div>
@@ -1082,9 +1541,21 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('landing') }}" target="_blank" class="btn btn-outline-secondary d-none d-sm-inline-flex align-items-center gap-2" style="height: 38px; padding: 0 14px; font-size: 13px; border-radius: 10px;" title="Lihat Toko Publik">
-                        <i class="bi bi-box-arrow-up-right" style="color: var(--colors-accent);"></i>
-                        <span>Storefront</span>
+                    <a href="{{ route('customer.settings') }}" 
+                       class="btn p-1 ps-2 pe-3 d-flex align-items-center gap-2 text-white border-0 rounded-pill admin-nav-profile-btn text-decoration-none {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active-profile' : '' }}" 
+                       title="Pengaturan Akun & Profil">
+                        @if(Auth::user()->profile && Auth::user()->profile->avatar && file_exists(public_path(Auth::user()->profile->avatar)))
+                            <img src="{{ asset(Auth::user()->profile->avatar) }}" alt="Avatar" class="rounded-circle object-fit-cover" style="width: 36px; height: 36px; border: 1.5px solid var(--colors-accent);">
+                        @else
+                            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" 
+                                 style="width: 36px; height: 36px; background: linear-gradient(135deg, var(--colors-accent) 0%, #ebd0b4 100%); font-size: 0.88rem; color: #0D0C1D !important;">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div class="d-none d-sm-flex flex-column text-start" style="line-height: 1.2;">
+                            <span class="fw-bold text-white text-truncate" style="font-size: 0.84rem; max-width: 140px;">{{ Auth::user()->name }}</span>
+                            <span style="font-size: 0.72rem; color: var(--colors-accent); font-weight: 600;">{{ $isAdmin ? 'Administrator' : 'Staff Gudang' }}</span>
+                        </div>
                     </a>
                 </div>
             </header>
@@ -1099,7 +1570,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebar = document.getElementById('sidebar');
             const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
@@ -1108,9 +1578,9 @@
                 document.body.classList.add('sidebar-collapsed');
             }
 
-            if (sidebarToggle && sidebar) {
-                sidebarToggle.addEventListener('click', function () {
-                    if (window.innerWidth < 992) {
+            function handleToggle() {
+                if (window.innerWidth < 992) {
+                    if (sidebar) {
                         const isOpen = sidebar.classList.toggle('show');
                         if (sidebarBackdrop) {
                             if (isOpen) {
@@ -1119,13 +1589,18 @@
                                 sidebarBackdrop.classList.add('d-none');
                             }
                         }
-                    } else {
-                        document.body.classList.toggle('sidebar-collapsed');
-                        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-                        localStorage.setItem('admin_sidebar_collapsed', isCollapsed ? 'true' : 'false');
                     }
-                });
+                } else {
+                    document.body.classList.toggle('sidebar-collapsed');
+                    const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+                    localStorage.setItem('admin_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+                }
             }
+
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarToggleTop = document.getElementById('sidebarToggleTop');
+            if (sidebarToggle) sidebarToggle.addEventListener('click', handleToggle);
+            if (sidebarToggleTop) sidebarToggleTop.addEventListener('click', handleToggle);
 
             if (sidebarBackdrop) {
                 sidebarBackdrop.addEventListener('click', function () {
@@ -1137,6 +1612,7 @@
             }
         });
     </script>
+    @include('components.confirm-modal')
     @stack('scripts')
 </body>
 </html>

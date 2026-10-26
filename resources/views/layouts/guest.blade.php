@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Autentikasi') - Ctrl+R</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -254,7 +255,10 @@
     <div class="guest-container">
         <!-- Brand Logo -->
         <div class="brand-header">
-            <a href="{{ route('landing') }}" class="brand-title">Ctrl+R</a>
+            <a href="{{ route('landing') }}" class="brand-title d-inline-flex align-items-center gap-2 text-decoration-none">
+                <img src="{{ asset('images/logo.png') }}" alt="Ctrl+R" style="width: 44px; height: 44px; object-fit: contain; border-radius: 10px; flex-shrink: 0;">
+                <span>Ctrl+R</span>
+            </a>
         </div>
 
         @yield('content')

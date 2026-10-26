@@ -26,7 +26,14 @@
             </button>
 
             @if($purchase->status === 'completed' && Auth::user()->isAdmin())
-                <form action="{{ route('purchases.cancel', $purchase) }}" method="POST" onsubmit="return confirm('PERINGATAN: Membatalkan transaksi ini akan otomatis mengurangi (mengembalikan) stok produk di inventaris. Lanjutkan pembatalan?')">
+                <form action="{{ route('purchases.cancel', $purchase) }}" 
+                      method="POST"
+                      data-confirm="Membatalkan transaksi pembelian ini akan otomatis mengurangi (mengembalikan) stok produk fisik di inventaris."
+                      data-confirm-title="Batalkan Transaksi Pembelian?"
+                      data-confirm-item="PO #{{ $purchase->purchase_number }}"
+                      data-confirm-type="warning"
+                      data-confirm-icon="bi-arrow-counterclockwise"
+                      data-confirm-btn="Ya, Batalkan Transaksi">
                     @csrf
                     <button type="submit" class="btn btn-danger btn-sm">
                         <i class="bi bi-x-circle me-1"></i> Batalkan Transaksi (Admin)

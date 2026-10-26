@@ -167,7 +167,7 @@
 
 @section('content')
 <!-- Top Stream & Sync Status Bar (Glassmorphic Bar) -->
-<div class="glass-card mb-4 p-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+<div class="glass-card mb-3 p-2.5 px-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2.5">
     <div class="d-flex align-items-center gap-3">
         <span class="badge badge-gradient-accent d-flex align-items-center gap-2 font-monospace" style="font-size: 0.72rem;">
             <span class="pulse-dot"></span>
@@ -192,39 +192,39 @@
 
 @if(Auth::user()->isAdmin())
     <!-- ADMIN SPECIAL SALES SUMMARY BANNER (Gradient Hero Cards) -->
-    <div class="row g-3 mb-4">
+    <div class="row g-3 mb-3">
         <div class="col-12 col-md-6">
-            <div class="hero-banner-card hero-banner-accent p-4 d-flex align-items-center justify-content-between">
+            <div class="hero-banner-card hero-banner-accent p-3 px-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <span class="badge badge-gradient-accent text-uppercase font-monospace mb-2" style="font-size: 0.7rem;">
+                    <span class="badge badge-gradient-accent text-uppercase font-monospace mb-1.5" style="font-size: 0.68rem;">
                         Penjualan Hari Ini
                     </span>
-                    <div class="fs-3 fw-bold font-monospace text-white mt-1" style="letter-spacing: -0.5px;">
+                    <div class="fs-4 fw-bold font-monospace text-white mt-0.5" style="letter-spacing: -0.5px;">
                         Rp {{ number_format($salesToday, 0, ',', '.') }}
                     </div>
-                    <small class="d-block mt-1 font-monospace" style="color: var(--colors-muted); font-size: 0.74rem;">
+                    <small class="d-block mt-0.5 font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
                         Akumulasi pesanan terverifikasi sistem
                     </small>
                 </div>
-                <div class="kpi-icon-squircle icon-accent" style="width: 56px; height: 56px; font-size: 1.5rem;">
+                <div class="kpi-icon-squircle icon-accent" style="width: 50px; height: 50px; font-size: 1.35rem;">
                     <i class="bi bi-cash-stack"></i>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class="hero-banner-card hero-banner-blue p-4 d-flex align-items-center justify-content-between">
+            <div class="hero-banner-card hero-banner-blue p-3 px-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <span class="badge badge-gradient-info text-uppercase font-monospace mb-2" style="font-size: 0.7rem;">
+                    <span class="badge badge-gradient-info text-uppercase font-monospace mb-1.5" style="font-size: 0.68rem;">
                         Penjualan Bulan Ini
                     </span>
-                    <div class="fs-3 fw-bold font-monospace text-white mt-1" style="letter-spacing: -0.5px;">
+                    <div class="fs-4 fw-bold font-monospace text-white mt-0.5" style="letter-spacing: -0.5px;">
                         Rp {{ number_format($salesThisMonth, 0, ',', '.') }}
                     </div>
-                    <small class="d-block mt-1 font-monospace" style="color: var(--colors-muted); font-size: 0.74rem;">
+                    <small class="d-block mt-0.5 font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
                         Total transaksi mutasi kasir & checkout
                     </small>
                 </div>
-                <div class="kpi-icon-squircle icon-blue" style="width: 56px; height: 56px; font-size: 1.5rem;">
+                <div class="kpi-icon-squircle icon-blue" style="width: 50px; height: 50px; font-size: 1.35rem;">
                     <i class="bi bi-graph-up-arrow"></i>
                 </div>
             </div>
@@ -235,10 +235,10 @@
 <!-- ========================================================================= -->
 <!-- 4 STATISTIC KPI CARDS (Gradient Glassmorphism)                            -->
 <!-- ========================================================================= -->
-<div class="row g-3 mb-4">
+<div class="row g-3 mb-3">
     <!-- Card 1: Total Produk -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-accent p-3.5 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-accent p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Total Produk
@@ -260,7 +260,7 @@
 
     <!-- Card 2: Nilai Inventory -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-emerald p-3.5 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-emerald p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Nilai Inventory
@@ -282,7 +282,7 @@
 
     <!-- Card 3: Barang Masuk (In) -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-blue p-3.5 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-blue p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Barang Masuk (In)
@@ -304,7 +304,7 @@
 
     <!-- Card 4: Barang Keluar (Out) -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-purple p-3.5 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-purple p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Barang Keluar (Out)
@@ -327,10 +327,10 @@
 
 <!-- Low Stock Critical Banner -->
 @if($lowStockCount > 0)
-    <div class="glass-card p-3.5 mb-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3" 
+    <div class="glass-card p-2.5 px-3 mb-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3" 
          style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(71, 73, 115, 0.28) 100%) !important; border: 1px solid rgba(239, 68, 68, 0.4) !important;">
         <div class="d-flex align-items-center gap-3">
-            <div class="kpi-icon-squircle" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #F87171;">
+            <div class="kpi-icon-squircle" style="width: 42px; height: 42px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #F87171;">
                 <i class="bi bi-exclamation-triangle-fill"></i>
             </div>
             <div>
@@ -350,11 +350,11 @@
     <!-- ========================================================================= -->
     <!-- 4. ADMIN DASHBOARD SPECIFIC: CHARTS & DIAGRAMS (Rich Canvas Gradients)     -->
     <!-- ========================================================================= -->
-    <div class="row g-3 g-md-4 mb-4">
-        <!-- Chart 1: Tren Pergerakan Stok -->
-        <div class="col-12 col-xl-8">
-            <div class="glass-card h-100">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
+    <div class="row g-3 mb-3">
+        <!-- Chart 1: Tren Pergerakan Stok (Panoramic 7 Hari) -->
+        <div class="col-12">
+            <div class="glass-card">
+                <div class="card-header d-flex align-items-center justify-content-between py-2.5">
                     <div>
                         <h6 class="mb-0 fw-semibold text-white">
                             Tren Stok Masuk vs Stok Keluar (7 Hari)
@@ -366,38 +366,20 @@
                     <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.68rem;">ANALISIS MINGGUAN</span>
                 </div>
                 <div class="card-body p-3">
-                    <div style="position: relative; height: 310px; width: 100%;">
-                        <canvas id="trendChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chart 2: Proporsi Stok Kategori -->
-        <div class="col-12 col-xl-4">
-            <div class="glass-card h-100">
-                <div class="card-header py-3">
-                    <h6 class="mb-0 fw-semibold text-white">
-                        Distribusi Stok Kategori
-                    </h6>
-                    <small class="font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
-                        Komposisi volume unit fisik per kategori
-                    </small>
-                </div>
-                <div class="card-body p-3 d-flex flex-column align-items-center justify-content-center">
                     <div style="position: relative; height: 260px; width: 100%;">
-                        <canvas id="categoryChart"></canvas>
+                        <canvas id="trendChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Chart 3 & Master Control -->
-    <div class="row g-3 g-md-4 mb-4">
-        <div class="col-12 col-lg-8">
+    <!-- Chart 2 & 3: Balanced Analytics Grid (Equal Columns) -->
+    <div class="row g-3 mb-3">
+        <!-- Chart 2: Top 5 Nilai Inventaris Terbesar -->
+        <div class="col-12 col-lg-6">
             <div class="glass-card h-100">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                <div class="card-header d-flex align-items-center justify-content-between py-2.5">
                     <div>
                         <h6 class="mb-0 fw-semibold text-white">
                             Top 5 Nilai Inventaris Terbesar
@@ -411,45 +393,31 @@
                     </a>
                 </div>
                 <div class="card-body p-3">
-                    <div style="position: relative; height: 250px; width: 100%;">
+                    <div style="position: relative; height: 280px; width: 100%;">
                         <canvas id="topProductsChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 col-lg-4">
-            <div class="glass-card h-100 p-4 d-flex flex-column justify-content-between">
-                <div>
-                    <h6 class="fw-semibold text-white mb-2">
-                        Pusat Kontrol Master Data
-                    </h6>
-                    <p class="small font-monospace mb-3" style="color: var(--colors-muted);">Akses cepat pengelolaan entitas bisnis inventaris:</p>
-                    
-                    <div class="d-flex flex-column gap-2.5">
-                        <a href="{{ route('products.create') }}" class="btn btn-glass-outline d-flex align-items-center justify-content-between py-2 text-start font-monospace small">
-                            <span><i class="bi bi-plus-circle me-1.5" style="color: var(--colors-accent);"></i> Tambah Produk Baru</span>
-                            <i class="bi bi-chevron-right text-secondary"></i>
-                        </a>
-                        <a href="{{ route('categories.create') }}" class="btn btn-glass-outline d-flex align-items-center justify-content-between py-2 text-start font-monospace small">
-                            <span><i class="bi bi-tags me-1.5" style="color: #60A5FA;"></i> Tambah Kategori</span>
-                            <i class="bi bi-chevron-right text-secondary"></i>
-                        </a>
-                        <a href="{{ route('suppliers.create') }}" class="btn btn-glass-outline d-flex align-items-center justify-content-between py-2 text-start font-monospace small">
-                            <span><i class="bi bi-truck me-1.5" style="color: #34D399;"></i> Tambah Supplier</span>
-                            <i class="bi bi-chevron-right text-secondary"></i>
-                        </a>
-                        <a href="{{ route('users.index') }}" class="btn btn-glass-outline d-flex align-items-center justify-content-between py-2 text-start font-monospace small">
-                            <span><i class="bi bi-people me-1.5" style="color: #C084FC;"></i> Kelola Pengguna (3 Role)</span>
-                            <i class="bi bi-chevron-right text-secondary"></i>
-                        </a>
+        <!-- Chart 3: Distribusi Stok Kategori -->
+        <div class="col-12 col-lg-6">
+            <div class="glass-card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between py-2.5">
+                    <div>
+                        <h6 class="mb-0 fw-semibold text-white">
+                            Distribusi Stok Kategori
+                        </h6>
+                        <small class="font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
+                            Komposisi volume unit fisik per kategori
+                        </small>
                     </div>
+                    <span class="badge badge-gradient-info font-monospace" style="font-size: 0.68rem;">KOMPOSISI UNIT</span>
                 </div>
-                
-                <div class="pt-3 border-top mt-3" style="border-color: var(--colors-hairline) !important;">
-                    <a href="{{ route('reports.index') }}" class="btn btn-primary w-100 py-2.5 font-monospace" style="font-size: 0.85rem;">
-                        <i class="bi bi-file-earmark-bar-graph me-1.5"></i> Buka Laporan Bisnis
-                    </a>
+                <div class="card-body p-3 d-flex align-items-center justify-content-center">
+                    <div style="position: relative; height: 280px; width: 100%;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -546,7 +514,7 @@
 <!-- ========================================================================= -->
 <!-- TABEL TRANSAKSI TERAKHIR (Frosted Glass Tables)                           -->
 <!-- ========================================================================= -->
-<div class="row g-3 g-md-4">
+<div class="row g-3">
     <!-- Tabel Penjualan Terakhir -->
     <div class="col-12 col-xl-6">
         <div class="glass-card h-100">
@@ -764,7 +732,9 @@
                             '#34D399',
                             '#C084FC',
                             '#F472B6',
-                            '#A69CAC'
+                            '#A69CAC',
+                            '#FBBF24',
+                            '#38BDF8'
                         ],
                         borderColor: '#161B33',
                         borderWidth: 3,
@@ -774,21 +744,32 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: 10
+                    },
                     plugins: {
                         legend: { 
-                            position: 'bottom', 
+                            position: window.innerWidth > 991 ? 'right' : 'bottom', 
                             labels: { 
-                                boxWidth: 10, 
-                                boxHeight: 10,
-                                borderRadius: 3,
+                                boxWidth: 12, 
+                                boxHeight: 12,
+                                borderRadius: 4,
                                 useBorderRadius: true,
-                                font: { size: 11, weight: 500 }, 
+                                font: { size: 12, weight: 500, family: "'Plus Jakarta Sans', sans-serif" }, 
                                 color: '#FFFFFF',
                                 padding: 12
                             } 
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed || 0;
+                                    return ` ${context.label}: ${value} Unit`;
+                                }
+                            }
                         }
                     },
-                    cutout: '70%'
+                    cutout: '68%'
                 }
             });
         }
@@ -808,7 +789,8 @@
                         backgroundColor: barGradient,
                         borderColor: '#F1DAC4',
                         borderWidth: 1,
-                        borderRadius: 6,
+                        borderRadius: 8,
+                        barThickness: 16,
                         borderSkipped: false
                     }]
                 },
@@ -816,18 +798,44 @@
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.parsed.x || 0;
+                                    return ' Nilai: Rp ' + new Intl.NumberFormat('id-ID').format(val);
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         x: {
                             ticks: {
-                                callback: val => 'Rp ' + (val / 1000000).toFixed(1) + 'M',
-                                color: '#A69CAC'
+                                maxRotation: 0,
+                                minRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 5,
+                                callback: function(val) {
+                                    if (val >= 1000000000) {
+                                        return 'Rp ' + (val / 1000000000).toFixed(1) + 'B';
+                                    }
+                                    if (val >= 1000000) {
+                                        return 'Rp ' + (val / 1000000).toFixed(0) + ' jt';
+                                    }
+                                    return 'Rp ' + val;
+                                },
+                                color: '#A69CAC',
+                                font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" }
                             },
                             grid: { color: 'rgba(166, 156, 172, 0.12)' }
                         },
                         y: { 
                             grid: { display: false }, 
-                            ticks: { color: '#FFFFFF', font: { weight: 500 } } 
+                            ticks: { 
+                                color: '#FFFFFF', 
+                                font: { size: 12, weight: 500, family: "'Plus Jakarta Sans', sans-serif" } 
+                            } 
                         }
                     }
                 }

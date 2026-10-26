@@ -6,77 +6,108 @@
 @section('content')
 <!-- Header Ringkasan Eksekutif (Glassmorphic KPI Cards) -->
 <div class="row g-3 mb-4">
+    <!-- Card 1: Total Item Produk -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0">
-            <div class="card-body p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted small text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">Total Item Produk</span>
-                    <div class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="bi bi-boxes fs-5"></i>
-                    </div>
+        <div class="kpi-card theme-accent p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
+                    Total Item Produk
+                </span>
+                <div class="kpi-icon-squircle icon-accent">
+                    <i class="bi bi-boxes"></i>
                 </div>
-                <h3 class="fw-bold text-dark mb-1">{{ number_format($totalProducts) }}</h3>
-                <small class="text-secondary">Total keseluruhan item terdaftar</small>
+            </div>
+            <div>
+                <div class="kpi-value mb-1">
+                    {{ number_format($totalProducts) }} <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Item</span>
+                </div>
+                <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
+                    Total keseluruhan item terdaftar
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Card 2: Total Nilai Inventaris -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0">
-            <div class="card-body p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted small text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">Total Nilai Inventaris</span>
-                    <div class="bg-success-subtle text-success rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="bi bi-cash-stack fs-5"></i>
-                    </div>
+        <div class="kpi-card theme-emerald p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
+                    Total Nilai Inventaris
+                </span>
+                <div class="kpi-icon-squircle icon-emerald">
+                    <i class="bi bi-cash-stack"></i>
                 </div>
-                <h4 class="fw-bold text-success mb-1">Rp {{ number_format($totalInventoryValue, 0, ',', '.') }}</h4>
-                <small class="text-secondary">Estimasi total nilai aset gudang</small>
+            </div>
+            <div>
+                <div class="kpi-value mb-1" style="color: #6EE7B7;">
+                    Rp {{ number_format($totalInventoryValue, 0, ',', '.') }}
+                </div>
+                <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
+                    Estimasi total nilai aset gudang
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Card 3: Total Barang Masuk -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0">
-            <div class="card-body p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted small text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">Total Barang Masuk</span>
-                    <div class="bg-info-subtle text-info rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="bi bi-arrow-down-left-circle fs-5"></i>
-                    </div>
+        <div class="kpi-card theme-blue p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
+                    Total Barang Masuk
+                </span>
+                <div class="kpi-icon-squircle icon-blue">
+                    <i class="bi bi-arrow-down-left-circle"></i>
                 </div>
-                <h3 class="fw-bold text-primary mb-1">+{{ number_format($grandTotalIn) }} <span class="fs-6 fw-normal text-muted">unit</span></h3>
-                <small class="text-secondary">Akumulasi penerimaan stok</small>
+            </div>
+            <div>
+                <div class="kpi-value mb-1" style="color: #60A5FA;">
+                    +{{ number_format($grandTotalIn) }} <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Unit</span>
+                </div>
+                <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
+                    Akumulasi penerimaan stok
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Card 4: Total Barang Keluar -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0">
-            <div class="card-body p-3">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-muted small text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">Total Barang Keluar</span>
-                    <div class="bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="bi bi-arrow-up-right-circle fs-5"></i>
-                    </div>
+        <div class="kpi-card theme-purple p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
+                    Total Barang Keluar
+                </span>
+                <div class="kpi-icon-squircle icon-purple">
+                    <i class="bi bi-arrow-up-right-circle"></i>
                 </div>
-                <h3 class="fw-bold text-danger mb-1">-{{ number_format($grandTotalOut) }} <span class="fs-6 fw-normal text-muted">unit</span></h3>
-                <small class="text-secondary">Akumulasi pengeluaran stok</small>
+            </div>
+            <div>
+                <div class="kpi-value mb-1" style="color: #F87171;">
+                    -{{ number_format($grandTotalOut) }} <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Unit</span>
+                </div>
+                <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
+                    Akumulasi pengeluaran stok
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Bagian 1: Laporan Agregasi Kategori -->
-<div class="card mb-4">
+<div class="card glass-card mb-4">
     <div class="card-header py-3 d-flex align-items-center justify-content-between">
         <div>
-            <h6 class="mb-0 fw-bold text-dark"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Laporan Ringkasan Kategori</h6>
-            <small class="text-muted">Agregasi data produk berdasarkan masing-masing kategori</small>
+            <h6 class="mb-0 fw-bold text-white"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Laporan Ringkasan Kategori</h6>
+            <small style="color: var(--colors-muted);">Agregasi data produk berdasarkan masing-masing kategori</small>
         </div>
-        <span class="badge bg-primary-subtle text-primary">{{ $categoryReports->count() }} Kategori</span>
+        <span class="badge badge-gradient-info font-monospace">{{ $categoryReports->count() }} Kategori</span>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light text-uppercase text-secondary small">
+            <table class="table align-middle mb-0">
+                <thead>
                     <tr>
                         <th>Nama Kategori</th>
                         <th class="text-center">Total Produk</th>
@@ -89,20 +120,20 @@
                     @forelse ($categoryReports as $cat)
                         <tr>
                             <td>
-                                <a href="{{ route('categories.show', $cat->id) }}" class="fw-bold text-dark text-decoration-none">
+                                <a href="{{ route('categories.show', $cat->id) }}" class="fw-semibold text-white text-decoration-none">
                                     {{ $cat->name }}
                                 </a>
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-light text-dark border">{{ $cat->total_products }} item</span>
+                                <span class="badge badge-gradient-accent font-monospace">{{ $cat->total_products }} item</span>
                             </td>
-                            <td class="text-center fw-semibold">
+                            <td class="text-center fw-semibold text-white font-monospace">
                                 {{ number_format($cat->total_stock) }} unit
                             </td>
-                            <td class="text-end text-muted">
+                            <td class="text-end font-monospace" style="color: var(--colors-muted);">
                                 Rp {{ number_format($cat->average_price, 0, ',', '.') }}
                             </td>
-                            <td class="text-end fw-bold text-success">
+                            <td class="text-end fw-bold font-monospace" style="color: #6EE7B7;">
                                 Rp {{ number_format($cat->category_inventory_value, 0, ',', '.') }}
                             </td>
                         </tr>
@@ -118,12 +149,12 @@
 </div>
 
 <!-- Bagian 2: Laporan Pergerakan Stok per Produk -->
-<div class="card">
+<div class="card glass-card">
     <div class="card-header py-3">
         <div class="d-flex flex-column flex-md-row md-align-items-center justify-content-between gap-3">
             <div>
-                <h6 class="mb-0 fw-bold text-dark"><i class="bi bi-arrow-left-right text-success me-2"></i>Laporan Rekapitulasi Mutasi Stok per Produk</h6>
-                <small class="text-muted">Perbandingan total unit masuk dan keluar untuk setiap produk</small>
+                <h6 class="mb-0 fw-bold text-white"><i class="bi bi-arrow-left-right text-success me-2"></i>Laporan Rekapitulasi Mutasi Stok per Produk</h6>
+                <small style="color: var(--colors-muted);">Perbandingan total unit masuk dan keluar untuk setiap produk</small>
             </div>
 
             <!-- Filter Kategori & Search Produk -->
@@ -137,7 +168,7 @@
                 </select>
                 <button type="submit" class="btn btn-primary btn-sm px-3">Filter</button>
                 @if($search || $categoryId)
-                    <a href="{{ route('reports.index') }}" class="btn btn-outline-secondary btn-sm" title="Reset"><i class="bi bi-x"></i></a>
+                    <a href="{{ route('reports.index') }}" class="btn btn-glass-outline btn-sm" title="Reset"><i class="bi bi-x"></i></a>
                 @endif
             </form>
         </div>
@@ -145,14 +176,14 @@
 
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light text-uppercase text-secondary small">
+            <table class="table align-middle mb-0">
+                <thead>
                     <tr>
                         <th>SKU & Nama Produk</th>
                         <th>Kategori</th>
                         <th class="text-end">Harga Satuan</th>
-                        <th class="text-center text-success">Total Masuk</th>
-                        <th class="text-center text-danger">Total Keluar</th>
+                        <th class="text-center" style="color: #6EE7B7;">Total Masuk</th>
+                        <th class="text-center" style="color: #F87171;">Total Keluar</th>
                         <th class="text-center">Sisa Stok</th>
                         <th class="text-center">Status</th>
                     </tr>
@@ -161,31 +192,31 @@
                     @forelse ($productReports as $pr)
                         <tr>
                             <td>
-                                <div class="fw-bold text-dark">{{ $pr->name }}</div>
-                                <code class="small text-muted font-monospace">{{ $pr->sku }}</code>
+                                <div class="fw-semibold text-white">{{ $pr->name }}</div>
+                                <code class="small font-monospace" style="color: var(--colors-muted);">{{ $pr->sku }}</code>
                             </td>
                             <td>
-                                <span class="badge bg-light text-secondary border">{{ $pr->category->name ?? '-' }}</span>
+                                <span class="badge badge-gradient-accent font-monospace">{{ $pr->category->name ?? '-' }}</span>
                             </td>
-                            <td class="text-end">
+                            <td class="text-end font-monospace text-white">
                                 Rp {{ number_format($pr->price, 0, ',', '.') }}
                             </td>
-                            <td class="text-center fw-bold text-success">
+                            <td class="text-center fw-bold font-monospace" style="color: #6EE7B7;">
                                 +{{ number_format($pr->total_in) }}
                             </td>
-                            <td class="text-center fw-bold text-danger">
+                            <td class="text-center fw-bold font-monospace" style="color: #F87171;">
                                 -{{ number_format($pr->total_out) }}
                             </td>
-                            <td class="text-center">
-                                <span class="fs-6 fw-bold">{{ $pr->current_stock }}</span> unit
+                            <td class="text-center font-monospace">
+                                <span class="fs-6 fw-bold text-white">{{ $pr->current_stock }}</span> unit
                             </td>
                             <td class="text-center">
                                 @if ($pr->current_stock <= 0)
-                                    <span class="badge bg-danger">Habis</span>
+                                    <span class="badge badge-gradient-danger font-monospace">Habis</span>
                                 @elseif ($pr->current_stock <= $pr->min_stock)
-                                    <span class="badge bg-warning text-dark">Rendah</span>
+                                    <span class="badge badge-gradient-warning font-monospace">Rendah</span>
                                 @else
-                                    <span class="badge bg-success">Aman</span>
+                                    <span class="badge badge-gradient-success font-monospace">Aman</span>
                                 @endif
                             </td>
                         </tr>
@@ -200,13 +231,8 @@
     </div>
 
     @if ($productReports->hasPages())
-        <div class="card-footer d-flex align-items-center justify-content-between py-3">
-            <div class="small text-muted">
-                Menampilkan <strong>{{ $productReports->firstItem() }}</strong> sampai <strong>{{ $productReports->lastItem() }}</strong> dari <strong>{{ $productReports->total() }}</strong> produk
-            </div>
-            <div>
-                {{ $productReports->links('pagination::bootstrap-5') }}
-            </div>
+        <div class="card-footer py-3 border-top d-flex justify-content-center" style="background: transparent; border-color: var(--colors-hairline) !important;">
+            {{ $productReports->links('vendor.pagination.buyer-slide') }}
         </div>
     @endif
 </div>
