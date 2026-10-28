@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Sale;
 use App\Models\StockMovement;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -16,8 +19,83 @@ class ReportController extends Controller
      */
     public function index(Request $request): View
     {
-        // 1. Laporan Agregat per Kategori (P4 Slide 14)
-        // SELECT c.name, COUNT(p.id) AS total_products, SUM(p.stock) AS total_stock, AVG(p.price) AS average_price
+        $data = $this->getReportData($request, true);
+
+        return view('reports.index', $data);
+    }
+
+    /**
+     * Export official PDF inventory & stock mutation report with Kop Surat.
+     */
+    public function exportPdf(Request $request): Response
+    {
+        $data = $this->getReportData($request, false);
+
+        $logoPath = public_path('images/logo.png');
+        $data['logoBase64'] = file_exists($logoPath) ? 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath)) : null;
+
+        $pdf = Pdf::loadView('pdf.inventory_report', $data)
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan-inventaris-'.date('YmdHis').'.pdf');
+    }
+
+    /**
+     * Export Excel spreadsheet of inventory & stock movements.
+     */
+    public function exportExcel(Request $request): Response
+    {
+        $data = $this->getReportData($request, false);
+        $content = view('exports.inventory_excel', $data)->render();
+
+        return response($content, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="rekap-inventaris-'.date('YmdHis').'.xls"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ]);
+    }
+
+    /**
+     * Export Excel spreadsheet of sales transactions & gross profit analysis.
+     */
+    public function exportSalesExcel(Request $request): Response
+    {
+        $sales = Sale::with(['user', 'buyer', 'items.product'])->latest('sold_at')->get();
+
+        $totalRevenue = 0;
+        $totalCost = 0;
+        foreach ($sales as $sale) {
+            $totalRevenue += (float) $sale->total;
+            foreach ($sale->items as $item) {
+                $cost = $item->product ? ($item->product->purchase_price > 0 ? (float) $item->product->purchase_price : 0) : 0;
+                $totalCost += ($cost * $item->quantity);
+            }
+        }
+        $totalGrossProfit = max(0, $totalRevenue - $totalCost);
+
+        $content = view('exports.sales_excel', compact(
+            'sales',
+            'totalRevenue',
+            'totalCost',
+            'totalGrossProfit'
+        ))->render();
+
+        return response($content, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="rekap-penjualan-laba-rugi-'.date('YmdHis').'.xls"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ]);
+    }
+
+    /**
+     * Query and prepare shared report dataset.
+     */
+    protected function getReportData(Request $request, bool $paginate = true): array
+    {
         $categoryReports = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
             ->select(
                 'categories.id',
@@ -31,12 +109,10 @@ class ReportController extends Controller
             ->orderBy('categories.name')
             ->get();
 
-        // 2. Laporan Pergerakan Stok per Produk (P4 Slide 28)
-        // SELECT p.sku, p.name, SUM(CASE WHEN sm.type='in' THEN sm.quantity ELSE 0 END) AS total_in, ...
         $categoryId = $request->input('category_id');
         $search = $request->input('search');
 
-        $productReports = Product::with('category')
+        $query = Product::with('category')
             ->leftJoin('stock_movements', 'products.id', '=', 'stock_movements.product_id')
             ->select(
                 'products.id',
@@ -49,13 +125,13 @@ class ReportController extends Controller
                 DB::raw("COALESCE(SUM(CASE WHEN stock_movements.type = 'in' THEN stock_movements.quantity ELSE 0 END), 0) as total_in"),
                 DB::raw("COALESCE(SUM(CASE WHEN stock_movements.type = 'out' THEN stock_movements.quantity ELSE 0 END), 0) as total_out")
             )
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('products.category_id', $categoryId);
+            ->when($categoryId, function ($q, $catId) {
+                return $q->where('products.category_id', $catId);
             })
-            ->when($search, function ($query, $search) {
-                return $query->where(function ($q) use ($search) {
-                    $q->where('products.name', 'like', "%{$search}%")
-                        ->orWhere('products.sku', 'like', "%{$search}%");
+            ->when($search, function ($q, $s) {
+                return $q->where(function ($sub) use ($s) {
+                    $sub->where('products.name', 'like', "%{$s}%")
+                        ->orWhere('products.sku', 'like', "%{$s}%");
                 });
             })
             ->groupBy(
@@ -67,19 +143,18 @@ class ReportController extends Controller
                 'products.min_stock',
                 'products.category_id'
             )
-            ->orderBy('products.name')
-            ->paginate(15)
-            ->withQueryString();
+            ->orderBy('products.name');
 
-        // 3. Ringkasan Keseluruhan (KPI)
+        $productReports = $paginate ? $query->paginate(15)->withQueryString() : $query->get();
+
         $totalProducts = Product::count();
         $totalInventoryValue = (float) (Product::selectRaw('SUM(stock * price) as val')->value('val') ?? 0);
         $grandTotalIn = (int) StockMovement::where('type', 'in')->sum('quantity');
         $grandTotalOut = (int) StockMovement::where('type', 'out')->sum('quantity');
-
         $categories = Category::orderBy('name')->get();
+        $selectedCategoryName = $categoryId ? Category::find($categoryId)?->name : 'Semua Kategori';
 
-        return view('reports.index', compact(
+        return compact(
             'categoryReports',
             'productReports',
             'totalProducts',
@@ -88,7 +163,8 @@ class ReportController extends Controller
             'grandTotalOut',
             'categories',
             'categoryId',
+            'selectedCategoryName',
             'search'
-        ));
+        );
     }
 }

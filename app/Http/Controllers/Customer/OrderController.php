@@ -8,8 +8,11 @@ use App\Models\Sale;
 use App\Models\StockMovement;
 use App\Services\MidtransService;
 use App\Services\PromoService;
+use App\Services\ShippingService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -97,6 +100,8 @@ class OrderController extends Controller
             'notes' => ['nullable', 'string', 'max:500'],
             'payment_method' => ['nullable', 'string', 'in:midtrans,cod'],
             'promo_code' => ['nullable', 'string', 'max:50'],
+            'destination' => ['nullable', 'string', 'max:100'],
+            'courier' => ['nullable', 'string', 'max:50'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => ['required', 'exists:products,id'],
             'items.*.quantity' => ['required', 'integer', 'min:1'],
@@ -106,10 +111,12 @@ class OrderController extends Controller
         ]);
 
         $paymentMethod = $validated['payment_method'] ?? 'midtrans';
+        $destination = $validated['destination'] ?? null;
+        $courier = $validated['courier'] ?? null;
         $sessionPromo = $request->session()->get('applied_promo');
         $rawPromoCode = $validated['promo_code'] ?? ($sessionPromo['code'] ?? null);
 
-        $sale = DB::transaction(function () use ($validated, $paymentMethod, $rawPromoCode) {
+        $sale = DB::transaction(function () use ($validated, $paymentMethod, $rawPromoCode, $destination, $courier) {
             $prefix = 'SL-'.date('Ymd').'-';
             $countToday = Sale::whereDate('created_at', today())->count() + 1;
             $saleNumber = $prefix.str_pad((string) $countToday, 4, '0', STR_PAD_LEFT);
@@ -120,6 +127,7 @@ class OrderController extends Controller
                 'sale_number' => $saleNumber,
                 'subtotal' => 0,
                 'discount_amount' => 0,
+                'shipping_cost' => 0,
                 'promo_code' => null,
                 'total' => 0,
                 'status' => 'completed',
@@ -131,6 +139,7 @@ class OrderController extends Controller
             ]);
 
             $itemsSubtotal = 0;
+            $totalWeight = 0;
 
             foreach ($validated['items'] as $item) {
                 $product = Product::lockForUpdate()->findOrFail($item['product_id']);
@@ -141,6 +150,8 @@ class OrderController extends Controller
                         'items' => "Stok produk {$product->name} tidak mencukupi (Tersisa: {$product->stock}, Dipesan: {$qty}).",
                     ]);
                 }
+
+                $totalWeight += (ShippingService::estimateProductWeight($product->name) * $qty);
 
                 $unitPrice = (float) ($product->selling_price > 0 ? $product->selling_price : $product->price);
                 $subtotal = round($unitPrice * $qty, 2);
@@ -154,6 +165,7 @@ class OrderController extends Controller
 
                 // Atomically decrement stock
                 $product->decrement('stock', $qty);
+                $product->refresh()->notifyIfLowStock();
 
                 // Record audit trail
                 StockMovement::create([
@@ -167,6 +179,22 @@ class OrderController extends Controller
                 $itemsSubtotal += $subtotal;
             }
 
+            if ($totalWeight === 0) {
+                $totalWeight = 1000;
+            }
+
+            // Calculate Shipping Cost if destination & courier are specified
+            $shippingCost = 0.0;
+            $shippingCourier = null;
+            $shippingDestination = null;
+
+            if (! empty($destination) && ! empty($courier)) {
+                $shippingInfo = ShippingService::verifyOption($destination, $courier, $totalWeight);
+                $shippingCost = (float) $shippingInfo['cost'];
+                $shippingCourier = $shippingInfo['courier_name'];
+                $shippingDestination = $shippingInfo['destination_name'];
+            }
+
             // Calculate Promo Discount
             $discountAmount = 0.0;
             $appliedCode = null;
@@ -178,11 +206,15 @@ class OrderController extends Controller
                 }
             }
 
-            $finalTotal = max(0.0, $itemsSubtotal - $discountAmount);
+            $finalTotal = max(0.0, $itemsSubtotal - $discountAmount + $shippingCost);
 
             $sale->update([
                 'subtotal' => $itemsSubtotal,
                 'discount_amount' => $discountAmount,
+                'shipping_cost' => $shippingCost,
+                'shipping_courier' => $shippingCourier,
+                'shipping_destination' => $shippingDestination,
+                'shipping_weight' => $totalWeight,
                 'promo_code' => $appliedCode,
                 'total' => $finalTotal,
             ]);
@@ -467,5 +499,25 @@ class OrderController extends Controller
         }
 
         return back()->with('success', $msg);
+    }
+
+    /**
+     * Download official PDF sales invoice for customer order with Kop Surat.
+     */
+    public function downloadInvoicePdf(Sale $sale): Response
+    {
+        if ($sale->buyer_id !== Auth::id() && $sale->user_id !== Auth::id() && ! Auth::user()->isAdmin()) {
+            abort(403, 'Akses invoice tidak diizinkan.');
+        }
+
+        $sale->load(['user', 'buyer.profile', 'items.product']);
+
+        $logoPath = public_path('images/logo.png');
+        $logoBase64 = file_exists($logoPath) ? 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath)) : null;
+
+        $pdf = Pdf::loadView('pdf.invoice', compact('sale', 'logoBase64'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download("Invoice-{$sale->sale_number}.pdf");
     }
 }

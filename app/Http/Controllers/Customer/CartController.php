@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Services\PromoService;
+use App\Services\ShippingService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -60,7 +62,64 @@ class CartController extends Controller
 
         $finalTotal = max(0.0, $grandTotal - $discountAmount);
 
-        return view('customer.cart', compact('cartItems', 'grandTotal', 'discountAmount', 'promoCode', 'finalTotal'));
+        $totalWeight = 0;
+        foreach ($cartItems as $item) {
+            $totalWeight += (ShippingService::estimateProductWeight($item['product']->name) * $item['quantity']);
+        }
+        if ($totalWeight === 0) {
+            $totalWeight = 1000;
+        }
+
+        $destinations = ShippingService::getDestinations();
+        $defaultDestination = 'jakarta';
+        $initialRates = ShippingService::calculateRates($defaultDestination, $totalWeight);
+
+        return view('customer.cart', compact(
+            'cartItems',
+            'grandTotal',
+            'discountAmount',
+            'promoCode',
+            'finalTotal',
+            'totalWeight',
+            'destinations',
+            'defaultDestination',
+            'initialRates'
+        ));
+    }
+
+    /**
+     * Provide real-time shipping rate calculation for selected destination.
+     */
+    public function getShippingRates(Request $request): JsonResponse
+    {
+        $destination = $request->input('destination', 'jakarta');
+        $rawCart = session()->get('cart', []);
+
+        $totalWeight = 0;
+        if (! empty($rawCart)) {
+            $products = Product::whereIn('id', array_keys($rawCart))->get();
+            foreach ($rawCart as $pId => $qty) {
+                $p = $products->firstWhere('id', $pId);
+                if ($p) {
+                    $totalWeight += (ShippingService::estimateProductWeight($p->name) * (int) $qty);
+                }
+            }
+        }
+
+        if ($totalWeight === 0) {
+            $totalWeight = (int) $request->input('weight', 1000);
+        }
+
+        $rates = ShippingService::calculateRates($destination, $totalWeight);
+        $destinations = ShippingService::getDestinations();
+
+        return response()->json([
+            'status' => 'success',
+            'destination' => $destinations[$destination] ?? null,
+            'weight_grams' => $totalWeight,
+            'weight_kg' => max(1, (int) ceil($totalWeight / 1000)),
+            'rates' => $rates,
+        ]);
     }
 
     /**

@@ -12,18 +12,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0D0C1D;
-            --bg-solid: #161B33;
-            --bg-glass: rgba(71, 73, 115, 0.18);
-            --border-glass: rgba(166, 156, 172, 0.22);
-            --text-secondary: #A69CAC;
-            --accent-cream: #F1DAC4;
-            --accent-cream-hover: #ebd0b4;
-            --text-dark: #0D0C1D;
+            --bg-main: #F8F5EE;
+            --bg-solid: #FFFFFF;
+            --bg-glass: #FFFFFF;
+            --border-glass: #E5E0D5;
+            --text-secondary: #706E6B;
+            --accent-primary: #1A1A1C;
+            --accent-primary-hover: #2C2C2E;
+            --text-primary: #1A1A1C;
         }
         body {
             background-color: var(--bg-main);
-            color: #FFFFFF;
+            color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -41,12 +41,12 @@
             width: 100%;
             padding: 2.5rem 2rem;
             text-align: center;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 40px -15px rgba(28, 26, 24, 0.08);
         }
         .error-code {
             font-size: 3.5rem;
             font-weight: 800;
-            color: var(--accent-cream);
+            color: var(--accent-primary);
             line-height: 1;
             margin-bottom: 0.5rem;
         }
@@ -86,18 +86,18 @@
         @endphp
 
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
-            <a href="{{ $homeRoute }}" class="btn fw-bold py-2 px-3" style="background: var(--accent-cream); color: var(--text-dark); border-radius: 10px;">
+            <a href="{{ $homeRoute }}" class="btn fw-bold py-2 px-3" style="background: var(--accent-primary); color: #FFFFFF; border-radius: 10px;">
                 <i class="bi {{ $homeIcon }} me-1"></i> {{ $homeLabel }}
             </a>
             @auth
                 <form action="{{ route('logout') }}" method="POST" class="m-0">
                     @csrf
-                    <button type="submit" class="btn w-100 py-2 px-3 fw-semibold" style="background: rgba(22, 27, 51, 0.8); border: 1px solid var(--border-glass); color: #FFFFFF; border-radius: 10px;">
+                    <button type="submit" class="btn w-100 py-2 px-3 fw-semibold" style="background: #F2EFE9; border: 1px solid var(--border-glass); color: #1A1A1C; border-radius: 10px;">
                         <i class="bi bi-box-arrow-right me-1"></i> Ganti Akun
                     </button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="btn py-2 px-3 fw-semibold" style="background: rgba(22, 27, 51, 0.8); border: 1px solid var(--border-glass); color: #FFFFFF; border-radius: 10px;">
+                <a href="{{ route('login') }}" class="btn py-2 px-3 fw-semibold" style="background: #F2EFE9; border: 1px solid var(--border-glass); color: #1A1A1C; border-radius: 10px;">
                     <i class="bi bi-box-arrow-in-right me-1"></i> Masuk (Login)
                 </a>
             @endauth

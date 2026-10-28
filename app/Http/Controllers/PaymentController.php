@@ -20,14 +20,15 @@ class PaymentController extends Controller
      */
     public function notification(Request $request): JsonResponse
     {
-        $payload = $request->all();
+        $payload = $request->json()->all() ?: $request->all();
 
         $orderId = $payload['order_id'] ?? null;
-        $statusCode = $payload['status_code'] ?? null;
-        $grossAmount = $payload['gross_amount'] ?? null;
-        $signatureKey = $payload['signature_key'] ?? null;
+        $statusCode = (string) ($payload['status_code'] ?? '');
+        $grossAmount = (string) ($payload['gross_amount'] ?? '');
+        $signatureKey = (string) ($payload['signature_key'] ?? '');
         $transactionStatus = $payload['transaction_status'] ?? null;
         $fraudStatus = $payload['fraud_status'] ?? null;
+        $paymentType = $payload['payment_type'] ?? null;
 
         if (! $orderId || ! $signatureKey) {
             return response()->json(['message' => 'Invalid notification payload.'], 400);
@@ -49,11 +50,20 @@ class PaymentController extends Controller
         $parsed = $this->midtransService->parseNotificationStatus($transactionStatus, $fraudStatus);
         $newPaymentStatus = $parsed['payment_status'];
 
-        DB::transaction(function () use ($sale, $newPaymentStatus) {
+        DB::transaction(function () use ($sale, $newPaymentStatus, $paymentType, $transactionStatus) {
             if ($newPaymentStatus === 'paid') {
-                $sale->update([
+                $updateData = [
                     'payment_status' => 'paid',
-                ]);
+                    'shipping_status' => ($sale->shipping_status === 'pending' || empty($sale->shipping_status)) ? 'packing' : $sale->shipping_status,
+                ];
+
+                if (! empty($paymentType)) {
+                    $updateData['payment_method'] = 'midtrans ('.$paymentType.')';
+                }
+
+                $sale->update($updateData);
+
+                Log::info("Midtrans webhook: Order #{$sale->sale_number} marked as PAID via {$paymentType} ({$transactionStatus})");
             } elseif ($newPaymentStatus === 'failed') {
                 // Restore stock automatically if payment failed or expired
                 if ($sale->status !== 'cancelled') {
@@ -75,11 +85,22 @@ class PaymentController extends Controller
                     $sale->update([
                         'status' => 'cancelled',
                         'payment_status' => 'failed',
+                        'shipping_status' => 'cancelled',
                     ]);
+
+                    Log::info("Midtrans webhook: Order #{$sale->sale_number} CANCELLED and stock restored.");
                 }
             }
         });
 
-        return response()->json(['status' => 'success', 'payment_status' => $newPaymentStatus]);
+        $sale->refresh();
+
+        return response()->json([
+            'status' => 'success',
+            'order_id' => $sale->sale_number,
+            'payment_status' => $sale->payment_status,
+            'shipping_status' => $sale->shipping_status,
+            'transaction_status' => $transactionStatus,
+        ]);
     }
 }

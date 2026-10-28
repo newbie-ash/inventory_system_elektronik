@@ -18,7 +18,7 @@
                         <i class="bi bi-check-circle-fill"></i> LUNAS (PAID)
                     </span>
                 @elseif($sale->payment_method === 'cod')
-                    <span class="badge font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4);">
+                    <span class="badge font-monospace fs-6 px-3 py-1.5 d-inline-flex align-items-center gap-1.5" style="background: rgba(22, 163, 74, 0.08); color: #15803D; border: 1px solid rgba(22, 163, 74, 0.2);">
                         <i class="bi bi-cash-stack"></i> COD (BAYAR DI TEMPAT)
                     </span>
                 @elseif($sale->payment_status === 'pending')
@@ -54,7 +54,7 @@
                       data-confirm-icon="bi-cash-stack"
                       data-confirm-btn="Ya, Ubah ke COD">
                     @csrf
-                    <button type="submit" class="order-action-btn font-monospace border-0" style="background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.4) !important; color: #34D399;">
+                    <button type="submit" class="order-action-btn font-monospace" style="background: #FFFFFF; border: 1px solid rgba(22, 163, 74, 0.4) !important; color: #15803D;">
                         <i class="bi bi-cash-stack"></i>
                         <span>Ubah ke COD</span>
                     </button>
@@ -101,12 +101,17 @@
                       data-confirm-icon="bi-x-circle-fill"
                       data-confirm-btn="Ya, Batalkan Pesanan">
                     @csrf
-                    <button type="submit" class="order-action-btn font-monospace border-0" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35) !important; color: #FCA5A5;">
+                    <button type="submit" class="order-action-btn font-monospace" style="background: #FFFFFF; border: 1px solid rgba(220, 38, 38, 0.4) !important; color: #DC2626;">
                         <i class="bi bi-x-circle"></i>
                         <span>Batalkan Pesanan</span>
                     </button>
                 </form>
             @endif
+
+            <a href="{{ route('customer.orders.invoice.pdf', $sale) }}" class="order-action-btn order-action-outline font-monospace text-decoration-none" target="_blank" title="Unduh Berkas Faktur PDF Berkop Resmi">
+                <i class="bi bi-file-earmark-pdf text-danger"></i>
+                <span>Download PDF</span>
+            </a>
 
             <button onclick="window.print()" class="order-action-btn order-action-outline font-monospace">
                 <i class="bi bi-printer"></i>
@@ -116,10 +121,10 @@
     </div>
 
     <!-- Audit Log & Aktivitas Konsumen Banner (No Payment CTA) -->
-    <div class="card mb-4 p-3.5 p-md-4 rounded-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-left: 4px solid var(--colors-accent) !important; box-shadow: 0 10px 24px rgba(0,0,0,0.35);">
+    <div class="card mb-4 p-3.5 p-md-4 rounded-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-left: 4px solid var(--colors-accent) !important; box-shadow: 0 4px 20px -2px rgba(28, 26, 24, 0.05);">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: rgba(241, 218, 196, 0.12); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.25);">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: var(--colors-card-alt); color: var(--colors-accent); border: 1px solid var(--colors-hairline);">
                     <i class="bi bi-journal-check fs-4"></i>
                 </div>
                 <div>
@@ -130,7 +135,7 @@
                         @if($sale->payment_status === 'paid')
                             <span class="text-success"><i class="bi bi-check-circle me-1"></i>Transaksi telah lunas diverifikasi. Pesanan sedang disiapkan di gudang.</span>
                         @elseif($sale->payment_method === 'cod')
-                            <span style="color: #34D399;"><i class="bi bi-truck me-1"></i>Metode Bayar di Tempat (COD). Siapkan uang tunai saat kurir tiba mengantarkan paket.</span>
+                            <span class="text-success"><i class="bi bi-truck me-1"></i>Metode Bayar di Tempat (COD). Siapkan uang tunai saat kurir tiba mengantarkan paket.</span>
                         @else
                             <span class="text-warning"><i class="bi bi-hourglass-split me-1"></i>Pesanan tercatat di sistem inventaris dan menunggu pembayaran online.</span>
                             <a href="{{ route('customer.orders.payment', $sale) }}" class="ms-2 badge badge-gradient-accent text-decoration-none font-monospace py-1 px-2.5">
@@ -142,7 +147,7 @@
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="small font-monospace text-muted">ID Transaksi:</span>
-                <code class="text-white px-2 py-1 rounded" style="background: rgba(13, 12, 29, 0.8);">{{ $sale->sale_number }}</code>
+                <code class="px-2 py-1 rounded font-monospace" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: #1A1A1C;">{{ $sale->sale_number }}</code>
             </div>
         </div>
     </div>
@@ -177,11 +182,22 @@
                 <div class="d-flex align-items-center gap-2 mt-1">
                     <span class="small font-monospace text-secondary">Metode:</span>
                     @if($sale->payment_method === 'cod')
-                        <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.7rem;">COD (BAYAR DI TEMPAT)</span>
+                        <span class="badge font-monospace" style="background: rgba(22, 163, 74, 0.08); color: #15803D; border: 1px solid rgba(22, 163, 74, 0.2); font-size: 0.7rem;">COD (BAYAR DI TEMPAT)</span>
                     @else
                         <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.7rem;">MIDTRANS SNAP (ONLINE)</span>
                     @endif
                 </div>
+                @if($sale->shipping_courier)
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <span class="small font-monospace text-secondary">Pengiriman:</span>
+                        <span class="badge bg-transparent border font-monospace" style="border-color: var(--colors-hairline) !important; font-size: 0.7rem; color: var(--colors-text) !important;">
+                            {{ $sale->shipping_courier }}
+                        </span>
+                        @if($sale->shipping_destination)
+                            <span class="text-secondary small font-monospace">({{ ucwords($sale->shipping_destination) }})</span>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -232,19 +248,19 @@
                         @php
                             $prod = $item->product;
                         @endphp
-                        <tr style="border-bottom: 1px solid rgba(166, 156, 172, 0.08);">
+                        <tr style="border-bottom: 1px solid var(--colors-hairline);">
                             <td class="ps-4 py-3">
                                 <div class="d-flex align-items-center gap-3">
                                     @if($prod && $prod->image_url)
-                                        <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="object-fit-cover rounded-3 flex-shrink-0" style="width: 44px; height: 44px; border: 1px solid rgba(166, 156, 172, 0.25); background: var(--colors-card-alt);">
+                                        <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="object-fit-cover rounded-3 flex-shrink-0" style="width: 44px; height: 44px; border: 1px solid var(--colors-hairline); background: var(--colors-card-alt);">
                                     @else
-                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(166, 156, 172, 0.2); color: var(--colors-muted);">
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: var(--colors-muted);">
                                             <i class="bi bi-box-seam fs-5"></i>
                                         </div>
                                     @endif
                                     <div class="d-flex flex-column justify-content-center" style="min-width: 0;">
                                         <span class="fw-semibold text-white">{{ $prod->name ?? 'Produk Dihapus' }}</span>
-                                        <span class="badge bg-transparent border font-monospace text-muted align-self-start mt-0.5" style="border-color: rgba(166, 156, 172, 0.25) !important; font-size: 0.7rem;">
+                                        <span class="badge bg-transparent border font-monospace text-muted align-self-start mt-0.5" style="border-color: var(--colors-hairline) !important; font-size: 0.7rem;">
                                             {{ $prod->category->name ?? 'Hardware' }}
                                         </span>
                                     </div>
@@ -266,13 +282,15 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    @if($sale->discount_amount > 0)
+                    @if($sale->discount_amount > 0 || $sale->shipping_cost > 0)
                         <tr>
                             <td colspan="4" class="text-end text-secondary font-monospace pt-3">Subtotal Produk:</td>
                             <td class="text-end pe-4 text-white font-monospace pt-3">
                                 Rp {{ number_format($sale->subtotal > 0 ? $sale->subtotal : $sale->total, 0, ',', '.') }}
                             </td>
                         </tr>
+                    @endif
+                    @if($sale->discount_amount > 0)
                         <tr>
                             <td colspan="4" class="text-end text-success font-monospace py-1">Diskon Voucher ({{ $sale->promo_code }}):</td>
                             <td class="text-end pe-4 text-success font-monospace fw-bold py-1">
@@ -280,7 +298,17 @@
                             </td>
                         </tr>
                     @endif
-                    <tr class="border-top" style="border-color: var(--colors-hairline) !important; background: rgba(0,0,0,0.15);">
+                    @if($sale->shipping_cost > 0 || $sale->shipping_courier)
+                        <tr>
+                            <td colspan="4" class="text-end text-secondary font-monospace py-1">
+                                Ongkos Kirim ({{ $sale->shipping_courier ?? 'Kurir' }}{{ $sale->shipping_destination ? ' - ' . ucwords($sale->shipping_destination) : '' }}):
+                            </td>
+                            <td class="text-end pe-4 text-white font-monospace fw-semibold py-1">
+                                Rp {{ number_format($sale->shipping_cost, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
+                    <tr class="border-top" style="border-color: var(--colors-hairline) !important; background: var(--colors-card-alt);">
                         <td colspan="4" class="text-end fw-semibold text-secondary font-monospace py-3">TOTAL TAGIHAN:</td>
                         <td class="text-end pe-4 fs-5 fw-bold font-monospace py-3" style="color: var(--colors-accent);">
                             Rp {{ number_format($sale->total, 0, ',', '.') }}

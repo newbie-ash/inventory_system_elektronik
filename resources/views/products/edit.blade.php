@@ -154,9 +154,9 @@
                         <!-- Foto Produk -->
                         <div class="col-12">
                             <label class="form-label fw-semibold small text-white">Foto Produk</label>
-                            <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(166, 156, 172, 0.35);">
+                            <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: var(--colors-card-alt); border: 1px dashed var(--colors-hairline);">
                                 <!-- Square Preview -->
-                                <div id="imagePreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 88px; height: 88px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(166, 156, 172, 0.25);">
+                                <div id="imagePreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 88px; height: 88px; background: #FFFFFF; border: 1px solid var(--colors-hairline);">
                                     @if ($product->image_url)
                                         <img id="imagePreview" src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover">
                                         <i class="bi bi-image fs-3 d-none" id="placeholderIcon" style="color: var(--colors-muted);"></i>

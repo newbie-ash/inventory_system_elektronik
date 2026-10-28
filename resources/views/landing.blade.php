@@ -16,25 +16,26 @@
 
     <style>
         :root {
-            --bg-main: #0D0C1D;
-            --bg-solid: #161B33;
-            --bg-glass: rgba(71, 73, 115, 0.18);
-            --border-glass: rgba(166, 156, 172, 0.22);
-            --text-secondary: #A69CAC;
-            --accent-cream: #F1DAC4;
-            --accent-cream-hover: #ebd0b4;
-            --text-dark: #0D0C1D;
+            --bg-main: #F6F3EC;
+            --bg-solid: rgba(255, 255, 255, 0.45);
+            --bg-glass: rgba(255, 255, 255, 0.45);
+            --border-glass: rgba(229, 224, 213, 0.7);
+            --text-secondary: #706E6B;
+            --accent-cream: #1A1A1C;
+            --accent-cream-hover: #2C2C2E;
+            --text-dark: #1A1A1C;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-main);
             background-image: 
-                radial-gradient(circle at 15% 12%, rgba(71, 73, 115, 0.28) 0%, transparent 45%),
-                radial-gradient(circle at 85% 18%, rgba(22, 27, 51, 0.65) 0%, transparent 50%),
-                radial-gradient(circle at 50% 65%, rgba(71, 73, 115, 0.18) 0%, transparent 50%);
+                radial-gradient(circle at 12% 12%, rgba(220, 210, 192, 0.65) 0%, transparent 45%),
+                radial-gradient(circle at 88% 18%, rgba(205, 195, 178, 0.55) 0%, transparent 50%),
+                radial-gradient(circle at 50% 65%, rgba(225, 215, 198, 0.55) 0%, transparent 50%),
+                radial-gradient(circle at 20% 88%, rgba(215, 205, 188, 0.55) 0%, transparent 45%);
             background-attachment: fixed;
-            color: #FFFFFF;
+            color: #1A1A1C;
             overflow-x: hidden;
             margin: 0;
             padding: 0;
@@ -42,17 +43,17 @@
 
         /* Top Navigation Bar (Frosted Glassmorphism) */
         .ctrl-navbar {
-            background: rgba(22, 27, 51, 0.78);
-            border-bottom: 1px solid rgba(166, 156, 172, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.42) !important;
+            border-bottom: 1px solid rgba(229, 224, 213, 0.6) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
             position: sticky;
             top: 0;
             z-index: 1050;
             height: 70px;
             display: flex;
             align-items: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 24px rgba(28, 26, 24, 0.04) !important;
             transition: all 0.3s ease;
         }
 
@@ -63,7 +64,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(241, 218, 196, 0.4) 50%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(26, 26, 28, 0.15) 50%, transparent 100%);
             pointer-events: none;
         }
 
@@ -85,7 +86,7 @@
         }
 
         .nav-link-item {
-            color: #FFFFFF;
+            color: #1A1A1C;
             font-size: 0.92rem;
             font-weight: 500;
             text-decoration: none;
@@ -96,7 +97,7 @@
 
         .nav-link-item:hover {
             color: var(--accent-cream);
-            background-color: rgba(71, 73, 115, 0.2);
+            background-color: #F2EFE9;
         }
 
         .apple-nav-link {
@@ -115,18 +116,18 @@
         }
 
         .apple-nav-link:hover {
-            color: #FFFFFF;
-            background-color: rgba(71, 73, 115, 0.28);
-            border-color: rgba(166, 156, 172, 0.25);
+            color: #1A1A1C;
+            background-color: #F2EFE9;
+            border-color: var(--border-glass);
             transform: translateY(-1px);
         }
 
         .apple-nav-link.active {
-            color: var(--accent-cream);
+            color: #FFFFFF;
             font-weight: 700;
-            background-color: rgba(241, 218, 196, 0.14);
-            border-color: rgba(241, 218, 196, 0.35);
-            box-shadow: 0 0 16px rgba(241, 218, 196, 0.12);
+            background-color: #1A1A1C;
+            border-color: #1A1A1C;
+            box-shadow: 0 2px 8px rgba(26, 26, 28, 0.25);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -138,9 +139,9 @@
         }
 
         .icon-btn-nav {
-            color: #FFFFFF;
-            background: rgba(71, 73, 115, 0.18);
-            border: 1px solid rgba(166, 156, 172, 0.18);
+            color: #1A1A1C;
+            background: #FFFFFF;
+            border: 1px solid var(--border-glass);
             font-size: 1.1rem;
             width: 40px;
             height: 40px;
@@ -153,9 +154,9 @@
         }
 
         .icon-btn-nav:hover {
-            color: var(--accent-cream);
-            background: rgba(71, 73, 115, 0.35);
-            border-color: rgba(241, 218, 196, 0.4);
+            color: #FFFFFF;
+            background: #1A1A1C;
+            border-color: #1A1A1C;
             transform: translateY(-1px);
         }
 
@@ -163,8 +164,8 @@
         .search-nav-form {
             display: inline-flex;
             align-items: center;
-            background: rgba(71, 73, 115, 0.22);
-            border: 1px solid rgba(166, 156, 172, 0.22);
+            background: #FFFFFF;
+            border: 1px solid var(--border-glass);
             border-radius: 12px;
             padding: 0 10px;
             height: 40px;
@@ -176,9 +177,9 @@
         }
 
         .search-nav-form:focus-within {
-            background: rgba(22, 27, 51, 0.9);
-            border-color: var(--accent-cream);
-            box-shadow: 0 0 16px rgba(241, 218, 196, 0.2);
+            background: #FFFFFF;
+            border-color: #1A1A1C;
+            box-shadow: 0 0 0 3px rgba(26, 26, 28, 0.08);
             max-width: 290px;
         }
 
@@ -197,14 +198,14 @@
 
         .search-nav-form:focus-within .search-nav-btn,
         .search-nav-btn:hover {
-            color: var(--accent-cream);
+            color: #1A1A1C;
         }
 
         .search-nav-input {
             background: transparent !important;
             border: none !important;
             outline: none !important;
-            color: #FFFFFF !important;
+            color: #1A1A1C !important;
             font-size: 0.84rem;
             padding: 0;
             width: 100%;
@@ -246,12 +247,12 @@
             }
         }
 
-        /* Cream CTA Buttons */
+        /* Warm Paper CTA Buttons */
         .btn-cream {
-            background: linear-gradient(135deg, var(--accent-cream) 0%, var(--accent-cream-hover) 100%);
-            color: var(--text-dark);
+            background: #1A1A1C;
+            color: #FFFFFF;
             font-weight: 700;
-            border: none;
+            border: 1px solid #1A1A1C;
             border-radius: 10px;
             padding: 9px 20px;
             font-size: 0.92rem;
@@ -261,21 +262,21 @@
             justify-content: center;
             gap: 6px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 16px rgba(241, 218, 196, 0.25);
+            box-shadow: 0 2px 8px rgba(28, 26, 24, 0.18);
         }
 
         .btn-cream:hover {
-            background: linear-gradient(135deg, #FFF0E0 0%, var(--accent-cream) 100%);
-            color: var(--text-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(241, 218, 196, 0.4);
+            background: #2C2C2E;
+            color: #FFFFFF;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(28, 26, 24, 0.24);
         }
 
         .btn-outline-glass {
-            background-color: rgba(71, 73, 115, 0.18);
+            background-color: #FFFFFF;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            color: #FFFFFF;
+            color: #1A1A1C;
             font-weight: 600;
             border: 1px solid var(--border-glass);
             border-radius: 10px;
@@ -290,9 +291,9 @@
         }
 
         .btn-outline-glass:hover {
-            background-color: rgba(71, 73, 115, 0.35);
-            color: var(--accent-cream);
-            border-color: var(--accent-cream);
+            background-color: #F2EFE9;
+            color: #1A1A1C;
+            border-color: #D8D2C4;
             transform: translateY(-1px);
         }
 
@@ -321,21 +322,21 @@
 
         /* Right Hero Showcase Glass Card */
         .hero-glass-card {
-            background: linear-gradient(145deg, rgba(71, 73, 115, 0.24) 0%, rgba(22, 27, 51, 0.78) 100%);
-            border: 1px solid rgba(166, 156, 172, 0.22);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
             border-radius: 22px;
             padding: 2rem;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px -4px rgba(28, 26, 24, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
             transition: all 0.3s ease;
         }
 
         .hero-glass-card:hover {
-            border-color: rgba(241, 218, 196, 0.35);
-            box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.7), 0 0 30px -5px rgba(241, 218, 196, 0.12), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+            border-color: #D8D2C4;
+            box-shadow: 0 12px 36px -4px rgba(28, 26, 24, 0.12);
         }
 
         .hero-mockup-wrap {
@@ -376,7 +377,7 @@
             font-size: 1.65rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            color: #FFFFFF;
+            color: #1A1A1C;
             margin-bottom: 0.25rem;
         }
 
@@ -392,7 +393,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.045;
+            opacity: 0.035;
             filter: blur(1px) grayscale(100%) brightness(190%);
             pointer-events: none;
             z-index: 0;
@@ -409,8 +410,8 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.055;
-            filter: drop-shadow(0 0 50px rgba(241, 218, 196, 0.45));
+            opacity: 0.045;
+            filter: drop-shadow(0 0 50px rgba(10, 132, 255, 0.15));
             pointer-events: none;
             z-index: 1;
             user-select: none;
@@ -418,34 +419,36 @@
 
         /* Apple-Style Hardware Spotlight Hero */
         .apple-hero-card {
-            background: radial-gradient(circle at 50% 20%, rgba(71, 73, 115, 0.45) 0%, rgba(22, 27, 51, 0.95) 75%);
-            border: 1px solid rgba(166, 156, 172, 0.28);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
             border-radius: 28px;
             padding: 3.5rem 2rem 2.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+            box-shadow: 0 16px 40px -10px rgba(28, 26, 24, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
             transition: all 0.35s ease;
         }
 
         .apple-hero-card:hover {
-            border-color: rgba(241, 218, 196, 0.4);
-            box-shadow: 0 36px 90px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(241, 218, 196, 0.12);
+            border-color: #D8D2C4;
+            box-shadow: 0 16px 48px -10px rgba(28, 26, 24, 0.12);
         }
 
         .apple-hero-title {
             font-size: clamp(2.2rem, 4.5vw, 3.8rem);
             font-weight: 800;
             letter-spacing: -1.2px;
-            color: #FFFFFF;
+            color: #1A1A1C;
             line-height: 1.1;
             margin-bottom: 0.75rem;
         }
 
         .apple-hero-subtitle {
             font-size: clamp(1.05rem, 2vw, 1.45rem);
-            color: var(--accent-cream);
+            color: var(--text-secondary);
             font-weight: 500;
             max-width: 650px;
             margin: 0 auto 1.5rem;
@@ -453,9 +456,9 @@
         }
 
         .btn-apple-pill {
-            background: #0071e3;
+            background: #1A1A1C;
             color: #FFFFFF !important;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
             padding: 9px 24px;
             border-radius: 980px;
@@ -463,20 +466,21 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
+            border: 1px solid #1A1A1C;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(0, 113, 227, 0.4);
+            box-shadow: 0 2px 8px rgba(28, 26, 24, 0.18);
         }
 
         .btn-apple-pill:hover {
-            background: #0077ed;
-            transform: scale(1.04);
-            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.55);
+            background: #2C2C2E;
+            transform: scale(1.03);
+            box-shadow: 0 4px 14px rgba(28, 26, 24, 0.24);
         }
 
         .btn-apple-pill-ghost {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #FFFFFF !important;
+            background: #FFFFFF;
+            border: 1px solid var(--border-glass);
+            color: #1A1A1C !important;
             font-weight: 600;
             font-size: 0.95rem;
             padding: 9px 24px;
@@ -490,9 +494,9 @@
         }
 
         .btn-apple-pill-ghost:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #FFFFFF;
-            transform: scale(1.04);
+            background: #F2EFE9;
+            border-color: #D8D2C4;
+            transform: scale(1.03);
         }
 
         .hero-apple-img-wrap {
@@ -509,7 +513,7 @@
             max-height: 380px;
             max-width: 90%;
             object-fit: contain;
-            filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.8));
+            filter: drop-shadow(0 15px 30px rgba(28, 26, 24, 0.15));
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -534,40 +538,46 @@
         }
 
         .apple-bento-card-dark {
-            background: radial-gradient(circle at 50% 15%, rgba(71, 73, 115, 0.35) 0%, #161B33 80%);
-            border: 1px solid rgba(166, 156, 172, 0.22);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+            box-shadow: 0 12px 36px -4px rgba(28, 26, 24, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         }
 
         .apple-bento-card-dark:hover {
-            border-color: rgba(241, 218, 196, 0.4);
+            border-color: rgba(26, 26, 28, 0.25) !important;
             transform: translateY(-6px);
-            box-shadow: 0 30px 65px rgba(0, 0, 0, 0.75), 0 0 30px rgba(241, 218, 196, 0.1);
+            box-shadow: 0 18px 48px -4px rgba(28, 26, 24, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         }
 
         .apple-bento-card-contrast {
-            background: radial-gradient(circle at 50% 15%, rgba(241, 218, 196, 0.12) 0%, rgba(31, 36, 71, 0.95) 85%);
-            border: 1px solid rgba(241, 218, 196, 0.25);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+            box-shadow: 0 12px 36px -4px rgba(28, 26, 24, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         }
 
         .apple-bento-card-contrast:hover {
-            border-color: var(--accent-cream);
+            border-color: rgba(26, 26, 28, 0.25) !important;
             transform: translateY(-6px);
-            box-shadow: 0 30px 65px rgba(0, 0, 0, 0.75), 0 0 30px rgba(241, 218, 196, 0.18);
+            box-shadow: 0 18px 48px -4px rgba(28, 26, 24, 0.1), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         }
 
         .apple-bento-card-split {
             min-height: 400px;
-            background: linear-gradient(145deg, rgba(22, 27, 51, 0.9) 0%, rgba(71, 73, 115, 0.25) 100%);
-            border: 1px solid rgba(166, 156, 172, 0.22);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+            box-shadow: 0 10px 30px -4px rgba(28, 26, 24, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         }
 
         .apple-bento-card-split:hover {
-            border-color: rgba(241, 218, 196, 0.35);
+            border-color: #D8D2C4;
             transform: translateY(-5px);
-            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 12px 32px -4px rgba(28, 26, 24, 0.1);
         }
 
         .apple-bento-img-wrap {
@@ -583,7 +593,7 @@
             max-height: 230px;
             max-width: 85%;
             object-fit: contain;
-            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
+            filter: drop-shadow(0 10px 20px rgba(28, 26, 24, 0.12));
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -594,7 +604,7 @@
         .apple-bento-title {
             font-size: clamp(1.4rem, 2.5vw, 1.85rem);
             font-weight: 800;
-            color: #FFFFFF;
+            color: #1A1A1C;
             letter-spacing: -0.5px;
             margin-bottom: 0.45rem;
         }
@@ -615,22 +625,22 @@
             height: auto;
             object-fit: contain;
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.65));
+            filter: drop-shadow(0 8px 16px rgba(28, 26, 24, 0.12));
             display: block;
             margin: 0 auto;
         }
 
         .product-glass-card:hover .product-real-img {
             transform: scale(1.08) translateY(-4px);
-            filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
+            filter: drop-shadow(0 12px 24px rgba(28, 26, 24, 0.18));
         }
 
-        /* Product Cards (Glassmorphism & Gradient) */
+        /* Product Cards (Warm Paper Glassmorphism) */
         .product-glass-card {
-            background: linear-gradient(145deg, rgba(71, 73, 115, 0.2) 0%, rgba(22, 27, 51, 0.72) 100%);
-            border: 1px solid rgba(166, 156, 172, 0.22);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.45) !important;
+            border: 1px solid rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(20px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
             border-radius: 18px;
             padding: 1.15rem;
             transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -638,20 +648,20 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 6px 24px -2px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
             position: relative;
         }
 
         .product-glass-card:hover {
             transform: translateY(-6px);
-            background: linear-gradient(145deg, rgba(71, 73, 115, 0.32) 0%, rgba(22, 27, 51, 0.85) 100%);
-            border-color: rgba(241, 218, 196, 0.45);
-            box-shadow: 0 20px 42px -10px rgba(0, 0, 0, 0.65), 0 0 25px -4px rgba(241, 218, 196, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.60) !important;
+            border-color: rgba(26, 26, 28, 0.25) !important;
+            box-shadow: 0 14px 36px -4px rgba(28, 26, 24, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
         }
 
         .product-img-box {
-            background: radial-gradient(circle at 50% 35%, rgba(71, 73, 115, 0.26) 0%, rgba(13, 12, 29, 0.75) 100%);
-            border: 1px solid rgba(166, 156, 172, 0.16);
+            background: #F8F5EE;
+            border: 1px solid var(--border-glass);
             border-radius: 16px;
             height: 175px;
             display: flex;
@@ -666,13 +676,13 @@
         }
 
         .product-glass-card:hover .product-img-box {
-            border-color: rgba(241, 218, 196, 0.35);
-            background: radial-gradient(circle at 50% 35%, rgba(71, 73, 115, 0.4) 0%, rgba(13, 12, 29, 0.88) 100%);
+            border-color: #D8D2C4;
+            background: #F2EFE9;
         }
 
         .product-glass-card:hover .product-img-box i {
             transform: scale(1.08);
-            color: #FFFFFF;
+            color: #1A1A1C;
         }
 
         .product-img-box i {
@@ -680,9 +690,9 @@
         }
 
         .badge-pill-status {
-            background: rgba(71, 73, 115, 0.5);
-            color: var(--accent-cream);
-            border: 1px solid rgba(241, 218, 196, 0.35);
+            background: #F2EFE9;
+            color: #706E6B;
+            border: 1px solid var(--border-glass);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             font-size: 0.68rem;
@@ -696,7 +706,7 @@
         .product-title {
             font-size: 0.96rem;
             font-weight: 700;
-            color: #FFFFFF;
+            color: #1A1A1C;
             margin-bottom: 0.35rem;
             white-space: nowrap;
             overflow: hidden;
@@ -707,44 +717,44 @@
         }
 
         .product-title:hover {
-            color: var(--accent-cream);
+            color: #706E6B;
         }
 
         .product-price {
             font-size: 1rem;
             font-weight: 700;
-            color: var(--accent-cream);
+            color: #1A1A1C;
             margin-bottom: 0.95rem;
         }
 
         .btn-buy-card {
-            background: linear-gradient(135deg, var(--accent-cream) 0%, var(--accent-cream-hover) 100%);
-            color: var(--text-dark);
+            background: #1A1A1C;
+            color: #FFFFFF;
             font-weight: 700;
             font-size: 0.84rem;
             padding: 7px 14px;
             border-radius: 10px;
-            border: none;
+            border: 1px solid #1A1A1C;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-grow: 1;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(241, 218, 196, 0.2);
+            box-shadow: 0 2px 8px rgba(28, 26, 24, 0.18);
         }
 
         .btn-buy-card:hover {
-            background: linear-gradient(135deg, #FFF0E0 0%, var(--accent-cream) 100%);
-            color: var(--text-dark);
+            background: #2C2C2E;
+            color: #FFFFFF;
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(241, 218, 196, 0.35);
+            box-shadow: 0 4px 14px rgba(28, 26, 24, 0.24);
         }
 
         .btn-cart-card {
-            background: rgba(71, 73, 115, 0.22);
-            border: 1px solid rgba(166, 156, 172, 0.25);
-            color: #FFFFFF;
+            background: #F2EFE9;
+            border: 1px solid var(--border-glass);
+            color: #1A1A1C;
             border-radius: 10px;
             padding: 7px 11px;
             font-size: 0.92rem;
@@ -755,9 +765,9 @@
         }
 
         .btn-cart-card:hover {
-            background: rgba(241, 218, 196, 0.15);
-            border-color: var(--accent-cream);
-            color: var(--accent-cream);
+            background: #E5E0D5;
+            border-color: #D8D2C4;
+            color: #1A1A1C;
             transform: translateY(-1px);
         }
 
@@ -776,13 +786,13 @@
         }
 
         .filter-chip:hover {
-            color: #FFFFFF;
-            border-color: rgba(241, 218, 196, 0.4);
+            color: #1A1A1C;
+            border-color: var(--accent-cream);
         }
 
         .filter-chip.active {
             background-color: var(--accent-cream);
-            color: var(--text-dark);
+            color: #FFFFFF;
             border-color: var(--accent-cream);
         }
 
@@ -797,9 +807,9 @@
         }
 
         .slide-nav-btn {
-            background: rgba(22, 27, 51, 0.85) !important;
-            border: 1px solid rgba(166, 156, 172, 0.25) !important;
-            color: #FFFFFF !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-glass) !important;
+            color: #1A1A1C !important;
             font-size: 0.95rem;
             font-weight: 600;
             width: 38px;
@@ -811,21 +821,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 6px rgba(28, 26, 24, 0.05);
         }
 
         .slide-nav-btn:hover:not(.disabled) {
-            background: rgba(71, 73, 115, 0.5) !important;
+            background: #F2EFE9 !important;
             border-color: var(--accent-cream) !important;
             color: var(--accent-cream) !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 12px rgba(28, 26, 24, 0.1);
         }
 
         .slide-nav-btn.disabled {
-            color: rgba(166, 156, 172, 0.35) !important;
-            border-color: rgba(166, 156, 172, 0.12) !important;
-            background: rgba(22, 27, 51, 0.4) !important;
+            color: rgba(112, 110, 107, 0.4) !important;
+            border-color: rgba(229, 224, 213, 0.6) !important;
+            background: rgba(242, 239, 233, 0.5) !important;
             cursor: not-allowed;
             pointer-events: none;
             box-shadow: none !important;
@@ -836,9 +846,9 @@
             height: 38px;
             padding: 0 10px;
             border-radius: 12px !important;
-            background: rgba(22, 27, 51, 0.85) !important;
-            border: 1px solid rgba(166, 156, 172, 0.25) !important;
-            color: #FFFFFF !important;
+            background: #FFFFFF !important;
+            border: 1px solid var(--border-glass) !important;
+            color: #1A1A1C !important;
             font-size: 0.88rem;
             font-weight: 600;
             text-decoration: none !important;
@@ -846,23 +856,23 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 6px rgba(28, 26, 24, 0.05);
         }
 
         .slide-nav-page:hover:not(.active) {
-            background: rgba(71, 73, 115, 0.5) !important;
+            background: #F2EFE9 !important;
             border-color: var(--accent-cream) !important;
             color: var(--accent-cream) !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 12px rgba(28, 26, 24, 0.1);
         }
 
         .slide-nav-page.active {
-            background: linear-gradient(135deg, var(--accent-cream) 0%, var(--accent-cream-hover) 100%) !important;
-            border-color: var(--accent-cream) !important;
-            color: var(--text-dark) !important;
+            background: #1A1A1C !important;
+            border-color: #1A1A1C !important;
+            color: #FFFFFF !important;
             font-weight: 800 !important;
-            box-shadow: 0 4px 16px rgba(241, 218, 196, 0.35) !important;
+            box-shadow: 0 2px 8px rgba(28, 26, 24, 0.2) !important;
             transform: translateY(-1px);
         }
 
@@ -884,7 +894,7 @@
 </head>
 <body>
 
-    <!-- 1. Top Navbar (Solid #161B33 with Glass Accents) -->
+    <!-- 1. Top Navbar (Premium Dark Matte) -->
     <header class="ctrl-navbar">
         <div class="container-fluid px-3 px-xl-5 d-flex align-items-center justify-content-between">
             <!-- Brand Logo -->
@@ -908,10 +918,10 @@
                         <button class="apple-nav-link dropdown-toggle border-0 bg-transparent" type="button" data-bs-toggle="dropdown" style="font-size: 0.82rem;">
                             Kategori Lain
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-dark shadow border small" style="background-color: var(--bg-solid); border-color: var(--border-glass);">
+                        <ul class="dropdown-menu shadow border small" style="background-color: #FFFFFF; border-color: var(--border-glass);">
                             @foreach($categories->skip(3) as $cat)
                                 <li>
-                                    <a class="dropdown-item py-2 {{ request('category') == $cat->id ? 'text-warning fw-bold' : 'text-white' }}" href="{{ route('landing', ['category' => $cat->id]) }}#katalog-gear">
+                                    <a class="dropdown-item py-2 {{ request('category') == $cat->id ? 'text-primary fw-bold' : '' }}" style="color: #1A1A1C;" href="{{ route('landing', ['category' => $cat->id]) }}#katalog-gear">
                                         {{ $cat->name }}
                                     </a>
                                 </li>
@@ -920,7 +930,7 @@
                     </div>
                 @endif
                 @if(Auth::check())
-                    <a href="{{ route('dashboard') }}" class="apple-nav-link text-white fw-semibold">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="apple-nav-link fw-semibold" style="color: #1A1A1C;">Dashboard</a>
                 @endif
             </nav>
 
@@ -982,11 +992,7 @@
             @if($heroProduct)
                 @php
                     $heroPrice = $heroProduct->selling_price > 0 ? $heroProduct->selling_price : $heroProduct->price;
-                    $heroImg = $heroProduct->image;
-                    $pngHero = preg_replace('/\.jpe?g$/i', '.png', $heroImg);
-                    if (file_exists(public_path($pngHero))) {
-                        $heroImg = $pngHero;
-                    }
+                    $heroImg = $heroProduct->image_url;
                 @endphp
                 <div class="apple-hero-card position-relative overflow-hidden">
                     <!-- Subtle Internal Brand Watermark -->
@@ -1024,8 +1030,8 @@
                     </div>
 
                     <div class="hero-apple-img-wrap position-relative" style="z-index: 2;">
-                        @if($heroImg && file_exists(public_path($heroImg)))
-                            <img src="{{ asset($heroImg) }}" class="hero-apple-img" alt="{{ $heroProduct->name }}">
+                        @if($heroImg)
+                            <img src="{{ $heroImg }}" class="hero-apple-img" alt="{{ $heroProduct->name }}">
                         @else
                             <i class="bi bi-laptop display-1" style="color: var(--accent-cream); opacity: 0.85;"></i>
                         @endif
@@ -1066,11 +1072,7 @@
                     @php
                         $spotPrice = $spot->selling_price > 0 ? $spot->selling_price : $spot->price;
                         $cardTheme = $index === 0 ? 'apple-bento-card-dark' : 'apple-bento-card-contrast';
-                        $spotImg = $spot->image;
-                        $pngSpot = preg_replace('/\.jpe?g$/i', '.png', $spotImg);
-                        if (file_exists(public_path($pngSpot))) {
-                            $spotImg = $pngSpot;
-                        }
+                        $spotImg = $spot->image_url;
                     @endphp
                     <div class="col-lg-6">
                         <div class="apple-bento-card {{ $cardTheme }}">
@@ -1092,8 +1094,8 @@
                                 </div>
                             </div>
                             <div class="apple-bento-img-wrap">
-                                @if($spotImg && file_exists(public_path($spotImg)))
-                                    <img src="{{ asset($spotImg) }}" class="apple-bento-img" alt="{{ $spot->name }}" loading="lazy">
+                                @if($spotImg)
+                                    <img src="{{ $spotImg }}" class="apple-bento-img" alt="{{ $spot->name }}" loading="lazy">
                                 @else
                                     <i class="bi bi-cpu display-2" style="color: var(--accent-cream);"></i>
                                 @endif
@@ -1109,11 +1111,7 @@
                 @foreach($spotlightProducts->slice(2, 2) as $spot)
                     @php
                         $spotPrice = $spot->selling_price > 0 ? $spot->selling_price : $spot->price;
-                        $spotImg = $spot->image;
-                        $pngSpot = preg_replace('/\.jpe?g$/i', '.png', $spotImg);
-                        if (file_exists(public_path($pngSpot))) {
-                            $spotImg = $pngSpot;
-                        }
+                        $spotImg = $spot->image_url;
                     @endphp
                     <div class="col-lg-6">
                         <div class="apple-bento-card apple-bento-card-split">
@@ -1135,8 +1133,8 @@
                                 </div>
                             </div>
                             <div class="apple-bento-img-wrap" style="height: 200px;">
-                                @if($spotImg && file_exists(public_path($spotImg)))
-                                    <img src="{{ asset($spotImg) }}" class="apple-bento-img" style="max-height: 180px;" alt="{{ $spot->name }}" loading="lazy">
+                                @if($spotImg)
+                                    <img src="{{ $spotImg }}" class="apple-bento-img" style="max-height: 180px;" alt="{{ $spot->name }}" loading="lazy">
                                 @else
                                     <i class="bi bi-motherboard display-3" style="color: var(--accent-cream);"></i>
                                 @endif
@@ -1202,15 +1200,11 @@
                                 <!-- Visual Box: Clean Framed Container -->
                                 <div class="product-img-box">
                                     @php
-                                        $catImg = $product->image;
-                                        $pngCat = preg_replace('/\.jpe?g$/i', '.png', $catImg);
-                                        if (file_exists(public_path($pngCat))) {
-                                            $catImg = $pngCat;
-                                        }
+                                        $catImg = $product->image_url;
                                     @endphp
 
-                                    @if($catImg && file_exists(public_path($catImg)))
-                                        <img src="{{ asset($catImg) }}" class="product-real-img" alt="{{ $product->name }}" loading="lazy">
+                                    @if($catImg)
+                                        <img src="{{ $catImg }}" class="product-real-img" alt="{{ $product->name }}" loading="lazy">
                                     @elseif(str_contains($lowerName, 'phone') || str_contains($lowerName, 'smartphone') || str_contains($lowerName, 'redmagic'))
                                         <i class="bi bi-phone" style="font-size: 4rem;"></i>
                                     @elseif(str_contains($lowerName, 'laptop') || str_contains($lowerName, 'macbook'))
@@ -1240,7 +1234,7 @@
                             </div>
 
                             <!-- Action Bottom Row: Buy Now + Cart Icon -->
-                            <div class="d-flex align-items-center gap-1.5 pt-2 border-top" style="border-color: rgba(166, 156, 172, 0.15) !important;">
+                            <div class="d-flex align-items-center gap-1.5 pt-2 border-top" style="border-color: var(--border-glass) !important;">
                                 <a href="{{ route('product.preview', $product->id) }}" class="btn-buy-card">
                                     Buy Now
                                 </a>
@@ -1253,7 +1247,7 @@
                 @empty
                     <div class="col-12 py-5 text-center" style="color: var(--text-secondary);">
                         <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                        <h5 class="text-white">Tidak ada produk yang sesuai dengan kriteria.</h5>
+                        <h5 style="color: #1A1A1C;">Tidak ada produk yang sesuai dengan kriteria.</h5>
                         <p class="small">Coba ubah kata kunci pencarian atau reset filter kategori.</p>
                         <a href="{{ route('landing') }}#katalog-gear" class="btn btn-cream mt-2">Reset Filter</a>
                     </div>

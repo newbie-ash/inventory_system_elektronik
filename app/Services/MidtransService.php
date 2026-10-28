@@ -64,6 +64,24 @@ class MidtransService
             ];
         }
 
+        if ((float) ($sale->shipping_cost ?? 0) > 0) {
+            $items[] = [
+                'id' => 'SHIPPING',
+                'price' => (int) round((float) $sale->shipping_cost),
+                'quantity' => 1,
+                'name' => mb_substr('Ongkir ('.($sale->shipping_courier ?? 'Ekspedisi').')', 0, 50),
+            ];
+        }
+
+        if ((float) ($sale->discount_amount ?? 0) > 0) {
+            $items[] = [
+                'id' => 'DISCOUNT',
+                'price' => -(int) round((float) $sale->discount_amount),
+                'quantity' => 1,
+                'name' => mb_substr('Diskon Promo ('.($sale->promo_code ?? 'Voucher').')', 0, 50),
+            ];
+        }
+
         $finishUrl = $sale->buyer_id
             ? route('customer.orders.show', $sale)
             : route('sales.show', $sale);

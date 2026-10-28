@@ -6,9 +6,9 @@
 @section('content')
 <!-- Banner Peringatan -->
 <div class="glass-card mb-3 p-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3"
-     style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(71, 73, 115, 0.3) 100%) !important; border: 1px solid rgba(239, 68, 68, 0.4) !important;">
+     style="background: rgba(220, 38, 38, 0.08) !important; border: 1px solid rgba(220, 38, 38, 0.25) !important;">
     <div class="d-flex align-items-center gap-3">
-        <div class="kpi-icon-squircle" style="background: rgba(239, 68, 68, 0.25); border: 1px solid rgba(239, 68, 68, 0.45); color: #F87171; width: 44px; height: 44px;">
+        <div class="kpi-icon-squircle" style="background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.3); color: #DC2626; width: 44px; height: 44px;">
             <i class="bi bi-exclamation-triangle-fill fs-5"></i>
         </div>
         <div>

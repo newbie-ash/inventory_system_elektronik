@@ -4,6 +4,28 @@
 @section('page_heading', 'Laporan Inventaris & Analisis')
 
 @section('content')
+<!-- Action Toolbar: Export PDF & Excel Berkop -->
+<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+    <div>
+        <h5 class="fw-bold text-white mb-1">Ikhtisar & Laporan Manajemen</h5>
+        <p class="small text-muted mb-0">Audit inventaris menyeluruh, mutasi keluar-masuk barang, dan evaluasi laba kotor.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a href="{{ route('reports.export.pdf', request()->query()) }}" class="btn btn-sm d-flex align-items-center gap-1.5 font-monospace" style="background: #FFFFFF; border: 1px solid var(--colors-hairline); color: #DC2626; border-radius: 8px; font-weight: 600;" target="_blank" title="Unduh Berkas PDF Berkop Resmi">
+            <i class="bi bi-file-earmark-pdf-fill"></i>
+            <span>Export PDF Berkop</span>
+        </a>
+        <a href="{{ route('reports.export.excel', request()->query()) }}" class="btn btn-sm d-flex align-items-center gap-1.5 font-monospace" style="background: #FFFFFF; border: 1px solid var(--colors-hairline); color: #15803D; border-radius: 8px; font-weight: 600;" title="Unduh Spreadsheet Excel Mutasi Stok">
+            <i class="bi bi-file-earmark-excel-fill"></i>
+            <span>Export Excel Mutasi</span>
+        </a>
+        <a href="{{ route('reports.export.sales-excel') }}" class="btn btn-sm d-flex align-items-center gap-1.5 font-monospace" style="background: #FFFFFF; border: 1px solid var(--colors-hairline); color: #1A1A1C; border-radius: 8px; font-weight: 600;" title="Unduh Spreadsheet Excel Rekap Penjualan & Laba Rugi">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Excel Laba-Rugi</span>
+        </a>
+    </div>
+</div>
+
 <!-- Header Ringkasan Eksekutif (Glassmorphic KPI Cards) -->
 <div class="row g-3 mb-4">
     <!-- Card 1: Total Item Produk -->
@@ -40,7 +62,7 @@
                 </div>
             </div>
             <div>
-                <div class="kpi-value mb-1" style="color: #6EE7B7;">
+                <div class="kpi-value mb-1" style="color: #15803D;">
                     Rp {{ number_format($totalInventoryValue, 0, ',', '.') }}
                 </div>
                 <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
@@ -52,18 +74,18 @@
 
     <!-- Card 3: Total Barang Masuk -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-blue p-3 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-accent p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Total Barang Masuk
                 </span>
-                <div class="kpi-icon-squircle icon-blue">
+                <div class="kpi-icon-squircle icon-accent">
                     <i class="bi bi-arrow-down-left-circle"></i>
                 </div>
             </div>
             <div>
-                <div class="kpi-value mb-1" style="color: #60A5FA;">
-                    +{{ number_format($grandTotalIn) }} <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Unit</span>
+                <div class="kpi-value mb-1">
+                    <span style="color: #15803D;">+{{ number_format($grandTotalIn) }}</span> <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Unit</span>
                 </div>
                 <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
                     Akumulasi penerimaan stok
@@ -74,17 +96,17 @@
 
     <!-- Card 4: Total Barang Keluar -->
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="kpi-card theme-purple p-3 h-100 d-flex flex-column justify-content-between">
+        <div class="kpi-card theme-accent p-3 h-100 d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="small font-monospace text-uppercase" style="color: var(--colors-muted); font-size: 0.72rem; letter-spacing: 0.5px;">
                     Total Barang Keluar
                 </span>
-                <div class="kpi-icon-squircle icon-purple">
+                <div class="kpi-icon-squircle icon-accent">
                     <i class="bi bi-arrow-up-right-circle"></i>
                 </div>
             </div>
             <div>
-                <div class="kpi-value mb-1" style="color: #F87171;">
+                <div class="kpi-value mb-1" style="color: #DC2626;">
                     -{{ number_format($grandTotalOut) }} <span class="fs-6 fw-normal" style="color: var(--colors-muted);">Unit</span>
                 </div>
                 <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
@@ -133,7 +155,7 @@
                             <td class="text-end font-monospace" style="color: var(--colors-muted);">
                                 Rp {{ number_format($cat->average_price, 0, ',', '.') }}
                             </td>
-                            <td class="text-end fw-bold font-monospace" style="color: #6EE7B7;">
+                            <td class="text-end fw-bold font-monospace" style="color: #15803D;">
                                 Rp {{ number_format($cat->category_inventory_value, 0, ',', '.') }}
                             </td>
                         </tr>
@@ -182,8 +204,8 @@
                         <th>SKU & Nama Produk</th>
                         <th>Kategori</th>
                         <th class="text-end">Harga Satuan</th>
-                        <th class="text-center" style="color: #6EE7B7;">Total Masuk</th>
-                        <th class="text-center" style="color: #F87171;">Total Keluar</th>
+                        <th class="text-center" style="color: #15803D;">Total Masuk</th>
+                        <th class="text-center" style="color: #DC2626;">Total Keluar</th>
                         <th class="text-center">Sisa Stok</th>
                         <th class="text-center">Status</th>
                     </tr>
@@ -201,10 +223,10 @@
                             <td class="text-end font-monospace text-white">
                                 Rp {{ number_format($pr->price, 0, ',', '.') }}
                             </td>
-                            <td class="text-center fw-bold font-monospace" style="color: #6EE7B7;">
+                            <td class="text-center fw-bold font-monospace" style="color: #15803D;">
                                 +{{ number_format($pr->total_in) }}
                             </td>
-                            <td class="text-center fw-bold font-monospace" style="color: #F87171;">
+                            <td class="text-center fw-bold font-monospace" style="color: #DC2626;">
                                 -{{ number_format($pr->total_out) }}
                             </td>
                             <td class="text-center font-monospace">

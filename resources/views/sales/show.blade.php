@@ -31,6 +31,10 @@
         </div>
 
         <div class="d-flex align-items-center gap-2">
+            <a href="{{ route('sales.invoice.pdf', $sale) }}" class="btn btn-outline-danger btn-sm text-decoration-none" target="_blank" title="Unduh Berkas PDF Berkop Resmi">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+            </a>
+
             <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
                 <i class="bi bi-printer me-1"></i> Cetak Invoice
             </button>
@@ -55,10 +59,10 @@
 
     @if($sale->status !== 'cancelled')
         <!-- Operational Fulfillment Control Bar (Staff Gudang & Admin) -->
-        <div class="card mb-4 p-3.5 border-0 shadow-sm" style="background: rgba(22, 27, 51, 0.95); border: 1px solid var(--colors-hairline) !important; border-radius: 14px;">
+        <div class="card mb-4 p-3.5 glass-card" style="border-radius: 14px;">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(71, 73, 115, 0.35); color: var(--colors-accent);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: var(--colors-accent);">
                         <i class="bi bi-box-seam fs-4"></i>
                     </div>
                     <div>
@@ -70,7 +74,7 @@
                             @elseif($sale->shipping_status === 'delivered')
                                 <span class="badge bg-success text-white font-monospace"><i class="bi bi-check2-circle me-1"></i> Pesanan Selesai / Telah Diterima</span>
                             @elseif($sale->shipping_status === 'packing')
-                                <span class="badge font-monospace" style="background: rgba(241, 218, 196, 0.2); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.35);"><i class="bi bi-box-seam me-1"></i> Sedang Dikemas di Gudang</span>
+                                <span class="badge font-monospace" style="background: rgba(226, 232, 240, 0.15); color: var(--colors-accent); border: 1px solid rgba(226, 232, 240, 0.3);"><i class="bi bi-box-seam me-1"></i> Sedang Dikemas di Gudang</span>
                             @else
                                 <span class="badge bg-warning text-dark font-monospace">Menunggu Pembayaran</span>
                             @endif
@@ -153,10 +157,18 @@
         <div class="col-12 col-md-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-                    <div class="text-muted small">Waktu & Petugas</div>
+                    <div class="text-muted small">Waktu & Pengiriman</div>
                     <div class="fw-bold text-dark fs-6">{{ $sale->sold_at ? $sale->sold_at->format('d F Y - H:i') : '-' }}</div>
                     <div class="small text-muted mt-1">Dicatat oleh: <span class="fw-medium text-dark">{{ $sale->user->name ?? '-' }}</span></div>
                     <div class="small text-muted">Metode: <span class="badge bg-light text-dark border text-uppercase">{{ $sale->payment_method }}</span></div>
+                    @if($sale->shipping_courier)
+                        <div class="small text-muted mt-1">
+                            Kurir: <span class="badge bg-info-subtle text-info-emphasis border">{{ $sale->shipping_courier }}</span>
+                            @if($sale->shipping_destination)
+                                <span class="text-muted">({{ ucwords($sale->shipping_destination) }})</span>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -200,6 +212,32 @@
                     @endforeach
                 </tbody>
                 <tfoot class="table-light border-top">
+                    @if($sale->discount_amount > 0 || $sale->shipping_cost > 0)
+                        <tr>
+                            <td colspan="5" class="text-end text-muted">Subtotal Produk:</td>
+                            <td class="text-end pe-3 font-monospace">
+                                Rp {{ number_format($sale->subtotal > 0 ? $sale->subtotal : $sale->total, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
+                    @if($sale->discount_amount > 0)
+                        <tr>
+                            <td colspan="5" class="text-end text-success">Diskon Voucher ({{ $sale->promo_code }}):</td>
+                            <td class="text-end pe-3 font-monospace text-success fw-bold">
+                                - Rp {{ number_format($sale->discount_amount, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
+                    @if($sale->shipping_cost > 0 || $sale->shipping_courier)
+                        <tr>
+                            <td colspan="5" class="text-end text-muted">
+                                Ongkos Kirim ({{ $sale->shipping_courier ?? 'Kurir' }}{{ $sale->shipping_destination ? ' - ' . ucwords($sale->shipping_destination) : '' }}):
+                            </td>
+                            <td class="text-end pe-3 font-monospace fw-semibold">
+                                Rp {{ number_format($sale->shipping_cost, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <td colspan="5" class="text-end fw-bold py-3 fs-6">Grand Total Penjualan:</td>
                         <td class="text-end pe-3 fw-bold text-success font-monospace fs-5 py-3">

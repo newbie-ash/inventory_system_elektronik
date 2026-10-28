@@ -8,7 +8,7 @@
     <div class="auth-subtitle">Sign in to manage your electronics inventory</div>
 
     @if(session('info'))
-        <div class="p-2.5 mb-3 text-start small" style="background: rgba(71, 73, 115, 0.25); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--accent-cream); font-size: 0.8rem;">
+        <div class="p-2.5 mb-3 text-start small" style="background: #F2EFE9; border: 1px solid var(--border-glass); border-radius: 8px; color: #1A1A1C; font-size: 0.8rem;">
             <i class="bi bi-info-circle me-1"></i> {{ session('info') }}
         </div>
     @endif

@@ -55,7 +55,7 @@
                         <span class="badge badge-gradient-danger font-monospace small">Kredensial</span>
                     </div>
 
-                    <div class="alert alert-dark d-flex align-items-start gap-2 py-2.5 px-3 mb-4" style="background: rgba(71, 73, 115, 0.2); border: 1px solid rgba(166, 156, 172, 0.2); color: var(--colors-muted); border-radius: 10px; font-size: 0.82rem;">
+                    <div class="d-flex align-items-start gap-2 py-2.5 px-3 mb-4" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: var(--colors-muted); border-radius: 10px; font-size: 0.82rem;">
                         <i class="bi bi-shield-exclamation text-warning fs-6 mt-0.5"></i>
                         <div>
                             <strong class="text-white d-block">Tips Keamanan:</strong>
@@ -104,7 +104,7 @@
 
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                            <div class="p-3 rounded-3 h-100" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                     <span class="small text-muted">Metode Enkripsi:</span>
                                     <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.68rem;">Bcrypt</span>
@@ -117,7 +117,7 @@
                         </div>
 
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                            <div class="p-3 rounded-3 h-100" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                     <span class="small text-muted">Status Sesi:</span>
                                     <span class="badge badge-gradient-success font-monospace" style="font-size: 0.68rem;">Live</span>

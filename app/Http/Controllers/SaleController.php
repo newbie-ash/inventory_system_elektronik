@@ -7,8 +7,10 @@ use App\Models\Sale;
 use App\Models\StockMovement;
 use App\Models\User;
 use App\Services\MidtransService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -134,6 +136,7 @@ class SaleController extends Controller
 
                 // Decrement stock atomically
                 $product->decrement('stock', $qty);
+                $product->refresh()->notifyIfLowStock();
 
                 // Audit log in stock_movements
                 StockMovement::create([
@@ -275,6 +278,22 @@ class SaleController extends Controller
         ];
 
         return back()->with('success', $messages[$newStatus] ?? 'Status logistik berhasil diperbarui.');
+    }
+
+    /**
+     * Download official PDF sales invoice with Kop Surat.
+     */
+    public function downloadInvoicePdf(Sale $sale): Response
+    {
+        $sale->load(['user', 'buyer.profile', 'items.product']);
+
+        $logoPath = public_path('images/logo.png');
+        $logoBase64 = file_exists($logoPath) ? 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath)) : null;
+
+        $pdf = Pdf::loadView('pdf.invoice', compact('sale', 'logoBase64'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download("Invoice-{$sale->sale_number}.pdf");
     }
 
     /**

@@ -82,6 +82,10 @@ class DashboardController extends Controller
             }])->orderBy('name')->get();
             $activeBanner = PromoBanner::getActiveBanner();
 
+            if (request()->ajax() || request()->query('ajax')) {
+                return view('dashboard.partials.product_grid', compact('products'));
+            }
+
             return view('dashboard.customer', compact(
                 'myOrdersCount',
                 'myOrdersPending',

@@ -5,12 +5,14 @@
 
 @push('styles')
 <style>
-    /* Promo Banner Card (Elongated downward per user request) */
+    /* Promo Banner Card (Glassmorphism) */
     .promo-banner-card {
-        background: linear-gradient(135deg, rgba(22, 27, 51, 0.98) 0%, rgba(71, 73, 115, 0.4) 55%, rgba(22, 27, 51, 0.98) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.22) !important;
-        border-radius: 24px !important;
-        box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.55) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 10px 30px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         min-height: 220px;
         padding: 2.5rem 2.25rem !important;
     }
@@ -22,7 +24,7 @@
         right: 0;
         bottom: 0;
         width: 45%;
-        background: radial-gradient(circle at 75% 50%, rgba(241, 218, 196, 0.12) 0%, transparent 65%);
+        background: radial-gradient(circle at 75% 50%, rgba(26, 26, 28, 0.04) 0%, transparent 65%);
         pointer-events: none;
     }
 
@@ -36,7 +38,7 @@
         width: 18px;
         height: 5px;
         border-radius: 4px;
-        background: rgba(166, 156, 172, 0.35);
+        background: rgba(112, 110, 107, 0.25);
         display: inline-block;
         transition: all 0.2s ease;
     }
@@ -44,13 +46,13 @@
     .carousel-dots .dot.active {
         width: 26px;
         background: var(--colors-accent);
-        box-shadow: 0 0 10px rgba(241, 218, 196, 0.4);
+        box-shadow: 0 0 8px rgba(26, 26, 28, 0.25);
     }
 
     /* Price Input Containers (Editable by Consumer) */
     .price-input-box {
-        background: rgba(13, 12, 29, 0.75);
-        border: 1px solid rgba(166, 156, 172, 0.25);
+        background: var(--colors-card-alt);
+        border: 1px solid var(--colors-hairline);
         border-radius: 10px;
         padding: 6px 10px;
         display: flex;
@@ -60,9 +62,9 @@
     }
 
     .price-input-box:focus-within {
-        border-color: var(--colors-accent);
-        background: rgba(22, 27, 51, 0.95);
-        box-shadow: 0 0 12px rgba(241, 218, 196, 0.2);
+        border-color: #1A1A1C;
+        background: #FFFFFF;
+        box-shadow: 0 0 0 2px rgba(26, 26, 28, 0.1);
     }
 
     .price-prefix {
@@ -76,7 +78,7 @@
         background: transparent !important;
         border: none !important;
         outline: none !important;
-        color: #FFFFFF !important;
+        color: #1A1A1C !important;
         font-size: 0.82rem;
         font-family: inherit;
         font-weight: 600;
@@ -85,7 +87,7 @@
     }
 
     .price-clean-input::placeholder {
-        color: rgba(166, 156, 172, 0.4);
+        color: #706E6B;
         font-weight: 400;
     }
 
@@ -98,24 +100,27 @@
         -moz-appearance: textfield;
     }
 
-    /* Left Sidebar Filter (Image 1 Style) */
+    /* Left Sidebar Filter (Warm Paper Glassmorphism) */
     .filter-sidebar-card {
-        background: linear-gradient(160deg, rgba(71, 73, 115, 0.22) 0%, rgba(22, 27, 51, 0.85) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.22) !important;
-        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 10px 30px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
 
     .filter-section-title {
         font-size: 0.92rem;
         font-weight: 700;
-        color: #FFFFFF;
+        color: #1A1A1C;
         margin-bottom: 0.75rem;
         letter-spacing: -0.2px;
     }
 
     .filter-checkbox {
-        background-color: rgba(13, 12, 29, 0.8) !important;
-        border: 1px solid rgba(166, 156, 172, 0.35) !important;
+        background-color: var(--colors-card-alt) !important;
+        border: 1px solid var(--colors-hairline) !important;
         border-radius: 6px !important;
         cursor: pointer;
     }
@@ -125,39 +130,42 @@
         border-color: var(--colors-accent) !important;
     }
 
-    /* Product Cards in Grid */
+    /* Product Cards in Grid (Glassmorphism) */
     .product-grid-card {
-        background: linear-gradient(150deg, rgba(71, 73, 115, 0.2) 0%, rgba(22, 27, 51, 0.75) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.22) !important;
-        border-radius: 16px !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(20px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+        border-radius: 14px !important;
         padding: 12px !important;
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45) !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 6px 20px -2px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
 
     .product-grid-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(241, 218, 196, 0.45) !important;
-        box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.65), 0 0 20px -4px rgba(241, 218, 196, 0.15) !important;
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.58) !important;
+        border-color: rgba(26, 26, 28, 0.25) !important;
+        box-shadow: 0 14px 32px -4px rgba(28, 26, 24, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
 
     .product-visual-box {
-        background: radial-gradient(circle at 50% 30%, rgba(71, 73, 115, 0.35) 0%, rgba(13, 12, 29, 0.85) 100%);
-        border: 1px solid rgba(166, 156, 172, 0.16);
-        border-radius: 12px;
+        background: var(--colors-card-alt);
+        border: 1px solid var(--colors-hairline);
+        border-radius: 10px;
         height: 130px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 0.75rem;
         color: var(--colors-accent);
-        transition: all 0.25s ease;
+        transition: all 0.2s ease;
         cursor: pointer;
     }
 
     .product-grid-card:hover .product-visual-box {
-        border-color: rgba(241, 218, 196, 0.45);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        border-color: var(--colors-accent);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
     }
 
     .product-grid-card:hover .product-visual-box i {
@@ -226,7 +234,7 @@
             </div>
             <div class="col-12 {{ $activeBanner && $activeBanner->image_url ? 'col-md-5 col-lg-5' : 'col-md-4 col-lg-4' }} text-md-end d-flex flex-column align-items-md-end justify-content-center gap-3">
                 @if($activeBanner && $activeBanner->image_url)
-                    <img src="{{ $activeBanner->image_url }}" alt="Promo" class="img-fluid rounded-3 object-fit-cover shadow" style="max-height: 125px; max-width: 220px; border: 1px solid rgba(166, 156, 172, 0.25);">
+                    <img src="{{ $activeBanner->image_url }}" alt="Promo" class="img-fluid rounded-3 object-fit-cover shadow" style="max-height: 125px; max-width: 220px; border: 1px solid var(--colors-hairline);">
                 @endif
                 <a href="{{ $bannerBtnUrl }}" class="btn btn-primary px-4 py-2.5 fw-bold" style="border-radius: 12px; font-size: 0.95rem;">
                     {{ $bannerBtnText }}
@@ -357,128 +365,17 @@
         </div>
 
         <!-- Right Product Grid Column -->
-        <div class="col-12 col-lg-9 col-xl-9">
-            <div class="row g-3 row-cols-2 row-cols-md-3 row-cols-xl-4">
-                @forelse($products as $p)
-                    @php
-                        $price = $p->selling_price > 0 ? $p->selling_price : $p->price;
-                        $lowerName = strtolower($p->name);
-                    @endphp
-                    <div class="col">
-                        <div class="card product-grid-card h-100 d-flex flex-column justify-content-between">
-                            <div>
-                                <!-- Visual Representation Box (Clickable Link to Product Detail) -->
-                                <a href="{{ route('customer.catalog.show', $p->id) }}" 
-                                   class="product-visual-box d-flex align-items-center justify-content-center text-decoration-none overflow-hidden" 
-                                   title="Lihat detail {{ $p->name }}">
-                                    @if($p->image_url)
-                                        <img src="{{ $p->image_url }}" alt="{{ $p->name }}" class="w-100 h-100 object-fit-cover rounded-3">
-                                    @elseif(str_contains($lowerName, 'phone') || str_contains($lowerName, 'smartphone') || str_contains($lowerName, 'redmagic'))
-                                        <i class="bi bi-phone" style="font-size: 3.4rem;"></i>
-                                    @elseif(str_contains($lowerName, 'laptop') || str_contains($lowerName, 'macbook') || str_contains($lowerName, 'asus'))
-                                        <i class="bi bi-laptop" style="font-size: 3.4rem;"></i>
-                                    @elseif(str_contains($lowerName, 'tws') || str_contains($lowerName, 'earbuds') || str_contains($lowerName, 'headset') || str_contains($lowerName, 'audio'))
-                                        <i class="bi bi-headphones" style="font-size: 3.4rem;"></i>
-                                    @elseif(str_contains($lowerName, 'monitor') || str_contains($lowerName, 'display'))
-                                        <i class="bi bi-display" style="font-size: 3.4rem;"></i>
-                                    @elseif(str_contains($lowerName, 'keyboard'))
-                                        <i class="bi bi-keyboard" style="font-size: 3.4rem;"></i>
-                                    @elseif(str_contains($lowerName, 'mouse'))
-                                        <i class="bi bi-mouse" style="font-size: 3.4rem;"></i>
-                                    @else
-                                        <i class="bi bi-cpu" style="font-size: 3.4rem;"></i>
-                                    @endif
-                                </a>
-
-                                <!-- Rating Stars & Reviews Count -->
-                                @php
-                                    $pRating = $p->averageRating();
-                                    $pReviews = $p->reviewsCount();
-                                @endphp
-                                <div class="d-flex align-items-center gap-1.5 mb-1.5 font-monospace" style="font-size: 0.72rem;">
-                                    @if($pReviews > 0)
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span class="text-white fw-bold">{{ number_format($pRating, 1) }}</span>
-                                        <span class="text-secondary">({{ $pReviews }})</span>
-                                    @else
-                                        <i class="bi bi-star text-secondary" style="opacity: 0.5;"></i>
-                                        <span class="text-secondary" style="font-size: 0.68rem;">Belum ada ulasan</span>
-                                    @endif
-                                </div>
-
-                                <!-- Title (Clickable Link to Product Detail) -->
-                                <a href="{{ route('customer.catalog.show', $p->id) }}" 
-                                   class="fw-semibold text-white d-block text-truncate text-decoration-none mb-1.5 product-card-title" 
-                                   style="font-size: 0.9rem;"
-                                   title="{{ $p->name }}">
-                                    {{ $p->name }}
-                                </a>
-
-                                <!-- Price & Real Stock Remaining Row -->
-                                <div class="d-flex align-items-baseline justify-content-between mb-2">
-                                    <span class="fw-bold text-white font-monospace" style="font-size: 0.9rem;">
-                                        Rp {{ number_format($price, 0, ',', '.') }}
-                                    </span>
-                                    @if($p->stock <= 0)
-                                        <span class="small font-monospace fw-semibold" style="color: #EF4444; font-size: 0.72rem;">
-                                            Stok Habis
-                                        </span>
-                                    @elseif($p->stock <= 5)
-                                        <span class="small font-monospace fw-semibold" style="color: #F59E0B; font-size: 0.72rem;" title="Stok hampir habis!">
-                                            Sisa {{ $p->stock }}
-                                        </span>
-                                    @else
-                                        <span class="small font-monospace fw-semibold" style="color: #10B981; font-size: 0.72rem;">
-                                            Sisa {{ $p->stock }}
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <!-- Bottom Action Row: Tambah ke Keranjang + Beli -->
-                            <div class="d-flex align-items-center gap-1.5 pt-2 border-top" style="border-color: rgba(166, 156, 172, 0.15) !important;">
-                                <form action="{{ route('customer.cart.add') }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $p->id }}">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" 
-                                            class="btn btn-sm py-1 px-2.5 d-inline-flex align-items-center justify-content-center" 
-                                            style="font-size: 0.85rem; height: 32px; width: 34px; background: rgba(71, 73, 115, 0.4); border: 1px solid rgba(166, 156, 172, 0.35); color: #ffffff; border-radius: 8px; transition: all 0.2s;" 
-                                            title="Tambah ke Keranjang"
-                                            {{ $p->stock <= 0 ? 'disabled' : '' }}>
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </form>
-
-                                <form action="{{ route('customer.checkout') }}" method="POST" class="d-inline flex-grow-1">
-                                    @csrf
-                                    <input type="hidden" name="items[0][product_id]" value="{{ $p->id }}">
-                                    <input type="hidden" name="items[0][quantity]" value="1">
-                                    <button type="submit" 
-                                            class="btn btn-primary btn-sm w-100 py-1 fw-bold" 
-                                            style="font-size: 0.8rem; height: 32px;"
-                                            {{ $p->stock <= 0 ? 'disabled' : '' }}>
-                                        Beli
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-12 py-5 text-center text-muted">
-                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                        <p class="text-white mb-1">Tidak ada produk yang sesuai dengan filter.</p>
-                        <a href="{{ route('dashboard') }}" class="btn btn-primary btn-sm mt-2">Reset Filter</a>
-                    </div>
-                @endforelse
+        <div class="col-12 col-lg-9 col-xl-9 position-relative">
+            <!-- Loading Overlay -->
+            <div id="catalogLoadingOverlay" class="position-absolute top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center" style="background: rgba(248, 245, 238, 0.75); z-index: 10; backdrop-filter: blur(2px); border-radius: 16px;">
+                <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem;">
+                    <span class="visually-hidden">Memuat...</span>
+                </div>
             </div>
 
-            <!-- Slide Page Pagination (Image 2 Style) -->
-            @if($products->hasPages())
-                <div class="d-flex justify-content-center">
-                    {{ $products->links('vendor.pagination.buyer-slide') }}
-                </div>
-            @endif
+            <div id="productGridContainer">
+                @include('dashboard.partials.product_grid', ['products' => $products])
+            </div>
         </div>
     </div>
 </div>
@@ -489,14 +386,131 @@
         const maxBox = document.getElementById('maxPriceInput');
         if (maxBox) {
             maxBox.value = val;
+            triggerFilter();
         }
     }
     function syncBoxToSlider(val) {
         const slider = document.getElementById('priceSlider');
         if (slider && val) {
             slider.value = val;
+            triggerFilter();
         }
     }
+
+    let filterTimeout = null;
+    let currentAbortController = null;
+
+    function triggerFilter() {
+        clearTimeout(filterTimeout);
+        filterTimeout = setTimeout(fetchFilteredCatalog, 300);
+    }
+
+    function fetchFilteredCatalog(pageUrl = null) {
+        const form = document.getElementById('filterSidebarForm');
+        const container = document.getElementById('productGridContainer');
+        const overlay = document.getElementById('catalogLoadingOverlay');
+        const navbarSearch = document.getElementById('navbarSearchInput');
+
+        if (!container) return;
+
+        let url;
+        if (pageUrl) {
+            url = new URL(pageUrl, window.location.origin);
+        } else {
+            url = new URL(form ? form.action : window.location.href, window.location.origin);
+            if (form) {
+                const formData = new FormData(form);
+                for (const [key, value] of formData.entries()) {
+                    if (value) {
+                        url.searchParams.append(key, value);
+                    }
+                }
+            }
+            if (navbarSearch && navbarSearch.value.trim() !== '') {
+                url.searchParams.set('search', navbarSearch.value.trim());
+            }
+        }
+
+        url.searchParams.set('ajax', '1');
+
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+        currentAbortController = new AbortController();
+
+        if (overlay) {
+            overlay.classList.remove('d-none');
+            overlay.classList.add('d-flex');
+        }
+        container.style.opacity = '0.5';
+
+        fetch(url.toString(), {
+            signal: currentAbortController.signal,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            }
+        })
+        .then(res => res.text())
+        .then(html => {
+            container.innerHTML = html;
+            container.style.opacity = '1';
+            if (overlay) {
+                overlay.classList.remove('d-flex');
+                overlay.classList.add('d-none');
+            }
+
+            // Sync clean URL to history
+            const cleanUrl = new URL(url.toString());
+            cleanUrl.searchParams.delete('ajax');
+            window.history.pushState(null, '', cleanUrl.toString());
+
+            // Re-bind ajax pagination
+            bindPaginationLinks();
+        })
+        .catch(err => {
+            if (err.name !== 'AbortError') {
+                container.style.opacity = '1';
+                if (overlay) {
+                    overlay.classList.remove('d-flex');
+                    overlay.classList.add('d-none');
+                }
+            }
+        });
+    }
+
+    function bindPaginationLinks() {
+        const paginationLinks = document.querySelectorAll('#productGridContainer .ajax-pagination-wrapper a');
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetchFilteredCatalog(this.href);
+                const gridSection = document.getElementById('katalog-grid');
+                if (gridSection) {
+                    gridSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('filterSidebarForm');
+        if (form) {
+            form.addEventListener('change', triggerFilter);
+            form.addEventListener('input', triggerFilter);
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                triggerFilter();
+            });
+        }
+
+        const navbarSearch = document.getElementById('navbarSearchInput');
+        if (navbarSearch) {
+            navbarSearch.addEventListener('input', triggerFilter);
+        }
+
+        bindPaginationLinks();
+    });
 </script>
 @endpush
 @endsection

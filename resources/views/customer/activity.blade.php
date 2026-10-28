@@ -16,7 +16,7 @@
                     <i class="bi bi-clock-history" style="color: var(--colors-accent);"></i>
                     <span>Riwayat Aktivitas</span>
                     @if($totalCount > 0)
-                        <span class="badge font-monospace" style="background: rgba(241, 218, 196, 0.15); color: var(--colors-accent); font-size: 0.75rem; font-weight: 600;">
+                        <span class="badge font-monospace" style="background: rgba(226, 232, 240, 0.15); color: var(--colors-accent); font-size: 0.75rem; font-weight: 600;">
                             {{ $totalCount }} produk
                         </span>
                     @endif
@@ -49,7 +49,7 @@
 
     <!-- Alert Feedback -->
     @if(session('success'))
-        <div class="alert alert-success d-flex align-items-center gap-2 mb-4 font-monospace small" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6EE7B7; border-radius: 12px;">
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-4 font-monospace small" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #15803D; border-radius: 12px;">
             <i class="bi bi-check-circle-fill"></i>
             <span>{{ session('success') }}</span>
         </div>
@@ -58,7 +58,7 @@
     @if($groupedActivities->isEmpty())
         <!-- Empty State -->
         <div class="card text-center py-5 px-3" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 20px;">
-            <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 50%; background: rgba(71, 73, 115, 0.2); border: 1px solid rgba(166, 156, 172, 0.2);">
+            <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 50%; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                 <i class="bi bi-clock-history fs-1" style="color: var(--colors-muted);"></i>
             </div>
             <h5 class="text-white fw-bold mb-1">Belum Ada Riwayat Aktivitas Dilihat</h5>
@@ -78,10 +78,10 @@
                 <div>
                     <!-- Date Group Heading -->
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <span class="badge font-monospace text-uppercase" style="background: rgba(71, 73, 115, 0.35); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.2); font-size: 0.8rem; padding: 6px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+                        <span class="badge font-monospace text-uppercase" style="background: var(--colors-card-alt); color: var(--colors-text); border: 1px solid var(--colors-hairline); font-size: 0.8rem; padding: 6px 14px; border-radius: 20px; letter-spacing: 0.5px;">
                             <i class="bi bi-calendar3 me-1"></i> {{ $groupLabel }}
                         </span>
-                        <div class="flex-grow-1" style="height: 1px; background: rgba(166, 156, 172, 0.12);"></div>
+                        <div class="flex-grow-1" style="height: 1px; background: var(--colors-hairline);"></div>
                         <span class="small font-monospace text-secondary" style="font-size: 0.75rem;">
                             {{ $items->count() }} item
                         </span>
@@ -98,7 +98,7 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <!-- Product Image Thumbnail -->
                                     <a href="{{ route('customer.catalog.show', $product) }}" class="flex-shrink-0 text-decoration-none">
-                                        <div style="width: 84px; height: 84px; border-radius: 12px; overflow: hidden; background: rgba(13, 12, 29, 0.6); border: 1px solid rgba(166, 156, 172, 0.18); display: flex; align-items: center; justify-content: center;">
+                                        <div style="width: 84px; height: 84px; border-radius: 12px; overflow: hidden; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); display: flex; align-items: center; justify-content: center;">
                                             @if($product->image && file_exists(public_path($product->image)))
                                                 <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
@@ -111,7 +111,7 @@
                                     <div class="flex-grow-1 min-w-0">
                                         <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
                                             @if($product->category)
-                                                <span class="badge" style="background: rgba(71, 73, 115, 0.3); color: var(--colors-muted); font-size: 0.68rem; padding: 2px 7px; border-radius: 6px;">
+                                                <span class="badge" style="background: var(--colors-card-alt); color: var(--colors-muted); border: 1px solid var(--colors-hairline); font-size: 0.68rem; padding: 2px 7px; border-radius: 6px;">
                                                     {{ $product->category->name }}
                                                 </span>
                                             @endif
@@ -130,7 +130,7 @@
                                                 Rp {{ number_format($price, 0, ',', '.') }}
                                             </span>
 
-                                            <span class="badge font-monospace" style="background: rgba(244, 63, 94, 0.15); color: #FB7185; border: 1px solid rgba(244, 63, 94, 0.25); font-size: 0.7rem; padding: 3px 8px; border-radius: 8px;">
+                                            <span class="badge font-monospace" style="background: rgba(220, 38, 38, 0.08); color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.7rem; padding: 3px 8px; border-radius: 8px;">
                                                 Anda melihat {{ $activity->view_count }} kali
                                             </span>
 
@@ -147,7 +147,7 @@
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <input type="hidden" name="quantity" value="1">
-                                                <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center justify-content-center" style="width: 42px; height: 42px; border-radius: 12px; border-color: rgba(244, 63, 94, 0.45); color: #FB7185; background: rgba(244, 63, 94, 0.08);" title="Tambah ke Keranjang">
+                                                <button type="submit" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--colors-hairline); color: #1A1A1C; background: var(--colors-card-alt);" title="Tambah ke Keranjang">
                                                     <i class="bi bi-cart-plus fs-5"></i>
                                                 </button>
                                             </form>

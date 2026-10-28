@@ -105,6 +105,9 @@ class StockMovementController extends Controller
                 $product->stock -= $quantity;
             }
             $product->save();
+            if ($type === 'out') {
+                $product->notifyIfLowStock();
+            }
 
             // Record transaction history
             StockMovement::create([

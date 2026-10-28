@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\LowStockNotification;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -36,12 +39,35 @@ class Product extends Model
     public function getImageUrlAttribute(): ?string
     {
         if ($this->image) {
+            if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+                return $this->image;
+            }
+
+            $activeDisk = config('filesystems.default');
+            if (in_array($activeDisk, ['s3', 'r2', 'public']) && Storage::disk($activeDisk)->exists($this->image)) {
+                return Storage::disk($activeDisk)->url($this->image);
+            }
+
             $pngCandidate = preg_replace('/\.jpe?g$/i', '.png', $this->image);
             if (file_exists(public_path($pngCandidate))) {
                 return asset($pngCandidate);
             }
             if (file_exists(public_path($this->image))) {
                 return asset($this->image);
+            }
+        }
+
+        if ($this->sku) {
+            $skuAsset = 'images/products/'.strtolower($this->sku).'.png';
+            if (file_exists(public_path($skuAsset))) {
+                return asset($skuAsset);
+            }
+        }
+
+        if ($this->name) {
+            $slugAsset = 'images/products/'.Str::slug($this->name).'.png';
+            if (file_exists(public_path($slugAsset))) {
+                return asset($slugAsset);
             }
         }
 
@@ -171,6 +197,36 @@ class Product extends Model
         $min = $this->minimum_stock ?? $this->min_stock ?? 5;
 
         return $this->stock <= $min;
+    }
+
+    /**
+     * Dispatch low stock alert notification to Admin & Staff if below threshold.
+     */
+    public function notifyIfLowStock(): bool
+    {
+        if (! $this->isLowStock()) {
+            return false;
+        }
+
+        $recipients = User::whereIn('role', ['admin', 'staff'])->get();
+        if ($recipients->isEmpty()) {
+            return false;
+        }
+
+        $notified = false;
+        foreach ($recipients as $recipient) {
+            $hasUnread = $recipient->unreadNotifications()
+                ->where('type', LowStockNotification::class)
+                ->where('data->product_id', $this->id)
+                ->exists();
+
+            if (! $hasUnread) {
+                $recipient->notify(new LowStockNotification($this));
+                $notified = true;
+            }
+        }
+
+        return $notified;
     }
 
     /**

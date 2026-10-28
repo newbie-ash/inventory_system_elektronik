@@ -36,7 +36,7 @@
                 <a href="{{ route('customer.orders.index', ['tab' => 'unpaid']) }}" 
                    class="order-tab-item p-2.5 d-flex flex-column align-items-center justify-content-center text-decoration-none rounded-3 position-relative {{ $tab === 'unpaid' ? 'active-tab' : '' }}">
                     @if(($counts['unpaid'] ?? 0) > 0)
-                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger font-monospace" style="font-size: 0.68rem; z-index: 2;">
+                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill font-monospace" style="font-size: 0.68rem; z-index: 2; background: #DC2626; color: #FFFFFF; border: 1.5px solid #FFFFFF;">
                             {{ $counts['unpaid'] }}
                         </span>
                     @endif
@@ -52,7 +52,7 @@
                 <a href="{{ route('customer.orders.index', ['tab' => 'packing']) }}" 
                    class="order-tab-item p-2.5 d-flex flex-column align-items-center justify-content-center text-decoration-none rounded-3 position-relative {{ $tab === 'packing' ? 'active-tab' : '' }}">
                     @if(($counts['packing'] ?? 0) > 0)
-                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-primary font-monospace" style="font-size: 0.68rem; z-index: 2;">
+                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill font-monospace" style="font-size: 0.68rem; z-index: 2; background: #1A1A1C; color: #FFFFFF; border: 1.5px solid #FFFFFF;">
                             {{ $counts['packing'] }}
                         </span>
                     @endif
@@ -68,7 +68,7 @@
                 <a href="{{ route('customer.orders.index', ['tab' => 'shipping']) }}" 
                    class="order-tab-item p-2.5 d-flex flex-column align-items-center justify-content-center text-decoration-none rounded-3 position-relative {{ $tab === 'shipping' ? 'active-tab' : '' }}">
                     @if(($counts['shipping'] ?? 0) > 0)
-                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-info font-monospace" style="font-size: 0.68rem; z-index: 2;">
+                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill font-monospace" style="font-size: 0.68rem; z-index: 2; background: #1A1A1C; color: #FFFFFF; border: 1.5px solid #FFFFFF;">
                             {{ $counts['shipping'] }}
                         </span>
                     @endif
@@ -84,7 +84,7 @@
                 <a href="{{ route('customer.orders.index', ['tab' => 'completed']) }}" 
                    class="order-tab-item p-2.5 d-flex flex-column align-items-center justify-content-center text-decoration-none rounded-3 position-relative {{ $tab === 'completed' ? 'active-tab' : '' }}">
                     @if(($counts['completed'] ?? 0) > 0)
-                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-success font-monospace" style="font-size: 0.68rem; z-index: 2;">
+                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill font-monospace" style="font-size: 0.68rem; z-index: 2; background: #15803D; color: #FFFFFF; border: 1.5px solid #FFFFFF;">
                             {{ $counts['completed'] }}
                         </span>
                     @endif
@@ -100,7 +100,7 @@
                 <a href="{{ route('customer.orders.index', ['tab' => 'cancelled']) }}" 
                    class="order-tab-item p-2.5 d-flex flex-column align-items-center justify-content-center text-decoration-none rounded-3 position-relative {{ $tab === 'cancelled' ? 'active-tab' : '' }}">
                     @if(($counts['cancelled'] ?? 0) > 0)
-                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger font-monospace" style="font-size: 0.68rem; z-index: 2;">
+                        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill font-monospace" style="font-size: 0.68rem; z-index: 2; background: #DC2626; color: #FFFFFF; border: 1.5px solid #FFFFFF;">
                             {{ $counts['cancelled'] }}
                         </span>
                     @endif
@@ -128,7 +128,7 @@
     @forelse($orders as $order)
         <div class="card mb-3.5 order-card" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 16px; overflow: hidden;">
             <!-- Order Card Header -->
-            <div class="card-header py-3 px-3 px-md-4 d-flex flex-wrap align-items-center justify-content-between gap-2" style="background: rgba(13, 12, 29, 0.45) !important; border-bottom: 1px solid var(--colors-hairline);">
+            <div class="card-header py-3 px-3 px-md-4 d-flex flex-wrap align-items-center justify-content-between gap-2" style="background: var(--colors-card-alt) !important; border-bottom: 1px solid var(--colors-hairline);">
                 <div class="d-flex align-items-center gap-2 flex-wrap">
                     <span class="font-monospace fw-bold text-white" style="font-size: 0.95rem;">
                         <i class="bi bi-file-earmark-text text-secondary me-1"></i>
@@ -139,11 +139,11 @@
                         {{ $order->sold_at ? $order->sold_at->translatedFormat('d M Y, H:i') : '-' }}
                     </span>
                     @if($order->payment_method === 'cod')
-                        <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.35); font-size: 0.68rem;">
+                        <span class="badge font-monospace" style="background: rgba(22, 163, 74, 0.08); color: #15803D; border: 1px solid rgba(22, 163, 74, 0.2); font-size: 0.68rem;">
                             <i class="bi bi-cash-stack"></i> COD
                         </span>
                     @else
-                        <span class="badge font-monospace" style="background: rgba(96, 165, 250, 0.15); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.3); font-size: 0.68rem;">
+                        <span class="badge font-monospace" style="background: var(--colors-card-alt); color: #1A1A1C; border: 1px solid var(--colors-hairline); font-size: 0.68rem;">
                             <i class="bi bi-credit-card"></i> Midtrans
                         </span>
                     @endif
@@ -168,7 +168,7 @@
                             <i class="bi bi-check-circle-fill me-1"></i> PESANAN SELESAI
                         </span>
                     @else
-                        <span class="badge font-monospace px-2.5 py-1" style="background: rgba(241, 218, 196, 0.2); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.35);">
+                        <span class="badge font-monospace px-2.5 py-1" style="background: var(--colors-card-alt); color: #1A1A1C; border: 1px solid var(--colors-hairline); font-weight: 600;">
                             <i class="bi bi-box-seam me-1"></i> SEDANG DIKEMAS
                         </span>
                     @endif
@@ -182,9 +182,9 @@
                         @php
                             $prod = $item->product;
                         @endphp
-                        <div class="d-flex align-items-center justify-content-between gap-3 pb-2.5 {{ !$loop->last ? 'border-bottom' : '' }}" style="border-color: rgba(166, 156, 172, 0.08) !important;">
+                        <div class="d-flex align-items-center justify-content-between gap-3 pb-2.5 {{ !$loop->last ? 'border-bottom' : '' }}" style="border-color: var(--colors-hairline) !important;">
                             <div class="d-flex align-items-center gap-3 min-w-0">
-                                <div style="width: 58px; height: 58px; border-radius: 10px; overflow: hidden; background: rgba(13, 12, 29, 0.6); border: 1px solid rgba(166, 156, 172, 0.16); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <div style="width: 58px; height: 58px; border-radius: 10px; overflow: hidden; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                     @if($prod && $prod->image && file_exists(public_path($prod->image)))
                                         <img src="{{ asset($prod->image) }}" alt="{{ $prod->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                     @else
@@ -210,7 +210,7 @@
             </div>
 
             <!-- Order Card Footer: Totals & Action Buttons (Shopee Style) -->
-            <div class="card-footer py-3 px-3 px-md-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3" style="background: rgba(13, 12, 29, 0.35) !important; border-top: 1px solid var(--colors-hairline);">
+            <div class="card-footer py-3 px-3 px-md-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3" style="background: var(--colors-card-alt) !important; border-top: 1px solid var(--colors-hairline);">
                 <div>
                     @if($order->promo_code && $order->discount_amount > 0)
                         <div class="small font-monospace text-success mb-1 d-flex align-items-center gap-1.5">
@@ -298,7 +298,7 @@
                               data-confirm-icon="bi-x-circle-fill"
                               data-confirm-btn="Ya, Batalkan Pesanan">
                             @csrf
-                            <button type="submit" class="order-action-btn font-monospace border-0" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35) !important; color: #FCA5A5;">
+                            <button type="submit" class="order-action-btn font-monospace" style="background: #FFFFFF; border: 1px solid rgba(220, 38, 38, 0.4) !important; color: #DC2626;">
                                 <i class="bi bi-x-circle"></i>
                                 <span>Batalkan</span>
                             </button>
@@ -339,14 +339,14 @@
                                             ->where('sale_id', $order->id)
                                             ->first();
                                     @endphp
-                                    <form action="{{ route('customer.reviews.store') }}" method="POST" class="p-3.5 rounded-3 {{ !$loop->last ? 'border-bottom' : '' }}" style="background: rgba(13, 12, 29, 0.4); border: 1px solid rgba(166, 156, 172, 0.15);">
+                                    <form action="{{ route('customer.reviews.store') }}" method="POST" class="p-3.5 rounded-3 {{ !$loop->last ? 'border-bottom' : '' }}" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                                         @csrf
                                         <input type="hidden" name="sale_id" value="{{ $order->id }}">
                                         <input type="hidden" name="product_id" value="{{ $item->product_id }}">
 
                                         <!-- Item Info Header -->
                                         <div class="d-flex align-items-center gap-3 mb-3">
-                                            <div style="width: 52px; height: 52px; border-radius: 10px; overflow: hidden; background: rgba(13, 12, 29, 0.8); border: 1px solid rgba(166, 156, 172, 0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                            <div style="width: 52px; height: 52px; border-radius: 10px; overflow: hidden; background: #FFFFFF; border: 1px solid var(--colors-hairline); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                                                 @if($prod && $prod->image_url)
                                                     <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                                                 @else
@@ -388,7 +388,7 @@
 
                                         <!-- Review Comment Textarea -->
                                         <div class="mb-3">
-                                            <textarea name="comment" rows="2" class="form-control font-monospace small" placeholder="Tuliskan ulasan Anda mengenai kualitas barang, kecepatan respon, dan kepuasan Anda..." style="background: rgba(13, 12, 29, 0.7); border: 1px solid rgba(166, 156, 172, 0.25); color: #FFFFFF; font-size: 0.84rem; border-radius: 10px;">{{ $existingReview ? $existingReview->comment : '' }}</textarea>
+                                            <textarea name="comment" rows="2" class="form-control font-monospace small" placeholder="Tuliskan ulasan Anda mengenai kualitas barang, kecepatan respon, dan kepuasan Anda..." style="background: #FFFFFF; border: 1px solid var(--colors-hairline); color: var(--colors-text); font-size: 0.84rem; border-radius: 10px;">{{ $existingReview ? $existingReview->comment : '' }}</textarea>
                                         </div>
 
                                         <div class="d-flex justify-content-end">
@@ -408,7 +408,7 @@
     @empty
         <!-- Empty State for Orders -->
         <div class="card text-center py-5 px-3" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 20px;">
-            <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 50%; background: rgba(71, 73, 115, 0.2); border: 1px solid rgba(166, 156, 172, 0.2);">
+            <div class="mx-auto mb-3 d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px; border-radius: 50%; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                 <i class="bi bi-bag-x fs-1" style="color: var(--colors-muted);"></i>
             </div>
             <h5 class="text-white fw-bold mb-1">Tidak Ada Pesanan pada Kategori Ini</h5>
@@ -445,29 +445,29 @@
 @push('styles')
 <style>
     .order-tab-item {
-        background: rgba(71, 73, 115, 0.15);
-        border: 1px solid rgba(166, 156, 172, 0.14);
+        background: #FFFFFF;
+        border: 1px solid var(--colors-hairline);
         color: var(--colors-muted);
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         min-height: 84px;
     }
     .order-tab-item:hover {
-        background: rgba(71, 73, 115, 0.3);
-        border-color: rgba(241, 218, 196, 0.3);
-        color: #FFFFFF;
+        background: var(--colors-card-alt);
+        border-color: var(--colors-hairline);
+        color: var(--colors-text);
         transform: translateY(-2px);
     }
     .order-tab-item.active-tab {
-        background: linear-gradient(135deg, rgba(241, 218, 196, 0.18) 0%, rgba(71, 73, 115, 0.35) 100%);
-        border-color: var(--colors-accent);
+        background: #1A1A1C !important;
+        border-color: #1A1A1C;
         color: #FFFFFF;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(241, 218, 196, 0.12);
+        box-shadow: 0 2px 8px rgba(26, 26, 28, 0.25);
     }
     .order-tab-item.active-tab .tab-icon-wrap i {
-        color: var(--colors-accent) !important;
+        color: #FFFFFF !important;
     }
     .order-tab-item.active-tab .tab-label {
-        color: var(--colors-accent) !important;
+        color: #FFFFFF !important;
         font-weight: 700 !important;
     }
     .tab-icon-wrap i {
@@ -482,7 +482,7 @@
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
     .order-card:hover {
-        border-color: rgba(241, 218, 196, 0.28) !important;
+        border-color: #D8D2C4 !important;
     }
 
     /* Standardized Action Containers (Exact Matching Height & Padding) */
@@ -510,47 +510,48 @@
     }
 
     .order-action-outline {
-        background: rgba(71, 73, 115, 0.2) !important;
-        border: 1px solid rgba(166, 156, 172, 0.25) !important;
-        color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1px solid var(--colors-hairline) !important;
+        color: #1A1A1C !important;
     }
     .order-action-outline:hover {
-        background: rgba(71, 73, 115, 0.4) !important;
-        border-color: var(--colors-accent) !important;
-        color: var(--colors-accent) !important;
+        background: var(--colors-card-alt) !important;
+        border-color: var(--colors-hairline) !important;
+        color: #1A1A1C !important;
         transform: translateY(-1px);
     }
 
     .order-action-waiting {
-        background: rgba(22, 27, 51, 0.85) !important;
-        border: 1px solid rgba(166, 156, 172, 0.25) !important;
+        background: var(--colors-card-alt) !important;
+        border: 1px solid var(--colors-hairline) !important;
         color: var(--colors-muted) !important;
         cursor: default;
     }
 
     .order-action-success {
-        background: #10B981 !important;
-        border: 1px solid #10B981 !important;
+        background: #15803D !important;
+        border: 1px solid #15803D !important;
         color: #FFFFFF !important;
-        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+        box-shadow: 0 2px 8px rgba(21, 128, 61, 0.25) !important;
         cursor: pointer;
     }
     .order-action-success:hover {
-        background: #059669 !important;
-        border-color: #059669 !important;
+        background: #28a745 !important;
+        border-color: #28a745 !important;
         transform: translateY(-1px);
     }
 
     .order-action-primary {
-        background: linear-gradient(135deg, var(--colors-accent) 0%, #E2C2A4 100%) !important;
-        border: 1px solid var(--colors-accent) !important;
-        color: #0D0C1D !important;
+        background: #1A1A1C !important;
+        border: 1px solid #1A1A1C !important;
+        color: #FFFFFF !important;
         font-weight: 700 !important;
-        box-shadow: 0 4px 14px rgba(241, 218, 196, 0.25) !important;
+        box-shadow: 0 4px 14px rgba(26, 26, 28, 0.2) !important;
         cursor: pointer;
     }
     .order-action-primary:hover {
-        background: linear-gradient(135deg, #FFF0E2 0%, #E2C2A4 100%) !important;
+        background: #2C2C2E !important;
+        border-color: #2C2C2E !important;
         transform: translateY(-1px);
     }
 </style>

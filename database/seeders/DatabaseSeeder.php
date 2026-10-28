@@ -143,6 +143,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Laptop Dell Latitude 3420 Core i5',
                 'sku' => 'ELC-LAP-001',
                 'description' => 'Intel Core i5-1135G7, RAM 16GB, SSD 512GB NVMe, 14 Inch Full HD Anti-Glare.',
+                'image' => 'images/products/laptop-dell-latitude-3420-core-i5.png',
                 'purchase_price' => 9200000,
                 'selling_price' => 11500000,
                 'stock' => 12,
@@ -154,6 +155,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Lenovo ThinkPad E14 Gen 4 Ryzen 5',
                 'sku' => 'ELC-LAP-002',
                 'description' => 'AMD Ryzen 5 5625U, RAM 16GB, SSD 512GB, Fingerprint reader, Military-grade durability.',
+                'image' => 'images/products/lenovo-thinkpad-e14-gen-4-ryzen-5.png',
                 'purchase_price' => 8800000,
                 'selling_price' => 10800000,
                 'stock' => 8,
@@ -165,6 +167,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Mouse Wireless Logitech M330 Silent',
                 'sku' => 'ELC-MOU-002',
                 'description' => 'Silent touch mouse wireless 2.4GHz USB nano receiver, battery life up to 24 months.',
+                'image' => 'images/products/mouse-wireless-logitech-m330-silent.png',
                 'purchase_price' => 145000,
                 'selling_price' => 195000,
                 'stock' => 35,
@@ -176,6 +179,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Keyboard Mechanical Keychron K2 Wireless',
                 'sku' => 'ELC-KBD-003',
                 'description' => 'Wireless Bluetooth mechanical keyboard Gateron Brown switch, RGB backlit 84 keys.',
+                'image' => 'images/products/keyboard-mechanical-keychron-k2-wireless.png',
                 'purchase_price' => 980000,
                 'selling_price' => 1250000,
                 'stock' => 4, // CRITICAL LOW STOCK (<= 5)
@@ -187,6 +191,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Monitor LG 24 Inch IPS 75Hz Borderless',
                 'sku' => 'ELC-MON-004',
                 'description' => 'Full HD 1080p, AMD FreeSync, Flicker Safe, Reader Mode, HDMI & VGA port.',
+                'image' => 'images/products/monitor-lg-24-inch-ips-75hz-borderless.png',
                 'purchase_price' => 1350000,
                 'selling_price' => 1650000,
                 'stock' => 10,
@@ -198,6 +203,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Monitor Gaming ASUS TUF 27 Inch 165Hz',
                 'sku' => 'ELC-MON-005',
                 'description' => 'IPS Panel 1ms MPRT, Extreme Low Motion Blur, G-SYNC Compatible, HDR10.',
+                'image' => 'images/products/monitor-gaming-asus-tuf-27-inch-165hz.png',
                 'purchase_price' => 2800000,
                 'selling_price' => 3450000,
                 'stock' => 3, // CRITICAL LOW STOCK (<= 4)
@@ -209,6 +215,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'SSD Samsung 980 NVMe M.2 1TB',
                 'sku' => 'ELC-SSD-006',
                 'description' => 'PCIe 3.0 x4 NVMe 1.4, Read speed up to 3500MB/s, Write speed up to 3000MB/s.',
+                'image' => 'images/products/ssd-samsung-980-nvme-m2-1tb.png',
                 'purchase_price' => 1100000,
                 'selling_price' => 1380000,
                 'stock' => 18,
@@ -220,6 +227,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Power Supply Corsair CV550 550W 80+ Bronze',
                 'sku' => 'SPR-PSU-002',
                 'description' => 'Continuous power delivery 80 PLUS Bronze certified, 120mm low-noise cooling fan.',
+                'image' => 'images/products/power-supply-corsair-cv550-550w-80-bronze.png',
                 'purchase_price' => 480000,
                 'selling_price' => 620000,
                 'stock' => 2, // CRITICAL LOW STOCK (<= 4)
@@ -231,6 +239,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Router WiFi 6 TP-Link Archer AX12 Gigabit',
                 'sku' => 'NET-RTR-001',
                 'description' => 'Dual-Band Wi-Fi 6 up to 1.5 Gbps (1201 Mbps 5GHz + 300 Mbps 2.4GHz), 4 Antennas.',
+                'image' => 'images/products/router-wifi-6-tp-link-archer-ax12-gigabit.png',
                 'purchase_price' => 420000,
                 'selling_price' => 540000,
                 'stock' => 15,
@@ -245,6 +254,9 @@ class DatabaseSeeder extends Seeder
             unset($pData['supplier_ids']);
 
             $product = Product::firstOrCreate(['sku' => $pData['sku']], $pData);
+            if (empty($product->image) || ! empty($pData['image'])) {
+                $product->image = $pData['image'];
+            }
             $product->price = $pData['selling_price'];
             $product->min_stock = $pData['minimum_stock'];
             $product->save();
@@ -323,6 +335,7 @@ class DatabaseSeeder extends Seeder
                 'tag' => 'PROMO SPESIAL GAJIAN:',
                 'title' => 'Potongan hingga 15% untuk kategori PC & Gadget',
                 'description' => 'Dapatkan penawaran terbatas untuk produk elektronik & hardware pilihan minggu ini.',
+                'image' => file_exists(public_path('images/banners/promo-banner.jpg')) ? 'images/banners/promo-banner.jpg' : null,
                 'button_text' => 'Klaim Voucher',
                 'button_url' => '#katalog-grid',
                 'is_active' => true,

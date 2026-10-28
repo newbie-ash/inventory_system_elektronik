@@ -6,11 +6,11 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\Supplier;
+use App\Services\ProductImageStorageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -56,6 +56,10 @@ class ProductController extends Controller
             ->withQueryString();
 
         $categories = Category::orderBy('name')->get();
+
+        if ($request->ajax() || $request->query('ajax')) {
+            return view('products.partials.table', compact('products'));
+        }
 
         return view('products.index', compact('products', 'categories', 'search', 'categoryId', 'stockStatus', 'sort', 'direction'));
     }
@@ -106,16 +110,7 @@ class ProductController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-            $filename = 'product_'.time().'_'.uniqid().'.'.$imageFile->getClientOriginalExtension();
-            $destinationPath = public_path('uploads/products');
-
-            if (! File::isDirectory($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            $imageFile->move($destinationPath, $filename);
-            $imagePath = 'uploads/products/'.$filename;
+            $imagePath = ProductImageStorageService::store($request->file('image'), $validated['sku'], $validated['name']);
         }
 
         DB::beginTransaction();
@@ -220,27 +215,13 @@ class ProductController extends Controller
         $imagePath = $product->image;
 
         if ($request->boolean('remove_image')) {
-            if ($product->image && File::exists(public_path($product->image))) {
-                File::delete(public_path($product->image));
-            }
+            ProductImageStorageService::delete($product->image, $product->sku, $product->name);
             $imagePath = null;
         }
 
         if ($request->hasFile('image')) {
-            if ($product->image && File::exists(public_path($product->image))) {
-                File::delete(public_path($product->image));
-            }
-
-            $imageFile = $request->file('image');
-            $filename = 'product_'.time().'_'.uniqid().'.'.$imageFile->getClientOriginalExtension();
-            $destinationPath = public_path('uploads/products');
-
-            if (! File::isDirectory($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-
-            $imageFile->move($destinationPath, $filename);
-            $imagePath = 'uploads/products/'.$filename;
+            ProductImageStorageService::delete($product->image, $product->sku, $product->name);
+            $imagePath = ProductImageStorageService::store($request->file('image'), $validated['sku'], $validated['name']);
         }
 
         DB::beginTransaction();
@@ -259,6 +240,8 @@ class ProductController extends Controller
             $product->suppliers()->sync($validated['supplier_ids'] ?? []);
 
             DB::commit();
+
+            $product->refresh()->notifyIfLowStock();
 
             return redirect()->route('products.index')
                 ->with('success', 'Data produk berhasil diperbarui.');

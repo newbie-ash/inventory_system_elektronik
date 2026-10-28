@@ -39,7 +39,7 @@
 
     <!-- Collapse: Form Tambah Banner Baru -->
     <div class="collapse mb-4" id="collapseNewBanner">
-        <div class="card p-4" style="background: linear-gradient(145deg, rgba(71, 73, 115, 0.25) 0%, rgba(22, 27, 51, 0.85) 100%);">
+        <div class="card p-4 glass-card">
             <h5 class="fw-bold text-white mb-3"><i class="bi bi-plus-circle me-2" style="color: var(--colors-accent);"></i>Tambah Banner Promo Baru</h5>
             <form action="{{ route('banners.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -60,8 +60,8 @@
                     <!-- Upload Foto Banner Promo -->
                     <div class="col-12">
                         <label class="form-label small text-white fw-semibold">Foto / Gambar Banner Promo (Opsional)</label>
-                        <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(166, 156, 172, 0.35);">
-                            <div id="newBannerPreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 120px; height: 70px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(166, 156, 172, 0.25);">
+                        <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: var(--colors-card-alt); border: 1px dashed var(--colors-hairline);">
+                            <div id="newBannerPreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 120px; height: 70px; background: #FFFFFF; border: 1px solid var(--colors-hairline);">
                                 <i class="bi bi-image fs-3" id="newBannerPlaceholderIcon" style="color: var(--colors-muted);"></i>
                                 <img id="newBannerPreview" src="" alt="Pratinjau Banner" class="d-none w-100 h-100 object-fit-cover">
                             </div>
@@ -109,33 +109,33 @@
             <span class="small font-monospace text-uppercase" style="color: var(--colors-accent); font-weight: 700; letter-spacing: 0.8px;">
                 <i class="bi bi-eye-fill me-1"></i> Live Preview Tampilan Pembeli
             </span>
-            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.35);">
+            <span class="badge badge-gradient-success font-monospace">
                 Ukuran Real di Beranda
             </span>
         </div>
 
         <div class="card p-4 p-md-5 promo-banner-preview position-relative overflow-hidden d-flex flex-column justify-content-center"
-             style="background: linear-gradient(135deg, rgba(22, 27, 51, 0.98) 0%, rgba(71, 73, 115, 0.4) 55%, rgba(22, 27, 51, 0.98) 100%) !important; border: 1px solid rgba(166, 156, 172, 0.22) !important; border-radius: 24px !important; min-height: 220px; box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.55) !important;">
+             style="background: #FFFFFF !important; border: 1px solid var(--colors-hairline) !important; border-radius: 16px !important; min-height: 220px; box-shadow: 0 4px 20px -2px rgba(28, 26, 24, 0.05) !important;">
             <div class="row align-items-center g-4 position-relative" style="z-index: 2;">
                 <div class="col-12 col-md-7 col-lg-7">
                     <span id="previewTag" class="text-uppercase fw-semibold mb-2 d-inline-block font-monospace" style="color: var(--colors-muted); font-size: 0.82rem; letter-spacing: 0.75px;">
                         {{ $activeBanner->tag ?? 'PROMO SPESIAL GAJIAN:' }}
                     </span>
-                    <h2 id="previewTitle" class="fw-bold text-white mb-2" style="font-size: clamp(1.4rem, 2.5vw, 2.1rem); letter-spacing: -0.5px; line-height: 1.25;">
+                    <h2 id="previewTitle" class="fw-bold mb-2" style="font-size: clamp(1.4rem, 2.5vw, 2.1rem); letter-spacing: -0.5px; line-height: 1.25; color: #1A1A1C !important;">
                         {{ $activeBanner->title ?? 'Potongan hingga 15% untuk kategori PC & Gadget' }}
                     </h2>
-                    <p id="previewDesc" class="text-white-50 small mb-3 mb-md-4" style="max-width: 650px; font-size: 0.92rem; line-height: 1.5;">
+                    <p id="previewDesc" class="small mb-3 mb-md-4" style="max-width: 650px; font-size: 0.92rem; line-height: 1.5; color: var(--colors-muted) !important;">
                         {{ $activeBanner->description ?? 'Dapatkan penawaran terbatas untuk produk elektronik & hardware pilihan minggu ini.' }}
                     </p>
                     <div class="d-flex align-items-center gap-1.5 pt-1">
-                        <span style="width: 26px; height: 5px; border-radius: 4px; background: var(--colors-accent); display: inline-block; box-shadow: 0 0 10px rgba(241, 218, 196, 0.4);"></span>
-                        <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(166, 156, 172, 0.35); display: inline-block;"></span>
-                        <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(166, 156, 172, 0.35); display: inline-block;"></span>
+                        <span style="width: 26px; height: 5px; border-radius: 4px; background: #1A1A1C; display: inline-block;"></span>
+                        <span style="width: 18px; height: 5px; border-radius: 4px; background: #E5E0D5; display: inline-block;"></span>
+                        <span style="width: 18px; height: 5px; border-radius: 4px; background: #E5E0D5; display: inline-block;"></span>
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-5 text-md-end d-flex flex-column align-items-md-end justify-content-center gap-3">
                     <div id="liveBannerVisualWrapper" class="{{ $activeBanner->image_url ? '' : 'd-none' }}">
-                        <img id="liveBannerVisual" src="{{ $activeBanner->image_url ?? '' }}" alt="Banner Graphic" class="img-fluid rounded-3 object-fit-cover shadow" style="max-height: 120px; max-width: 210px; border: 1px solid rgba(166, 156, 172, 0.25);">
+                        <img id="liveBannerVisual" src="{{ $activeBanner->image_url ?? '' }}" alt="Banner Graphic" class="img-fluid rounded-3 object-fit-cover shadow" style="max-height: 120px; max-width: 210px; border: 1px solid var(--colors-hairline);">
                     </div>
                     <span id="previewButton" class="btn btn-primary px-4 py-2.5 fw-bold" style="border-radius: 12px; font-size: 0.95rem; pointer-events: none;">
                         {{ $activeBanner->button_text ?? 'Klaim Voucher' }}
@@ -146,14 +146,14 @@
     </div>
 
     <!-- Form Edit Banner Aktif -->
-    <div class="card p-4 p-md-4 mb-4" style="background: linear-gradient(160deg, rgba(71, 73, 115, 0.22) 0%, rgba(22, 27, 51, 0.8) 100%);">
+    <div class="card p-4 p-md-4 mb-4 glass-card">
         <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3" style="border-color: var(--colors-hairline) !important;">
             <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-pencil-square fs-5" style="color: var(--colors-accent);"></i>
                 <h5 class="fw-bold text-white mb-0">Edit Banner Promo Utama</h5>
             </div>
             @if($activeBanner->exists)
-                <span class="badge" style="background: rgba(241, 218, 196, 0.15); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.3);">
+                <span class="badge" style="background: rgba(226, 232, 240, 0.15); color: var(--colors-accent); border: 1px solid rgba(226, 232, 240, 0.3);">
                     Banner ID: #{{ $activeBanner->id }}
                 </span>
             @endif
@@ -206,8 +206,8 @@
                 <!-- Upload & Edit Foto Banner Promo -->
                 <div class="col-12">
                     <label class="form-label small text-white fw-semibold">Foto / Gambar Banner Promo (Opsional)</label>
-                    <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(166, 156, 172, 0.35);">
-                        <div id="editBannerPreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 130px; height: 75px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(166, 156, 172, 0.25);">
+                    <div class="p-3 rounded-3 d-flex flex-wrap align-items-center gap-3" style="background: var(--colors-card-alt); border: 1px dashed var(--colors-hairline);">
+                        <div id="editBannerPreviewContainer" class="rounded-3 d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0 position-relative" style="width: 130px; height: 75px; background: #FFFFFF; border: 1px solid var(--colors-hairline);">
                             @if($activeBanner->image_url)
                                 <img id="editBannerPreview" src="{{ $activeBanner->image_url }}" alt="Banner" class="w-100 h-100 object-fit-cover">
                                 <i class="bi bi-image fs-3 d-none" id="editBannerPlaceholderIcon" style="color: var(--colors-muted);"></i>
@@ -280,7 +280,7 @@
 
     <!-- Riwayat Daftar Semua Banner -->
     @if($banners->count() > 1)
-        <div class="card p-4" style="background: linear-gradient(160deg, rgba(22, 27, 51, 0.95) 0%, rgba(13, 12, 29, 0.95) 100%);">
+        <div class="card p-4 glass-card">
             <h6 class="fw-bold text-white mb-3">Daftar Banner Promo Terdaftar</h6>
             <div class="table-responsive">
                 <table class="table align-middle">
@@ -304,9 +304,9 @@
                                 <td><span class="small text-secondary">{{ $item->button_text }} ({{ $item->button_url }})</span></td>
                                 <td>
                                     @if($item->is_active)
-                                        <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4);">Aktif di Beranda</span>
+                                        <span class="badge badge-gradient-success font-monospace">Aktif di Beranda</span>
                                     @else
-                                        <span class="badge" style="background: rgba(166, 156, 172, 0.15); color: var(--colors-muted);">Non-Aktif</span>
+                                        <span class="badge font-monospace" style="background: #F2EFE9; color: var(--colors-muted); border: 1px solid var(--colors-hairline);">Non-Aktif</span>
                                     @endif
                                 </td>
                                 <td class="text-end">

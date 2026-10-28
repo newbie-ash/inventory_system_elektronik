@@ -118,19 +118,19 @@
                                 @if($s->status === 'cancelled')
                                     <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">Dibatalkan</span>
                                 @elseif($s->shipping_status === 'shipped')
-                                    <span class="badge font-monospace px-2 py-1" style="background: rgba(96, 165, 250, 0.2); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.4);">
+                                    <span class="badge badge-gradient-info font-monospace px-2 py-1">
                                         <i class="bi bi-truck me-1"></i> Dikirim
                                     </span>
                                 @elseif($s->shipping_status === 'delivered')
-                                    <span class="badge font-monospace px-2 py-1" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4);">
+                                    <span class="badge badge-gradient-success font-monospace px-2 py-1">
                                         <i class="bi bi-check2-circle me-1"></i> Selesai
                                     </span>
                                 @elseif($s->shipping_status === 'packing')
-                                    <span class="badge font-monospace px-2 py-1" style="background: rgba(241, 218, 196, 0.2); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.4);">
+                                    <span class="badge badge-gradient-accent font-monospace px-2 py-1">
                                         <i class="bi bi-box-seam me-1"></i> Dikemas
                                     </span>
                                 @else
-                                    <span class="badge font-monospace px-2 py-1" style="background: rgba(245, 158, 11, 0.15); color: #FCD34D; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                    <span class="badge badge-gradient-warning font-monospace px-2 py-1">
                                         Menunggu
                                     </span>
                                 @endif

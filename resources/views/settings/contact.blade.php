@@ -103,7 +103,7 @@
                         </div>
                     </div>
 
-                    <div class="p-3 rounded-3" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                    <div class="p-3 rounded-3" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                         <div class="d-flex align-items-center gap-2 text-white small fw-semibold mb-1">
                             <i class="bi bi-building-check text-success"></i>
                             <span>Wilayah Operasional Terdaftar</span>

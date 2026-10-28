@@ -46,25 +46,25 @@
 
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: rgba(71, 73, 115, 0.22); border: 1.5px solid var(--colors-accent);">
+                            <div class="p-3 rounded-3 h-100" style="background: var(--colors-card-alt); border: 1.5px solid var(--colors-accent);">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="fw-bold text-white small">Dark Glassmorphic UI</span>
+                                    <span class="fw-bold text-white small">Warm Paper UI</span>
                                     <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.68rem;">Default</span>
                                 </div>
                                 <p class="small text-muted mb-0" style="font-size: 0.78rem;">
-                                    Palet warna Navy & Canvas dengan aksen Cream CTA `#F1DAC4` dan hairline blur glassmorphism.
+                                    Palet warna Cream (#F8F5EE) &amp; Black Charcoal (#1A1A1C).
                                 </p>
                             </div>
                         </div>
 
                         <div class="col-12 col-md-6">
-                            <div class="p-3 rounded-3 h-100" style="background: rgba(71, 73, 115, 0.12); border: 1px dashed var(--colors-hairline); opacity: 0.75;">
+                            <div class="p-3 rounded-3 h-100" style="background: var(--colors-card-alt); border: 1px dashed var(--colors-hairline); opacity: 0.75;">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="fw-bold text-white small">Mode Terang (Light Theme)</span>
+                                    <span class="fw-bold text-white small">Dark Charcoal UI</span>
                                     <span class="badge badge-gradient-neutral font-monospace" style="font-size: 0.68rem;">Mendatang</span>
                                 </div>
                                 <p class="small text-muted mb-0" style="font-size: 0.78rem;">
-                                    Tema kontras tinggi alternatif untuk pencahayaan ruang kerja siang hari.
+                                    Tema gelap alternatif untuk pencahayaan ruang kerja malam hari.
                                 </p>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="d-flex flex-column gap-3">
-                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                             <div>
                                 <div class="fw-semibold text-white small">Peringatan Stok Kritis (Low Stock Alert)</div>
                                 <div class="text-muted" style="font-size: 0.78rem;">Tampilkan badge indikator merah menyala pada navigasi saat produk menipis (&le; 10 unit).</div>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                             <div>
                                 <div class="fw-semibold text-white small">Slide Paginator Interaktif</div>
                                 <div class="text-muted" style="font-size: 0.78rem;">Navigasi tabel bergaya slide minimalis dengan kontrol Sebelumnya/Selanjutnya kompak.</div>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: rgba(71, 73, 115, 0.16); border: 1px solid var(--colors-hairline);">
+                        <div class="d-flex align-items-center justify-content-between p-3 rounded-3" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                             <div>
                                 <div class="fw-semibold text-white small">Format Regional Indonesia (IDR & Waktu Lokal)</div>
                                 <div class="text-muted" style="font-size: 0.78rem;">Mata uang Rupiah (`Rp`), kalender 24 jam (WIB/WITA/WIT), dan pemisah ribuan titik.</div>

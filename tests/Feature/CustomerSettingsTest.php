@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -150,7 +152,7 @@ class CustomerSettingsTest extends TestCase
         $this->actingAs($admin)->get('/settings/preferences')
             ->assertStatus(200)
             ->assertSee('Preferensi Sistem')
-            ->assertSee('Dark Glassmorphic UI');
+            ->assertSee('Warm Paper UI');
     }
 
     public function test_user_can_update_contact_and_security_separately(): void
@@ -186,5 +188,55 @@ class CustomerSettingsTest extends TestCase
         $this->actingAs($user)->put('/settings/preferences', [])
             ->assertRedirect('/settings/preferences')
             ->assertSessionHas('success');
+    }
+
+    public function test_user_can_upload_avatar_photo(): void
+    {
+        $user = User::factory()->create(['role' => 'pembeli']);
+        $file = UploadedFile::fake()->image('profile.png', 200, 200);
+
+        $response = $this->actingAs($user)->put('/settings/profile', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $file,
+        ]);
+
+        $response->assertRedirect('/settings/profile');
+        $response->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertNotNull($user->profile->avatar);
+        $this->assertFileExists(public_path($user->profile->avatar));
+
+        // Cleanup
+        if (File::exists(public_path($user->profile->avatar))) {
+            File::delete(public_path($user->profile->avatar));
+        }
+    }
+
+    public function test_user_can_update_avatar_with_cropped_base64(): void
+    {
+        $user = User::factory()->create(['role' => 'pembeli']);
+        // Small 1x1 transparent PNG base64
+        $fakeCroppedBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+
+        $response = $this->actingAs($user)->put('/settings/profile', [
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar_cropped' => $fakeCroppedBase64,
+        ]);
+
+        $response->assertRedirect('/settings/profile');
+        $response->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertNotNull($user->profile->avatar);
+        $this->assertStringContainsString('avatar_', $user->profile->avatar);
+        $this->assertFileExists(public_path($user->profile->avatar));
+
+        // Cleanup
+        if (File::exists(public_path($user->profile->avatar))) {
+            File::delete(public_path($user->profile->avatar));
+        }
     }
 }

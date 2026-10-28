@@ -16,21 +16,21 @@
 
     <style>
         :root {
-            --bg-main: #0D0C1D;
-            --bg-solid: #161B33;
-            --bg-glass: rgba(71, 73, 115, 0.15);
-            --border-glass: rgba(166, 156, 172, 0.22);
-            --border-input: rgba(166, 156, 172, 0.3);
-            --text-secondary: #A69CAC;
-            --accent-cream: #F1DAC4;
-            --accent-cream-hover: #ebd0b4;
-            --text-dark: #0D0C1D;
+            --bg-main: #F8F5EE;
+            --bg-solid: #FFFFFF;
+            --bg-glass: #FFFFFF;
+            --border-glass: #E5E0D5;
+            --border-input: #D8D2C4;
+            --text-secondary: #706E6B;
+            --accent-cream: #1A1A1C;
+            --accent-cream-hover: #2C2C2E;
+            --text-dark: #FFFFFF;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-main);
-            color: #FFFFFF;
+            color: #1A1A1C;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -49,7 +49,7 @@
             right: 15%;
             width: 380px;
             height: 380px;
-            background: radial-gradient(circle, rgba(71, 73, 115, 0.35) 0%, rgba(13, 12, 29, 0) 70%);
+            background: radial-gradient(circle, rgba(240, 235, 224, 0.8) 0%, rgba(248, 245, 238, 0) 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -61,7 +61,7 @@
             left: 15%;
             width: 320px;
             height: 320px;
-            background: radial-gradient(circle, rgba(22, 27, 51, 0.6) 0%, rgba(13, 12, 29, 0) 70%);
+            background: radial-gradient(circle, rgba(235, 230, 218, 0.6) 0%, rgba(248, 245, 238, 0) 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -89,15 +89,15 @@
             display: inline-block;
         }
 
-        /* Glassmorphism Card */
+        /* Glassmorphism Card (Warm Paper Frosted Glass) */
         .glass-auth-card {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(24px) saturate(190%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-radius: 16px;
             padding: 2.25rem 2rem;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 16px 36px -10px rgba(28, 26, 24, 0.06), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
         }
 
         .auth-heading {
@@ -105,7 +105,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #FFFFFF;
+            color: #1A1A1C;
             text-align: center;
             margin-bottom: 0.35rem;
         }
@@ -122,10 +122,10 @@
             display: block !important;
             width: 100% !important;
             box-sizing: border-box !important;
-            background-color: rgba(22, 27, 51, 0.85) !important;
+            background-color: #FFFFFF !important;
             border: 1px solid var(--border-input) !important;
-            color: #FFFFFF !important;
-            border-radius: 12px !important;
+            color: #1A1A1C !important;
+            border-radius: 10px !important;
             height: 48px;
             padding: 0 16px;
             font-size: 0.95rem;
@@ -133,41 +133,45 @@
         }
 
         .form-control-glass::placeholder {
-            color: rgba(166, 156, 172, 0.6) !important;
+            color: #8E8A83 !important;
         }
 
         .form-control-glass:focus, .form-select-glass:focus {
-            background-color: rgba(22, 27, 51, 0.95) !important;
+            background-color: #FFFFFF !important;
             border-color: var(--accent-cream) !important;
-            box-shadow: 0 0 0 2px rgba(241, 218, 196, 0.2) !important;
+            box-shadow: 0 0 0 3px rgba(26, 26, 28, 0.1) !important;
             outline: none;
         }
 
         .form-select-glass option {
             background-color: var(--bg-solid);
-            color: #FFFFFF;
+            color: #1A1A1C;
         }
 
-        /* Primary Button (Cream CTA) */
+        /* Primary Button (Black Charcoal CTA) */
         .btn-cream-cta {
-            background-color: var(--accent-cream) !important;
-            color: var(--text-dark) !important;
+            background: #1A1A1C !important;
+            color: #FFFFFF !important;
             font-weight: 700 !important;
-            border: none !important;
-            border-radius: 12px !important;
+            border: 1px solid #1A1A1C !important;
+            border-radius: 10px !important;
             height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             font-size: 0.95rem;
-            transition: background-color 0.15s ease, transform 0.1s ease;
+            box-shadow: 0 2px 8px rgba(28, 26, 24, 0.18) !important;
+            transition: all 0.15s ease;
             text-decoration: none;
         }
 
         .btn-cream-cta:hover {
-            background-color: var(--accent-cream-hover) !important;
-            color: var(--text-dark) !important;
+            background: #2C2C2E !important;
+            border-color: #2C2C2E !important;
+            color: #FFFFFF !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(28, 26, 24, 0.25) !important;
         }
 
         .btn-cream-cta:active {
@@ -176,10 +180,10 @@
 
         /* Social Button */
         .btn-social-glass {
-            background-color: rgba(22, 27, 51, 0.6) !important;
+            background-color: #F2EFE9 !important;
             border: 1px solid var(--border-input) !important;
             border-radius: 12px !important;
-            color: #FFFFFF !important;
+            color: #1A1A1C !important;
             height: 48px;
             display: flex;
             align-items: center;
@@ -190,8 +194,9 @@
         }
 
         .btn-social-glass:hover {
-            background-color: rgba(71, 73, 115, 0.3) !important;
+            background-color: #E5E0D5 !important;
             border-color: var(--accent-cream) !important;
+            color: #1A1A1C !important;
         }
 
         /* Divider */
@@ -213,7 +218,7 @@
 
         .auth-divider span {
             position: relative;
-            background: #191B2F;
+            background: #FFFFFF;
             padding: 0 12px;
             font-size: 0.78rem;
             color: var(--text-secondary);
@@ -221,7 +226,7 @@
 
         /* Checkbox & Footer Link */
         .form-check-input {
-            background-color: rgba(22, 27, 51, 0.85);
+            background-color: #FFFFFF;
             border-color: var(--border-input);
             border-radius: 4px;
         }
@@ -239,14 +244,14 @@
         }
 
         .auth-footer a {
-            color: #FFFFFF;
+            color: #1A1A1C;
             text-decoration: none;
             font-weight: 600;
             margin-left: 4px;
         }
 
         .auth-footer a:hover {
-            color: var(--accent-cream);
+            color: #706E6B;
         }
     </style>
     @stack('styles')

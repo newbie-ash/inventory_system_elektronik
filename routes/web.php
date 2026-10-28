@@ -11,6 +11,7 @@ use App\Http\Controllers\Customer\PromoController;
 use App\Http\Controllers\Customer\ReviewController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromoBannerController;
@@ -28,6 +29,7 @@ Route::get('/product/{product}', [LandingController::class, 'previewProduct'])->
 
 // Midtrans Public Webhook Notification
 Route::post('/payments/midtrans-notification', [PaymentController::class, 'notification'])->name('payments.midtrans-notification');
+Route::post('/api/midtrans/notification', [PaymentController::class, 'notification'])->name('api.midtrans.notification');
 
 // Guest Authentication
 Route::middleware('guest')->group(function () {
@@ -68,6 +70,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/preferences', [ProfileController::class, 'preferences'])->name('settings.preferences');
     Route::put('/settings/preferences', [ProfileController::class, 'updatePreferences'])->name('settings.preferences.update');
 
+    // In-App Notifications
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+
     // --- PEMBELI (CUSTOMER) ROUTES ---
     Route::middleware('role:pembeli')->group(function () {
         Route::get('/catalog', [CatalogController::class, 'index'])->name('customer.catalog');
@@ -82,6 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart/clear', [CartController::class, 'clear'])->name('customer.cart.clear');
         Route::post('/cart/promo', [CartController::class, 'applyPromo'])->name('customer.cart.apply-promo');
         Route::delete('/cart/promo', [CartController::class, 'removePromo'])->name('customer.cart.remove-promo');
+        Route::get('/cart/shipping-rates', [CartController::class, 'getShippingRates'])->name('customer.cart.shipping-rates');
         Route::post('/cart/reorder/{sale}', [CartController::class, 'reorder'])->name('customer.cart.reorder');
 
         // Checkout & Dedicated Payment Page
@@ -95,6 +102,7 @@ Route::middleware('auth')->group(function () {
         // Pesanan Saya (Shopee-Style Status Tabs: Belum Bayar, Dikemas, Dikirim, Selesai)
         Route::get('/my-orders', [OrderController::class, 'index'])->name('customer.orders.index');
         Route::get('/my-orders/{sale}', [OrderController::class, 'show'])->name('customer.orders.show');
+        Route::get('/my-orders/{sale}/invoice-pdf', [OrderController::class, 'downloadInvoicePdf'])->name('customer.orders.invoice.pdf');
         Route::post('/my-orders/{sale}/cancel', [OrderController::class, 'cancel'])->name('customer.orders.cancel');
         Route::post('/my-orders/{sale}/switch-to-cod', [OrderController::class, 'switchToCod'])->name('customer.orders.switch-to-cod');
         Route::post('/my-orders/{sale}/confirm-delivery', [OrderController::class, 'confirmDelivery'])->name('customer.orders.confirm-delivery');
@@ -123,6 +131,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
         Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
         Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+        Route::get('/sales/{sale}/invoice-pdf', [SaleController::class, 'downloadInvoicePdf'])->name('sales.invoice.pdf');
         Route::patch('/sales/{sale}/shipping-status', [SaleController::class, 'updateShippingStatus'])->name('sales.update-shipping-status');
 
         // Products (Read-Only)
@@ -158,5 +167,8 @@ Route::middleware('auth')->group(function () {
 
         // Reports
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+        Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+        Route::get('/reports/export/sales-excel', [ReportController::class, 'exportSalesExcel'])->name('reports.export.sales-excel');
     });
 });

@@ -56,17 +56,17 @@
                 <div class="card p-3 h-100 d-flex flex-column justify-content-between" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline);">
                     <div>
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge font-monospace" style="background: rgba(255, 0, 61, 0.15); color: var(--colors-accent); border: 1px solid var(--colors-accent); font-size: 0.65rem;">{{ $prod->sku }}</span>
+                            <span class="badge font-monospace" style="background: var(--colors-card-alt); color: var(--colors-muted); border: 1px solid var(--colors-hairline); font-size: 0.65rem;">{{ $prod->sku }}</span>
                             @if($prod->stock <= 0)
-                                <span class="badge font-monospace" style="background: rgba(239, 68, 68, 0.2); color: #F87171; font-size: 0.68rem;">
+                                <span class="badge font-monospace" style="background: rgba(220, 38, 38, 0.08); color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 0.68rem;">
                                     Stok Habis
                                 </span>
                             @elseif($prod->stock <= 5)
-                                <span class="badge font-monospace" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; font-size: 0.68rem;">
+                                <span class="badge font-monospace" style="background: rgba(217, 119, 6, 0.08); color: #D97706; border: 1px solid rgba(217, 119, 6, 0.25); font-size: 0.68rem;">
                                     Sisa {{ $prod->stock }} unit
                                 </span>
                             @else
-                                <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.68rem;">
+                                <span class="badge font-monospace" style="background: rgba(22, 163, 74, 0.08); color: #15803D; border: 1px solid rgba(22, 163, 74, 0.2); font-size: 0.68rem;">
                                     Sisa {{ $prod->stock }} unit
                                 </span>
                             @endif
@@ -132,7 +132,7 @@
                                 <button type="submit" 
                                         formaction="{{ route('customer.cart.add') }}" 
                                         class="btn btn-glass-outline btn-sm font-monospace py-1.5 px-2.5 d-flex align-items-center justify-content-center" 
-                                        style="border: 1px solid rgba(166, 156, 172, 0.35); color: #ffffff; background: rgba(71, 73, 115, 0.35);"
+                                        style="border: 1px solid var(--colors-hairline); color: #ffffff; background: rgba(42, 52, 74, 0.4);"
                                         title="Tambah ke Keranjang"
                                         {{ $prod->stock <= 0 ? 'disabled' : '' }}>
                                     <i class="bi bi-cart-plus fs-6"></i>

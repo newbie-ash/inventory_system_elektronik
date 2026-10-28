@@ -5,22 +5,23 @@
 
 @push('styles')
 <style>
-    /* Gradient Glassmorphism KPI Cards */
+    /* Warm Paper KPI Cards (Frosted Glassmorphism) */
     .kpi-card {
-        background: linear-gradient(145deg, rgba(71, 73, 115, 0.28) 0%, rgba(22, 27, 51, 0.75) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.25) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
         border-radius: 20px !important;
-        box-shadow: 0 14px 35px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 10px 28px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
         overflow: hidden;
     }
     .kpi-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(241, 218, 196, 0.45) !important;
-        box-shadow: 0 20px 42px -10px rgba(0, 0, 0, 0.65), 0 0 26px -6px rgba(241, 218, 196, 0.2) !important;
+        background: rgba(255, 255, 255, 0.58) !important;
+        border-color: rgba(26, 26, 28, 0.25) !important;
+        box-shadow: 0 16px 36px -4px rgba(28, 26, 24, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
     .kpi-card::after {
         content: '';
@@ -32,17 +33,17 @@
         border-radius: 50%;
         pointer-events: none;
         filter: blur(28px);
-        opacity: 0.6;
+        opacity: 0.5;
         transition: opacity 0.25s ease;
     }
     .kpi-card:hover::after {
-        opacity: 1;
+        opacity: 0.9;
     }
 
-    .kpi-card.theme-accent::after { background: rgba(241, 218, 196, 0.35); }
-    .kpi-card.theme-emerald::after { background: rgba(52, 211, 153, 0.35); }
-    .kpi-card.theme-blue::after { background: rgba(96, 165, 250, 0.35); }
-    .kpi-card.theme-purple::after { background: rgba(192, 132, 252, 0.35); }
+    .kpi-card.theme-accent::after { background: rgba(26, 26, 28, 0.08); }
+    .kpi-card.theme-emerald::after { background: rgba(21, 128, 61, 0.08); }
+    .kpi-card.theme-blue::after { background: rgba(2, 132, 199, 0.08); }
+    .kpi-card.theme-purple::after { background: rgba(147, 51, 234, 0.08); }
 
     .kpi-icon-squircle {
         width: 48px;
@@ -52,7 +53,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.35rem;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 6px rgba(28, 26, 24, 0.08);
         transition: transform 0.25s ease;
     }
     .kpi-card:hover .kpi-icon-squircle {
@@ -60,24 +61,24 @@
     }
 
     .icon-accent {
-        background: linear-gradient(135deg, rgba(241, 218, 196, 0.25) 0%, rgba(71, 73, 115, 0.4) 100%);
-        border: 1px solid rgba(241, 218, 196, 0.35);
-        color: var(--colors-accent);
+        background: rgba(26, 26, 28, 0.08);
+        border: 1px solid rgba(26, 26, 28, 0.18);
+        color: #1A1A1C;
     }
     .icon-emerald {
-        background: linear-gradient(135deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
-        border: 1px solid rgba(52, 211, 153, 0.35);
-        color: #34D399;
+        background: rgba(21, 128, 61, 0.1);
+        border: 1px solid rgba(21, 128, 61, 0.25);
+        color: #15803D;
     }
     .icon-blue {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(59, 130, 246, 0.15) 100%);
-        border: 1px solid rgba(96, 165, 250, 0.35);
-        color: #60A5FA;
+        background: rgba(2, 132, 199, 0.1);
+        border: 1px solid rgba(2, 132, 199, 0.25);
+        color: #0284C7;
     }
     .icon-purple {
-        background: linear-gradient(135deg, rgba(192, 132, 252, 0.25) 0%, rgba(147, 51, 234, 0.15) 100%);
-        border: 1px solid rgba(192, 132, 252, 0.35);
-        color: #C084FC;
+        background: rgba(147, 51, 234, 0.1);
+        border: 1px solid rgba(147, 51, 234, 0.25);
+        color: #9333EA;
     }
 
     .kpi-value {
@@ -85,7 +86,7 @@
         font-weight: 800;
         letter-spacing: -0.5px;
         line-height: 1.2;
-        color: #FFFFFF;
+        color: #1A1A1C;
     }
 
     /* Hero Banner Cards */
@@ -93,7 +94,7 @@
         border-radius: 20px !important;
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
-        box-shadow: 0 16px 38px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 0 rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 20px -2px rgba(28, 26, 24, 0.05) !important;
         position: relative;
         overflow: hidden;
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -101,13 +102,13 @@
     .hero-banner-card:hover {
         transform: translateY(-3px);
     }
-    .hero-banner-accent {
-        background: linear-gradient(135deg, rgba(241, 218, 196, 0.16) 0%, rgba(71, 73, 115, 0.3) 50%, rgba(22, 27, 51, 0.8) 100%) !important;
-        border: 1px solid rgba(241, 218, 196, 0.32) !important;
-    }
+    .hero-banner-accent,
     .hero-banner-blue {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.16) 0%, rgba(71, 73, 115, 0.3) 50%, rgba(22, 27, 51, 0.8) 100%) !important;
-        border: 1px solid rgba(96, 165, 250, 0.32) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        box-shadow: 0 10px 28px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
     }
 
     /* Live Pulse Indicator */
@@ -115,15 +116,15 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: #34D399;
-        box-shadow: 0 0 10px #34D399;
+        background-color: #15803D;
+        box-shadow: 0 0 6px rgba(21, 128, 61, 0.4);
         display: inline-block;
         animation: pulseAnimation 2s infinite ease-in-out;
     }
     @keyframes pulseAnimation {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
-        70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.5); }
+        70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(21, 128, 61, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(21, 128, 61, 0); }
     }
 
     /* Quick Action Cards */
@@ -146,21 +147,19 @@
     .quick-action-card:hover {
         transform: translateY(-4px);
     }
-    .quick-action-in {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.18) 0%, rgba(71, 73, 115, 0.32) 100%) !important;
-        border: 1px solid rgba(96, 165, 250, 0.35) !important;
-    }
-    .quick-action-in:hover {
-        border-color: rgba(96, 165, 250, 0.6) !important;
-        box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(96, 165, 250, 0.2) !important;
-    }
+    .quick-action-in,
     .quick-action-out {
-        background: linear-gradient(135deg, rgba(241, 218, 196, 0.18) 0%, rgba(71, 73, 115, 0.32) 100%) !important;
-        border: 1px solid rgba(241, 218, 196, 0.35) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+        box-shadow: 0 8px 24px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
+    .quick-action-in:hover,
     .quick-action-out:hover {
-        border-color: rgba(241, 218, 196, 0.6) !important;
-        box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(241, 218, 196, 0.2) !important;
+        background: rgba(255, 255, 255, 0.58) !important;
+        border-color: rgba(26, 26, 28, 0.25) !important;
+        box-shadow: 0 14px 32px -4px rgba(28, 26, 24, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
 </style>
 @endpush
@@ -270,7 +269,7 @@
                 </div>
             </div>
             <div>
-                <div class="kpi-value mb-1" id="kpiInventoryValue" style="color: #6EE7B7;">
+                <div class="kpi-value mb-1" id="kpiInventoryValue" style="color: #15803D;">
                     Rp {{ number_format($totalInventoryValue, 0, ',', '.') }}
                 </div>
                 <div class="small font-monospace" style="color: var(--colors-muted); font-size: 0.72rem;">
@@ -328,9 +327,9 @@
 <!-- Low Stock Critical Banner -->
 @if($lowStockCount > 0)
     <div class="glass-card p-2.5 px-3 mb-3 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3" 
-         style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(71, 73, 115, 0.28) 100%) !important; border: 1px solid rgba(239, 68, 68, 0.4) !important;">
+         style="background: rgba(220, 38, 38, 0.08) !important; border: 1px solid rgba(220, 38, 38, 0.25) !important;">
         <div class="d-flex align-items-center gap-3">
-            <div class="kpi-icon-squircle" style="width: 42px; height: 42px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #F87171;">
+            <div class="kpi-icon-squircle" style="width: 42px; height: 42px; background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.3); color: #DC2626;">
                 <i class="bi bi-exclamation-triangle-fill"></i>
             </div>
             <div>
@@ -466,9 +465,9 @@
                 </div>
 
                 <div class="p-3 d-flex align-items-center justify-content-between rounded-3" 
-                     style="background: rgba(22, 27, 51, 0.7); border: 1px solid var(--colors-hairline);">
+                     style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-shield-check" style="color: #34D399;"></i>
+                        <i class="bi bi-shield-check" style="color: #15803D;"></i>
                         <span class="small font-monospace" style="color: var(--colors-muted);">Mutasi stok diamankan dengan DB Transaction atomik.</span>
                     </div>
                     <a href="{{ route('stock-movements.index') }}" class="btn btn-sm btn-glass-outline font-monospace">
@@ -489,14 +488,14 @@
 
                 @if($lowStockProducts->isEmpty())
                     <div class="p-4 text-center font-monospace small" style="color: var(--colors-muted);">
-                        <i class="bi bi-check-circle fs-2 d-block mb-2" style="color: #34D399;"></i>
+                        <i class="bi bi-check-circle fs-2 d-block mb-2" style="color: #15803D;"></i>
                         Semua stok produk saat ini berada di atas batas minimum.
                     </div>
                 @else
                     <div class="d-flex flex-column gap-2.5">
                         @foreach($lowStockProducts as $lp)
                             <div class="p-2.5 d-flex align-items-center justify-content-between rounded-3" 
-                                 style="background: rgba(22, 27, 51, 0.7); border: 1px solid var(--colors-hairline);">
+                                 style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                                 <div>
                                     <div class="fw-semibold text-white small text-truncate" style="max-width: 200px;">{{ $lp->name }}</div>
                                     <div class="font-monospace" style="color: var(--colors-muted); font-size: 0.68rem;">SKU: {{ $lp->sku }} &bull; Min: {{ $lp->minimum_stock }}</div>
@@ -577,7 +576,7 @@
         <div class="glass-card h-100">
             <div class="card-header d-flex align-items-center justify-content-between py-3">
                 <div class="d-flex align-items-center gap-2">
-                    <i class="bi bi-box-arrow-in-down" style="color: #60A5FA;"></i>
+                    <i class="bi bi-box-arrow-in-down" style="color: var(--colors-accent);"></i>
                     <h6 class="mb-0 fw-semibold text-white">
                         Pembelian Terkini (Stock-In)
                     </h6>
@@ -635,8 +634,8 @@
 @if(Auth::user()->isAdmin())
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        Chart.defaults.color = '#A69CAC';
-        Chart.defaults.borderColor = 'rgba(166, 156, 172, 0.15)';
+        Chart.defaults.color = '#706E6B';
+        Chart.defaults.borderColor = 'rgba(229, 224, 213, 0.8)';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
 
         // Helper function for vertical gradients
@@ -658,8 +657,8 @@
         const trendCtx = document.getElementById('trendChart')?.getContext('2d');
         let trendChart;
         if (trendCtx) {
-            const inGradient = createVGradient(trendCtx, 'rgba(166, 156, 172, 0.85)', 'rgba(71, 73, 115, 0.25)');
-            const outGradient = createVGradient(trendCtx, '#F1DAC4', 'rgba(241, 218, 196, 0.2)');
+            const inGradient = createVGradient(trendCtx, 'rgba(112, 110, 107, 0.7)', 'rgba(229, 224, 213, 0.3)');
+            const outGradient = createVGradient(trendCtx, '#1A1A1C', 'rgba(26, 26, 28, 0.25)');
 
             trendChart = new Chart(trendCtx, {
                 type: 'bar',
@@ -670,7 +669,7 @@
                             label: 'Barang Masuk (Stock-In)',
                             data: {!! json_encode($trendStockIn) !!},
                             backgroundColor: inGradient,
-                            borderColor: 'rgba(166, 156, 172, 0.9)',
+                            borderColor: 'rgba(112, 110, 107, 0.9)',
                             borderWidth: 1,
                             borderRadius: 8,
                             borderSkipped: false
@@ -679,7 +678,7 @@
                             label: 'Barang Keluar (Stock-Out)',
                             data: {!! json_encode($trendStockOut) !!},
                             backgroundColor: outGradient,
-                            borderColor: '#F1DAC4',
+                            borderColor: '#1A1A1C',
                             borderWidth: 1,
                             borderRadius: 8,
                             borderSkipped: false
@@ -697,7 +696,7 @@
                                 boxHeight: 12,
                                 borderRadius: 3,
                                 useBorderRadius: true,
-                                color: '#FFFFFF',
+                                color: '#1A1A1C',
                                 font: { weight: 600 }
                             } 
                         }
@@ -705,12 +704,12 @@
                     scales: {
                         y: { 
                             beginAtZero: true, 
-                            grid: { color: 'rgba(166, 156, 172, 0.12)' }, 
-                            ticks: { color: '#A69CAC' } 
+                            grid: { color: 'rgba(229, 224, 213, 0.8)' }, 
+                            ticks: { color: '#706E6B' } 
                         },
                         x: { 
                             grid: { display: false }, 
-                            ticks: { color: '#A69CAC' } 
+                            ticks: { color: '#706E6B' } 
                         }
                     }
                 }
@@ -727,16 +726,16 @@
                     datasets: [{
                         data: {!! json_encode($catStocks) !!},
                         backgroundColor: [
-                            '#F1DAC4',
-                            '#60A5FA',
-                            '#34D399',
-                            '#C084FC',
-                            '#F472B6',
-                            '#A69CAC',
-                            '#FBBF24',
-                            '#38BDF8'
+                            '#1A1A1C',
+                            '#15803D',
+                            '#D97706',
+                            '#DC2626',
+                            '#9333EA',
+                            '#0284C7',
+                            '#706E6B',
+                            '#CA8A04'
                         ],
-                        borderColor: '#161B33',
+                        borderColor: '#FFFFFF',
                         borderWidth: 3,
                         hoverOffset: 6
                     }]
@@ -756,7 +755,7 @@
                                 borderRadius: 4,
                                 useBorderRadius: true,
                                 font: { size: 12, weight: 500, family: "'Plus Jakarta Sans', sans-serif" }, 
-                                color: '#FFFFFF',
+                                color: '#1A1A1C',
                                 padding: 12
                             } 
                         },
@@ -777,7 +776,7 @@
         const topCtx = document.getElementById('topProductsChart')?.getContext('2d');
         let topChart;
         if (topCtx) {
-            const barGradient = createHGradient(topCtx, '#F1DAC4', '#D4A373');
+            const barGradient = createHGradient(topCtx, '#1A1A1C', '#48484A');
 
             topChart = new Chart(topCtx, {
                 type: 'bar',
@@ -787,7 +786,7 @@
                         label: 'Nilai Inventaris (Rp)',
                         data: {!! json_encode($topProductValues) !!},
                         backgroundColor: barGradient,
-                        borderColor: '#F1DAC4',
+                        borderColor: '#1A1A1C',
                         borderWidth: 1,
                         borderRadius: 8,
                         barThickness: 16,
@@ -825,15 +824,15 @@
                                     }
                                     return 'Rp ' + val;
                                 },
-                                color: '#A69CAC',
+                                color: '#706E6B',
                                 font: { size: 11, family: "'Plus Jakarta Sans', sans-serif" }
                             },
-                            grid: { color: 'rgba(166, 156, 172, 0.12)' }
+                            grid: { color: 'rgba(229, 224, 213, 0.8)' }
                         },
                         y: { 
                             grid: { display: false }, 
                             ticks: { 
-                                color: '#FFFFFF', 
+                                color: '#1A1A1C', 
                                 font: { size: 12, weight: 500, family: "'Plus Jakarta Sans', sans-serif" } 
                             } 
                         }

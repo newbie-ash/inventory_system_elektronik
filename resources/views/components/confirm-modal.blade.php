@@ -1,7 +1,7 @@
 <!-- Universal Modern Glassmorphic Confirmation Modal -->
 <div class="modal fade" id="appUniversalConfirmModal" tabindex="-1" aria-labelledby="appConfirmModalTitle" aria-hidden="true" style="backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
-        <div class="modal-content" id="appConfirmModalCard" style="background: #161B33; border: 1px solid rgba(166, 156, 172, 0.35); border-radius: 22px; color: #FFFFFF; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75); overflow: hidden; transition: all 0.25s ease;">
+        <div class="modal-content" id="appConfirmModalCard" style="background: #FFFFFF; border: 1px solid var(--colors-hairline); border-radius: 16px; color: #1A1A1C; box-shadow: 0 20px 50px rgba(28, 26, 24, 0.15); overflow: hidden; transition: all 0.25s ease;">
             <div class="modal-body p-4 text-center">
                 <!-- Glowing Dynamic Icon -->
                 <div id="appConfirmModalIconWrap" class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; border-radius: 50%; transition: all 0.25s ease;">
@@ -9,18 +9,18 @@
                 </div>
 
                 <!-- Title & Message -->
-                <h4 class="fw-bold mb-1 font-monospace text-white" id="appConfirmModalTitle">Konfirmasi</h4>
+                <h4 class="fw-bold mb-1 font-monospace" style="color: #1A1A1C;" id="appConfirmModalTitle">Konfirmasi</h4>
                 <p class="text-secondary small mb-3" id="appConfirmModalMessage" style="color: var(--colors-muted) !important; font-size: 0.88rem; line-height: 1.5;"></p>
 
                 <!-- Optional Highlighted Item Info -->
-                <div id="appConfirmModalItemBox" class="p-3 rounded-3 text-start mb-3 d-none" style="background: rgba(13, 12, 29, 0.65); border: 1px solid rgba(166, 156, 172, 0.2);">
+                <div id="appConfirmModalItemBox" class="p-3 rounded-3 text-start mb-3 d-none" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                     <div class="small text-secondary mb-1 font-monospace" style="font-size: 0.72rem; color: var(--colors-muted) !important;">TARGET / ITEM:</div>
-                    <div class="fw-bold text-white fs-6 text-truncate font-monospace" id="appConfirmModalItemText"></div>
+                    <div class="fw-bold fs-6 text-truncate font-monospace" style="color: #1A1A1C;" id="appConfirmModalItemText"></div>
                 </div>
 
                 <!-- Action Buttons: Batal & Konfirmasi -->
                 <div class="d-flex gap-2 justify-content-center mt-4">
-                    <button type="button" class="btn px-4 py-2.5 fw-semibold font-monospace flex-grow-1" data-bs-dismiss="modal" style="background: rgba(71, 73, 115, 0.35); border: 1px solid rgba(166, 156, 172, 0.25); color: #FFFFFF; border-radius: 12px; transition: all 0.2s;">
+                    <button type="button" class="btn px-4 py-2.5 fw-semibold font-monospace flex-grow-1" data-bs-dismiss="modal" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: #1A1A1C; border-radius: 12px; transition: all 0.2s;">
                         Batal
                     </button>
                     <button type="button" id="appConfirmModalActionBtn" class="btn px-4 py-2.5 fw-bold font-monospace flex-grow-1 d-inline-flex align-items-center justify-content-center gap-2" style="border: none; color: #FFFFFF; border-radius: 12px; transition: all 0.2s;">
@@ -66,51 +66,51 @@
                 itemBox.classList.add('d-none');
             }
 
-            // Theme Customization (Glassmorphic Gradients)
+            // Theme Customization (Warm Paper Mode)
             if (type === 'success') {
-                card.style.background = 'radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18) 0%, #161B33 80%)';
-                card.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-                card.style.boxShadow = '0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(16, 185, 129, 0.18)';
+                card.style.background = '#FFFFFF';
+                card.style.borderColor = 'rgba(21, 128, 61, 0.35)';
+                card.style.boxShadow = '0 20px 50px rgba(28, 26, 24, 0.15), 0 0 25px rgba(21, 128, 61, 0.12)';
 
-                iconWrap.style.background = 'rgba(16, 185, 129, 0.15)';
-                iconWrap.style.border = '2px solid rgba(16, 185, 129, 0.4)';
-                iconWrap.style.boxShadow = '0 0 24px rgba(16, 185, 129, 0.3)';
+                iconWrap.style.background = 'rgba(21, 128, 61, 0.1)';
+                iconWrap.style.border = '2px solid rgba(21, 128, 61, 0.35)';
+                iconWrap.style.boxShadow = '0 0 20px rgba(21, 128, 61, 0.2)';
                 icon.className = 'bi ' + (options.icon || 'bi-check2-circle');
-                icon.style.color = '#34d399';
+                icon.style.color = '#15803D';
 
-                actionBtn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
-                actionBtn.style.boxShadow = '0 6px 18px rgba(16, 185, 129, 0.35)';
+                actionBtn.style.background = '#15803D';
+                actionBtn.style.boxShadow = '0 4px 14px rgba(21, 128, 61, 0.3)';
                 btnIcon.className = 'bi ' + (options.btnIcon || 'bi-check2');
                 btnText.textContent = options.confirmText || 'Ya, Lanjutkan';
             } else if (type === 'warning') {
-                card.style.background = 'radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.18) 0%, #161B33 80%)';
-                card.style.borderColor = 'rgba(245, 158, 11, 0.4)';
-                card.style.boxShadow = '0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(245, 158, 11, 0.18)';
+                card.style.background = '#FFFFFF';
+                card.style.borderColor = 'rgba(217, 119, 6, 0.35)';
+                card.style.boxShadow = '0 20px 50px rgba(28, 26, 24, 0.15), 0 0 25px rgba(217, 119, 6, 0.12)';
 
-                iconWrap.style.background = 'rgba(245, 158, 11, 0.15)';
-                iconWrap.style.border = '2px solid rgba(245, 158, 11, 0.4)';
-                iconWrap.style.boxShadow = '0 0 24px rgba(245, 158, 11, 0.3)';
+                iconWrap.style.background = 'rgba(217, 119, 6, 0.1)';
+                iconWrap.style.border = '2px solid rgba(217, 119, 6, 0.35)';
+                iconWrap.style.boxShadow = '0 0 20px rgba(217, 119, 6, 0.2)';
                 icon.className = 'bi ' + (options.icon || 'bi-exclamation-triangle-fill');
-                icon.style.color = '#fbbf24';
+                icon.style.color = '#D97706';
 
-                actionBtn.style.background = 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)';
-                actionBtn.style.boxShadow = '0 6px 18px rgba(245, 158, 11, 0.35)';
+                actionBtn.style.background = '#D97706';
+                actionBtn.style.boxShadow = '0 4px 14px rgba(217, 119, 6, 0.3)';
                 btnIcon.className = 'bi ' + (options.btnIcon || 'bi-arrow-repeat');
                 btnText.textContent = options.confirmText || 'Ya, Lanjutkan';
             } else {
                 // Danger (Default)
-                card.style.background = 'radial-gradient(circle at 50% 0%, rgba(255, 77, 109, 0.18) 0%, #161B33 80%)';
-                card.style.borderColor = 'rgba(255, 77, 109, 0.4)';
-                card.style.boxShadow = '0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 77, 109, 0.18)';
+                card.style.background = '#FFFFFF';
+                card.style.borderColor = 'rgba(220, 38, 38, 0.35)';
+                card.style.boxShadow = '0 20px 50px rgba(28, 26, 24, 0.15), 0 0 25px rgba(220, 38, 38, 0.12)';
 
-                iconWrap.style.background = 'rgba(255, 77, 109, 0.15)';
-                iconWrap.style.border = '2px solid rgba(255, 77, 109, 0.4)';
-                iconWrap.style.boxShadow = '0 0 24px rgba(255, 77, 109, 0.3)';
+                iconWrap.style.background = 'rgba(220, 38, 38, 0.1)';
+                iconWrap.style.border = '2px solid rgba(220, 38, 38, 0.35)';
+                iconWrap.style.boxShadow = '0 0 20px rgba(220, 38, 38, 0.2)';
                 icon.className = 'bi ' + (options.icon || 'bi-trash3-fill');
-                icon.style.color = '#ff4d6d';
+                icon.style.color = '#DC2626';
 
-                actionBtn.style.background = 'linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%)';
-                actionBtn.style.boxShadow = '0 6px 18px rgba(255, 77, 109, 0.35)';
+                actionBtn.style.background = '#DC2626';
+                actionBtn.style.boxShadow = '0 4px 14px rgba(220, 38, 38, 0.3)';
                 btnIcon.className = 'bi ' + (options.btnIcon || 'bi-trash-fill');
                 btnText.textContent = options.confirmText || 'Ya, Hapus';
             }

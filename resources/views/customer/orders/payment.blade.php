@@ -24,9 +24,9 @@
         </div>
     @endif
 
-    <div class="card p-4 p-md-5 mb-4" style="background: linear-gradient(145deg, rgba(22, 27, 51, 0.95) 0%, rgba(71, 73, 115, 0.3) 100%); border: 1px solid var(--colors-hairline); border-top: 4px solid var(--colors-accent) !important; border-radius: 20px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);">
+    <div class="card p-4 p-md-5 mb-4" style="background: #FFFFFF; border: 1px solid var(--colors-hairline); border-top: 4px solid var(--colors-accent) !important; border-radius: 20px; box-shadow: 0 10px 30px rgba(28, 26, 24, 0.08);">
         <div class="text-center mb-4">
-            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 72px; height: 72px; background: rgba(241, 218, 196, 0.12); border: 1px solid rgba(241, 218, 196, 0.3); color: var(--colors-accent);">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 72px; height: 72px; background: rgba(26, 26, 28, 0.08); border: 1px solid var(--colors-hairline); color: var(--colors-accent);">
                 <i class="bi bi-credit-card-2-front fs-1"></i>
             </div>
             <h3 class="fw-bold text-white mb-1" style="letter-spacing: -0.5px;">Portal Pembayaran Online</h3>
@@ -36,14 +36,14 @@
         </div>
 
         <!-- Bill Amount Card -->
-        <div class="p-3.5 p-md-4 rounded-3 mb-4 text-center" style="background: rgba(13, 12, 29, 0.7); border: 1px solid rgba(166, 156, 172, 0.25);">
+        <div class="p-3.5 p-md-4 rounded-3 mb-4 text-center" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
             <div class="text-secondary small font-monospace mb-1">TOTAL JUMLAH YANG HARUS DIBAYAR:</div>
             <div class="fs-1 fw-bold font-monospace mb-2" style="color: var(--colors-accent); letter-spacing: -1px;">
                 Rp {{ number_format($sale->total, 0, ',', '.') }}
             </div>
 
             @if($sale->discount_amount > 0)
-                <div class="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill small font-monospace" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34D399; font-size: 0.75rem;">
+                <div class="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill small font-monospace" style="background: rgba(21, 128, 61, 0.1); border: 1px solid rgba(21, 128, 61, 0.3); color: #15803D; font-size: 0.75rem;">
                     <i class="bi bi-tag-fill"></i>
                     <span>Diskon Kupon {{ $sale->promo_code }}: Hemat Rp {{ number_format($sale->discount_amount, 0, ',', '.') }}</span>
                 </div>
@@ -52,37 +52,35 @@
 
         <!-- Voucher / Promo Code Input on Payment Portal -->
         @if($sale->discount_amount <= 0)
-            <div class="mb-4 mx-auto p-3 rounded-3" style="max-width: 460px; background: rgba(13, 12, 29, 0.5); border: 1px dashed rgba(166, 156, 172, 0.35);">
+            <div class="mb-4 mx-auto p-3 rounded-3" style="max-width: 460px; background: var(--colors-card-alt); border: 1px dashed var(--colors-hairline);">
                 <form action="{{ route('customer.orders.apply-promo', $sale) }}" method="POST">
                     @csrf
                     <label class="form-label small text-secondary font-monospace mb-1.5 d-flex align-items-center gap-1.5">
                         <i class="bi bi-ticket-perforated" style="color: var(--colors-accent);"></i>Punya Kode Promo / Voucher?
                     </label>
-                    <div class="d-flex align-items-stretch" style="border: 1px solid rgba(166, 156, 172, 0.35); border-radius: 12px; overflow: hidden; background: rgba(13, 12, 29, 0.7); height: 44px;">
+                    <div class="d-flex align-items-stretch" style="border: 1px solid var(--colors-hairline); border-radius: 12px; overflow: hidden; background: #FFFFFF; height: 44px;">
                         <div class="d-flex align-items-center ps-3 pe-2 text-secondary">
                             <i class="bi bi-tag-fill" style="color: var(--colors-accent); font-size: 0.9rem;"></i>
                         </div>
                         <input type="text" 
                                name="promo_code" 
                                id="paymentPromoInput" 
-                               class="form-control font-monospace text-uppercase border-0 shadow-none m-0 p-0 text-white" 
+                               class="form-control font-monospace text-uppercase border-0 shadow-none m-0 p-0" 
                                placeholder="CONTOH: GAJIAN15" 
                                required 
                                autocomplete="off"
-                               style="background: transparent !important; height: 100%; font-size: 0.85rem; border-radius: 0 !important; letter-spacing: 0.5px;">
+                               style="background: transparent !important; color: var(--colors-text) !important; height: 100%; font-size: 0.85rem; border-radius: 0 !important; letter-spacing: 0.5px;">
                         <button type="submit" 
-                                class="btn font-monospace text-uppercase fw-bold text-white px-3 d-flex align-items-center justify-content-center" 
-                                style="border: none; border-left: 1px solid rgba(166, 156, 172, 0.35); border-radius: 0; background: rgba(71, 73, 115, 0.35); font-size: 0.78rem; letter-spacing: 0.5px; white-space: nowrap; transition: all 0.2s ease;"
-                                onmouseover="this.style.background='rgba(71, 73, 115, 0.65)'"
-                                onmouseout="this.style.background='rgba(71, 73, 115, 0.35)'">
+                                class="btn font-monospace text-uppercase fw-bold px-3 d-flex align-items-center justify-content-center" 
+                                style="border: none; border-left: 1px solid var(--colors-hairline); border-radius: 0; background: #1A1A1C; color: #FFFFFF; font-size: 0.78rem; letter-spacing: 0.5px; white-space: nowrap; transition: all 0.2s ease;">
                             Terapkan
                         </button>
                     </div>
                     <div class="text-secondary small font-monospace mt-2 d-flex align-items-center gap-1.5 flex-wrap" style="font-size: 0.72rem;">
                         <span class="text-muted">Kupon:</span>
-                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='GAJIAN15'" class="badge border-0 font-monospace cursor-pointer py-1 px-2" style="background: rgba(255, 0, 61, 0.15); color: var(--colors-accent); text-decoration: none;">GAJIAN15</button>
-                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='GEAR50K'" class="badge border-0 font-monospace cursor-pointer py-1 px-2" style="background: rgba(255, 0, 61, 0.15); color: var(--colors-accent); text-decoration: none;">GEAR50K</button>
-                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='CTRLR10'" class="badge border-0 font-monospace cursor-pointer py-1 px-2" style="background: rgba(255, 0, 61, 0.15); color: var(--colors-accent); text-decoration: none;">CTRLR10</button>
+                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='GAJIAN15'" class="badge border font-monospace cursor-pointer py-1 px-2" style="background: #FFFFFF; color: var(--colors-accent); border-color: var(--colors-hairline) !important; text-decoration: none;">GAJIAN15</button>
+                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='GEAR50K'" class="badge border font-monospace cursor-pointer py-1 px-2" style="background: #FFFFFF; color: var(--colors-accent); border-color: var(--colors-hairline) !important; text-decoration: none;">GEAR50K</button>
+                        <button type="button" onclick="document.getElementById('paymentPromoInput').value='CTRLR10'" class="badge border font-monospace cursor-pointer py-1 px-2" style="background: #FFFFFF; color: var(--colors-accent); border-color: var(--colors-hairline) !important; text-decoration: none;">CTRLR10</button>
                     </div>
                 </form>
             </div>
@@ -112,9 +110,9 @@
                 @csrf
                 <button type="submit" 
                         class="btn d-flex align-items-center justify-content-center gap-2 font-monospace text-uppercase fw-bold text-center" 
-                        style="width: 100% !important; height: 50px; min-height: 50px; border: 1.5px solid rgba(16, 185, 129, 0.4) !important; background: rgba(16, 185, 129, 0.12) !important; color: #34D399 !important; border-radius: 12px !important; font-size: 0.92rem; box-sizing: border-box; transition: all 0.2s ease; margin: 0 !important;" 
-                        onmouseover="this.style.background='rgba(16, 185, 129, 0.22)'"
-                        onmouseout="this.style.background='rgba(16, 185, 129, 0.12)'"
+                        style="width: 100% !important; height: 50px; min-height: 50px; border: 1.5px solid rgba(22, 163, 74, 0.3) !important; background: rgba(22, 163, 74, 0.08) !important; color: #15803D !important; border-radius: 12px !important; font-size: 0.92rem; box-sizing: border-box; transition: all 0.2s ease; margin: 0 !important;" 
+                        onmouseover="this.style.background='rgba(22, 163, 74, 0.16)'"
+                        onmouseout="this.style.background='rgba(22, 163, 74, 0.08)'"
                         title="Bayar tunai ke kurir saat barang sampai">
                     <i class="bi bi-cash-stack fs-5"></i>
                     <span>Bayar di Tempat (Cash on Delivery)</span>
@@ -129,9 +127,9 @@
                 @csrf
                 <button type="submit" 
                         class="btn d-flex align-items-center justify-content-center gap-2 font-monospace text-uppercase fw-bold text-center" 
-                        style="width: 100% !important; height: 50px; min-height: 50px; border: 1.5px solid rgba(16, 185, 129, 0.35) !important; background: transparent !important; color: #6EE7B7 !important; border-radius: 12px !important; font-size: 0.92rem; box-sizing: border-box; transition: all 0.2s ease; margin: 0 !important;" 
-                        onmouseover="this.style.background='rgba(16, 185, 129, 0.15)'"
-                        onmouseout="this.style.background='transparent'"
+                        style="width: 100% !important; height: 50px; min-height: 50px; border: 1.5px solid var(--colors-hairline) !important; background: #FFFFFF !important; color: #1A1A1C !important; border-radius: 12px !important; font-size: 0.92rem; box-sizing: border-box; transition: all 0.2s ease; margin: 0 !important;" 
+                        onmouseover="this.style.background='var(--colors-card-alt)'"
+                        onmouseout="this.style.background='#FFFFFF'"
                         title="Simulasi lunas instan mode sandbox tanpa buka pop-up">
                     <i class="bi bi-check2-circle fs-5"></i>
                     <span>Simulasi Pembayaran Lunas (Sandbox)</span>
@@ -183,7 +181,7 @@
                     </thead>
                     <tbody>
                         @foreach($sale->items as $item)
-                            <tr style="border-bottom: 1px solid rgba(166, 156, 172, 0.1);">
+                            <tr style="border-bottom: 1px solid var(--colors-hairline);">
                                 <td class="text-white fw-semibold">{{ $item->product->name ?? 'Produk' }}</td>
                                 <td class="text-center text-white">{{ $item->quantity }} unit</td>
                                 <td class="text-end text-white">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>

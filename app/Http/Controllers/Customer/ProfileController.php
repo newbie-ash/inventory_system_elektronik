@@ -40,13 +40,14 @@ class ProfileController extends Controller
             'phone_number' => ['nullable', 'string', 'max:30'],
             'address' => ['nullable', 'string', 'max:1000'],
             'bio' => ['nullable', 'string', 'max:1000'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+            'avatar_cropped' => ['nullable', 'string'],
             'current_password' => ['nullable', 'string'],
             'new_password' => ['nullable', 'string', 'min:6'],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'email.unique' => 'Email ini sudah digunakan oleh akun lain.',
-            'avatar.max' => 'Ukuran foto maksimal 2MB.',
+            'avatar.max' => 'Ukuran foto maksimal 5MB.',
             'new_password.min' => 'Password baru minimal 6 karakter.',
         ]);
 
@@ -68,19 +69,60 @@ class ProfileController extends Controller
         }
         $user->save();
 
-        // Handle avatar upload
+        // Handle avatar upload / crop
         $avatarPath = null;
-        if ($request->hasFile('avatar')) {
-            $avatarFile = $request->file('avatar');
-            $filename = 'avatar_'.$user->id.'_'.time().'.'.$avatarFile->getClientOriginalExtension();
-            $destinationPath = public_path('uploads/avatars');
+        $destinationPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, public_path('uploads/avatars'));
 
-            if (! File::isDirectory($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
+        if (! File::isDirectory($destinationPath)) {
+            File::makeDirectory($destinationPath, 0777, true, true);
+        }
+        if (! is_writable($destinationPath)) {
+            @chmod($destinationPath, 0777);
+        }
+
+        // 1. Cropped base64 image (from modal editor)
+        if ($request->filled('avatar_cropped') && str_starts_with($request->avatar_cropped, 'data:image/')) {
+            $dataUri = $request->avatar_cropped;
+            if (preg_match('/^data:image\/(\w+);base64,/', $dataUri, $matches)) {
+                $ext = strtolower($matches[1]);
+                if ($ext === 'jpeg') {
+                    $ext = 'jpg';
+                }
+                $base64Content = substr($dataUri, strpos($dataUri, ',') + 1);
+                $decoded = base64_decode($base64Content);
+                if ($decoded !== false) {
+                    $filename = 'avatar_'.$user->id.'_'.time().'_'.uniqid().'.'.$ext;
+                    $targetPath = $destinationPath.DIRECTORY_SEPARATOR.$filename;
+                    File::put($targetPath, $decoded);
+                    $avatarPath = 'uploads/avatars/'.$filename;
+                }
+            }
+        }
+        // 2. Direct file upload
+        elseif ($request->hasFile('avatar')) {
+            $avatarFile = $request->file('avatar');
+            $filename = 'avatar_'.$user->id.'_'.time().'_'.uniqid().'.'.$avatarFile->getClientOriginalExtension();
+            $targetPath = $destinationPath.DIRECTORY_SEPARATOR.$filename;
+
+            try {
+                $avatarFile->move($destinationPath, $filename);
+            } catch (\Throwable $e) {
+                @copy($avatarFile->getRealPath(), $targetPath);
+                if (! File::exists($targetPath)) {
+                    File::put($targetPath, File::get($avatarFile->getRealPath()));
+                }
             }
 
-            $avatarFile->move($destinationPath, $filename);
-            $avatarPath = 'uploads/avatars/'.$filename;
+            if (File::exists($targetPath)) {
+                $avatarPath = 'uploads/avatars/'.$filename;
+            }
+        }
+
+        if ($avatarPath && ! empty($user->profile?->avatar)) {
+            $oldAvatar = $user->profile->avatar;
+            if (str_starts_with($oldAvatar, 'uploads/avatars/') && File::exists(public_path($oldAvatar))) {
+                @File::delete(public_path($oldAvatar));
+            }
         }
 
         // Update profile

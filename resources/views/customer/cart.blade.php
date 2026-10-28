@@ -20,7 +20,7 @@
         padding-top: 16px;
         padding-bottom: 16px;
         vertical-align: middle;
-        border-bottom: 1px solid rgba(166, 156, 172, 0.1);
+        border-bottom: 1px solid var(--colors-hairline);
     }
     
     /* Dedicated Quantity Stepper */
@@ -28,28 +28,28 @@
         display: inline-flex;
         align-items: center;
         justify-content: space-between;
-        background: rgba(13, 12, 29, 0.65);
-        border: 1px solid rgba(166, 156, 172, 0.28);
+        background: var(--colors-card-alt);
+        border: 1px solid var(--colors-hairline);
         border-radius: 9px;
         padding: 3px 4px;
         width: 110px;
         height: 38px;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 1px 2px rgba(28, 26, 24, 0.05);
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .cart-qty-stepper:focus-within {
         border-color: var(--colors-accent);
-        box-shadow: 0 0 0 2px rgba(241, 218, 196, 0.2);
+        box-shadow: 0 0 0 2px rgba(26, 26, 28, 0.15);
     }
     .cart-qty-btn {
         width: 28px;
         height: 28px;
         padding: 0;
         margin: 0;
-        border: 1px solid rgba(166, 156, 172, 0.2);
-        background: rgba(71, 73, 115, 0.35);
+        border: 1px solid var(--colors-hairline);
+        background: #FFFFFF;
         border-radius: 6px;
-        color: #ffffff;
+        color: var(--colors-text);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -67,7 +67,7 @@
     .cart-qty-btn:disabled {
         opacity: 0.3;
         cursor: not-allowed;
-        background: rgba(71, 73, 115, 0.15);
+        background: var(--colors-card-alt);
         border-color: transparent;
     }
     .cart-qty-input {
@@ -76,7 +76,7 @@
         padding: 0 2px;
         border: none;
         background: transparent;
-        color: #ffffff;
+        color: var(--colors-text);
         font-family: monospace;
         font-weight: 700;
         font-size: 0.95rem;
@@ -94,13 +94,13 @@
     .cart-table-wrap {
         overflow-x: auto;
         scrollbar-width: thin;
-        scrollbar-color: rgba(166, 156, 172, 0.2) transparent;
+        scrollbar-color: rgba(42, 52, 74, 0.4) transparent;
     }
     .cart-table-wrap::-webkit-scrollbar {
         height: 5px;
     }
     .cart-table-wrap::-webkit-scrollbar-thumb {
-        background: rgba(166, 156, 172, 0.25);
+        background: rgba(42, 52, 74, 0.5);
         border-radius: 4px;
     }
 </style>
@@ -175,9 +175,9 @@
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center gap-3">
                                                 @if($prod->image_url)
-                                                    <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="object-fit-cover rounded-3 flex-shrink-0" style="width: 52px; height: 52px; border: 1px solid rgba(166, 156, 172, 0.25); background: var(--colors-card-alt);">
+                                                    <img src="{{ $prod->image_url }}" alt="{{ $prod->name }}" class="object-fit-cover rounded-3 flex-shrink-0" style="width: 52px; height: 52px; border: 1px solid var(--colors-hairline); background: var(--colors-card-alt);">
                                                 @else
-                                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 52px; height: 52px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(166, 156, 172, 0.2); color: var(--colors-muted);">
+                                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 52px; height: 52px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: var(--colors-muted);">
                                                         <i class="bi bi-box-seam fs-4"></i>
                                                     </div>
                                                 @endif
@@ -186,7 +186,7 @@
                                                         {{ $prod->name }}
                                                     </a>
                                                     <div class="d-flex align-items-center gap-2 mt-1">
-                                                        <span class="badge bg-transparent border font-monospace text-muted" style="border-color: rgba(166, 156, 172, 0.25) !important; font-size: 0.7rem;">
+                                                        <span class="badge bg-transparent border font-monospace text-muted" style="border-color: var(--colors-hairline) !important; font-size: 0.7rem;">
                                                             {{ $prod->sku }}
                                                         </span>
                                                         <span class="badge badge-gradient-info font-monospace" style="font-size: 0.68rem;">
@@ -330,7 +330,7 @@
                                 <label class="form-label small text-secondary font-monospace mb-1.5 d-flex align-items-center gap-1">
                                     <i class="bi bi-ticket-perforated" style="color: var(--colors-accent);"></i>KODE PROMO / VOUCHER:
                                 </label>
-                                <div class="d-flex align-items-stretch" style="border: 1px solid var(--colors-hairline); border-radius: 12px; overflow: hidden; background: rgba(13, 12, 29, 0.6); height: 44px;">
+                                <div class="d-flex align-items-stretch" style="border: 1px solid var(--colors-hairline); border-radius: 12px; overflow: hidden; background: #FFFFFF; height: 44px;">
                                     <div class="d-flex align-items-center ps-3 pe-2 text-secondary">
                                         <i class="bi bi-tag-fill" style="color: var(--colors-accent); font-size: 0.9rem;"></i>
                                     </div>
@@ -344,9 +344,9 @@
                                            style="background: transparent !important; height: 100%; font-size: 0.85rem; border-radius: 0 !important; letter-spacing: 0.5px;">
                                     <button type="submit" 
                                             class="btn font-monospace text-uppercase fw-bold text-white px-3 d-flex align-items-center justify-content-center" 
-                                            style="border: none; border-left: 1px solid var(--colors-hairline); border-radius: 0; background: rgba(71, 73, 115, 0.35); font-size: 0.78rem; letter-spacing: 0.5px; white-space: nowrap; transition: all 0.2s ease;"
-                                            onmouseover="this.style.background='rgba(71, 73, 115, 0.65)'"
-                                            onmouseout="this.style.background='rgba(71, 73, 115, 0.35)'">
+                                            style="border: none; border-left: 1px solid var(--colors-hairline); border-radius: 0; background: rgba(42, 52, 74, 0.4); font-size: 0.78rem; letter-spacing: 0.5px; white-space: nowrap; transition: all 0.2s ease;"
+                                            onmouseover="this.style.background='rgba(42, 52, 74, 0.7)'"
+                                            onmouseout="this.style.background='rgba(42, 52, 74, 0.4)'">
                                         Terapkan
                                     </button>
                                 </div>
@@ -367,15 +367,22 @@
                         </div>
                     @endif
 
+                    <div class="d-flex justify-content-between align-items-center mb-2 small font-monospace">
+                        <span class="text-secondary">Ongkos Kirim:</span>
+                        <span class="text-white fw-semibold" id="summaryShippingCost">
+                            Rp {{ number_format($initialRates[0]['cost'] ?? 10000, 0, ',', '.') }}
+                        </span>
+                    </div>
+
                     <div class="p-3 rounded-3 mb-3" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline);">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <span class="text-secondary small font-monospace">TOTAL TAGIHAN:</span>
-                            <span class="fs-4 fw-bold font-monospace" style="color: var(--colors-accent);">
-                                Rp {{ number_format($finalTotal, 0, ',', '.') }}
+                            <span class="fs-4 fw-bold font-monospace" style="color: var(--colors-accent);" id="summaryFinalTotal">
+                                Rp {{ number_format($finalTotal + ($initialRates[0]['cost'] ?? 10000), 0, ',', '.') }}
                             </span>
                         </div>
                         <div class="small text-muted font-monospace mt-1" style="font-size: 0.72rem;">
-                            <i class="bi bi-shield-check text-success me-1"></i>Harga resmi, stok langsung terverifikasi otomatis.
+                            <i class="bi bi-shield-check text-success me-1"></i>Termasuk ongkos kirim resmi ke kota tujuan Anda.
                         </div>
                     </div>
 
@@ -390,13 +397,54 @@
                             <input type="hidden" name="promo_code" value="{{ $promoCode }}">
                         @endif
 
+                        <!-- Section: Pilihan Destinasi & Ekspedisi (Kalkulator Ongkos Kirim) -->
+                        <div class="mb-3">
+                            <label class="form-label small text-secondary font-monospace mb-1.5 d-flex align-items-center justify-content-between">
+                                <span class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-truck" style="color: var(--colors-accent);"></i>DESTINASI & EKSPEDISI:
+                                </span>
+                                <span class="badge bg-secondary-subtle text-secondary font-monospace" style="font-size: 0.68rem;" id="shippingWeightBadge">
+                                    {{ round($totalWeight / 1000, 1) }} kg
+                                </span>
+                            </label>
+
+                            <!-- Destination Dropdown -->
+                            <div class="mb-2">
+                                <select name="destination" id="destinationSelect" class="form-select font-monospace small" style="font-size: 0.82rem;" onchange="updateShippingRates(this.value)">
+                                    @foreach($destinations as $destKey => $dest)
+                                        <option value="{{ $destKey }}" {{ $destKey === ($defaultDestination ?? 'jakarta') ? 'selected' : '' }}>
+                                            {{ $dest['name'] }} ({{ $dest['province'] }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Courier Radio Cards List -->
+                            <div id="courierListContainer" class="d-flex flex-column gap-1.5">
+                                @foreach($initialRates as $idx => $rate)
+                                    <label class="courier-option-card rounded-3 d-flex align-items-center justify-content-between p-2.5 px-3 cursor-pointer" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); border-radius: 10px; cursor: pointer;">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input type="radio" name="courier" value="{{ $rate['code'] }}" class="form-check-input mt-0 courier-radio" {{ $idx === 0 ? 'checked' : '' }} onchange="selectShippingRate({{ $rate['cost'] }}, '{{ $rate['service_name'] }}')" style="cursor: pointer;">
+                                            <div>
+                                                <div class="fw-semibold text-white small font-monospace" style="font-size: 0.8rem;">{{ $rate['service_name'] }}</div>
+                                                <div class="text-secondary small font-monospace" style="font-size: 0.68rem;">Estimasi: {{ $rate['etd'] }}</div>
+                                            </div>
+                                        </div>
+                                        <span class="fw-bold text-white font-monospace small" style="font-size: 0.82rem;">
+                                            Rp {{ number_format($rate['cost'], 0, ',', '.') }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
                         <!-- Payment Method Choice (Midtrans vs COD) -->
                         <div class="mb-3">
                             <label class="form-label small text-secondary font-monospace mb-2 d-flex align-items-center gap-1">
                                 <i class="bi bi-wallet2" style="color: var(--colors-accent);"></i>PILIH METODE PEMBAYARAN:
                             </label>
                             <div class="d-flex flex-column gap-2">
-                                <label class="rounded-3 d-flex align-items-center justify-content-between cursor-pointer" style="padding: 12px 14px; background: rgba(13, 12, 29, 0.6); border: 1px solid rgba(166, 156, 172, 0.25); border-radius: 12px; cursor: pointer; transition: all 0.2s ease;">
+                                <label class="rounded-3 d-flex align-items-center justify-content-between cursor-pointer" style="padding: 12px 14px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); border-radius: 12px; cursor: pointer; transition: all 0.2s ease;">
                                     <div class="d-flex align-items-center gap-2.5">
                                         <input type="radio" name="payment_method" value="midtrans" class="form-check-input mt-0" checked onchange="handlePaymentMethodChange(this.value)" style="width: 1.15rem; height: 1.15rem; cursor: pointer;">
                                         <div>
@@ -407,7 +455,7 @@
                                     <span class="badge badge-gradient-accent font-monospace" style="font-size: 0.65rem; padding: 4px 8px;">Instan</span>
                                 </label>
 
-                                <label class="rounded-3 d-flex align-items-center justify-content-between cursor-pointer" style="padding: 12px 14px; background: rgba(13, 12, 29, 0.6); border: 1px solid rgba(166, 156, 172, 0.25); border-radius: 12px; cursor: pointer; transition: all 0.2s ease;">
+                                <label class="rounded-3 d-flex align-items-center justify-content-between cursor-pointer" style="padding: 12px 14px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); border-radius: 12px; cursor: pointer; transition: all 0.2s ease;">
                                     <div class="d-flex align-items-center gap-2.5">
                                         <input type="radio" name="payment_method" value="cod" class="form-check-input mt-0" onchange="handlePaymentMethodChange(this.value)" style="width: 1.15rem; height: 1.15rem; cursor: pointer;">
                                         <div>
@@ -415,14 +463,14 @@
                                             <div class="text-secondary small font-monospace" style="font-size: 0.7rem;">Bayar tunai kepada kurir saat pesanan tiba</div>
                                         </div>
                                     </div>
-                                    <span class="badge font-monospace" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 0.65rem; padding: 4px 8px;">Tunai COD</span>
+                                    <span class="badge font-monospace" style="background: rgba(21, 128, 61, 0.1); color: #15803D; font-size: 0.65rem; padding: 4px 8px;">Tunai COD</span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="cartNotes" class="form-label small text-secondary font-monospace">Catatan Pesanan (Opsional):</label>
-                            <textarea name="notes" id="cartNotes" rows="2" class="form-control small font-monospace" style="height: auto !important; min-height: 62px; background: rgba(13, 12, 29, 0.6); border: 1px solid var(--colors-hairline); color: #fff; resize: vertical; padding: 10px 14px; font-size: 0.85rem; border-radius: 12px;" placeholder="Tulis catatan pengiriman atau permintaan khusus..."></textarea>
+                            <textarea name="notes" id="cartNotes" rows="2" class="form-control small font-monospace" style="height: auto !important; min-height: 62px; background: #FFFFFF; border: 1px solid var(--colors-hairline); color: var(--colors-text); resize: vertical; padding: 10px 14px; font-size: 0.85rem; border-radius: 12px;" placeholder="Tulis catatan pengiriman atau permintaan khusus..."></textarea>
                         </div>
 
                         <button type="submit" id="checkoutBtn" class="btn btn-primary w-100 font-monospace text-uppercase fw-bold d-flex align-items-center justify-content-center gap-2" style="border-radius: 12px; font-size: 0.92rem; height: 48px;">
@@ -432,6 +480,72 @@
                     </form>
 
                     <script>
+                        let baseGrandTotal = {{ $finalTotal }};
+                        let currentShippingCost = {{ $initialRates[0]['cost'] ?? 10000 }};
+
+                        function selectShippingRate(cost, name) {
+                            currentShippingCost = cost;
+                            const summaryShipping = document.getElementById('summaryShippingCost');
+                            const summaryTotal = document.getElementById('summaryFinalTotal');
+                            if (summaryShipping) {
+                                summaryShipping.textContent = 'Rp ' + Number(cost).toLocaleString('id-ID');
+                            }
+                            if (summaryTotal) {
+                                summaryTotal.textContent = 'Rp ' + Number(baseGrandTotal + cost).toLocaleString('id-ID');
+                            }
+                        }
+
+                        async function updateShippingRates(destKey) {
+                            const container = document.getElementById('courierListContainer');
+                            if (!container) return;
+                            
+                            container.innerHTML = '<div class="text-center py-2 text-secondary font-monospace small"><div class="spinner-border spinner-border-sm text-danger me-1"></div> Menghitung ongkir...</div>';
+                            
+                            try {
+                                const res = await fetch("{{ route('customer.cart.shipping-rates') }}?destination=" + encodeURIComponent(destKey), {
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'Accept': 'application/json'
+                                    }
+                                });
+                                const data = await res.json();
+                                
+                                if (data.status === 'success' && Array.isArray(data.rates)) {
+                                    const weightBadge = document.getElementById('shippingWeightBadge');
+                                    if (weightBadge && data.weight_kg) {
+                                        weightBadge.textContent = data.weight_kg + ' kg';
+                                    }
+                                    
+                                    let html = '';
+                                    data.rates.forEach((rate, idx) => {
+                                        const checked = idx === 0 ? 'checked' : '';
+                                        html += `
+                                            <label class="courier-option-card rounded-3 d-flex align-items-center justify-content-between p-2.5 px-3 cursor-pointer" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); border-radius: 10px; cursor: pointer;">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <input type="radio" name="courier" value="${rate.code}" class="form-check-input mt-0 courier-radio" ${checked} onchange="selectShippingRate(${rate.cost}, '${rate.service_name}')" style="cursor: pointer;">
+                                                    <div>
+                                                        <div class="fw-semibold text-white small font-monospace" style="font-size: 0.8rem;">${rate.service_name}</div>
+                                                        <div class="text-secondary small font-monospace" style="font-size: 0.68rem;">Estimasi: ${rate.etd}</div>
+                                                    </div>
+                                                </div>
+                                                <span class="fw-bold text-white font-monospace small" style="font-size: 0.82rem;">
+                                                    Rp ${Number(rate.cost).toLocaleString('id-ID')}
+                                                </span>
+                                            </label>
+                                        `;
+                                    });
+                                    container.innerHTML = html;
+                                    
+                                    if (data.rates.length > 0) {
+                                        selectShippingRate(data.rates[0].cost, data.rates[0].service_name);
+                                    }
+                                }
+                            } catch (err) {
+                                console.error('Gagal mengambil tarif pengiriman:', err);
+                                container.innerHTML = '<div class="text-danger small font-monospace py-2">Gagal memuat tarif ongkir. Silakan coba lagi.</div>';
+                            }
+                        }
+
                         function fillPromo(code) {
                             const input = document.getElementById('promoInput');
                             if (input) {
@@ -461,7 +575,7 @@
     @else
         <!-- Empty Cart State -->
         <div class="card p-5 text-center my-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 20px;">
-            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-3 rounded-circle" style="width: 80px; height: 80px; background: rgba(241, 218, 196, 0.1); border: 1px solid rgba(241, 218, 196, 0.25); color: var(--colors-accent);">
+            <div class="d-inline-flex align-items-center justify-content-center mx-auto mb-3 rounded-circle" style="width: 80px; height: 80px; background: rgba(226, 232, 240, 0.1); border: 1px solid rgba(226, 232, 240, 0.25); color: var(--colors-accent);">
                 <i class="bi bi-cart-x fs-1"></i>
             </div>
             <h4 class="fw-bold text-white mb-2" style="letter-spacing: -0.5px;">Keranjang Belanja Anda Masih Kosong</h4>

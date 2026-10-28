@@ -5,12 +5,14 @@
 
 @push('styles')
 <style>
-    /* Hero Promo Banner */
+    /* Hero Promo Banner (Glassmorphism) */
     .promo-hero-card {
-        background: linear-gradient(135deg, rgba(22, 27, 51, 0.98) 0%, rgba(71, 73, 115, 0.45) 55%, rgba(22, 27, 51, 0.98) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.25) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
         border-radius: 24px !important;
-        box-shadow: 0 18px 42px -10px rgba(0, 0, 0, 0.6) !important;
+        box-shadow: 0 10px 30px -4px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
         min-height: 220px;
         padding: 2.5rem 2.25rem !important;
         position: relative;
@@ -24,7 +26,7 @@
         right: 0;
         bottom: 0;
         width: 45%;
-        background: radial-gradient(circle at 75% 50%, rgba(241, 218, 196, 0.15) 0%, transparent 65%);
+        background: radial-gradient(circle at 75% 50%, rgba(26, 26, 28, 0.04) 0%, transparent 65%);
         pointer-events: none;
     }
 
@@ -32,21 +34,24 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(13, 12, 29, 0.65);
-        border: 1px solid rgba(241, 218, 196, 0.3);
+        background: #FFFFFF;
+        border: 1px solid var(--colors-hairline);
         border-radius: 20px;
         padding: 4px 14px;
         font-size: 0.8rem;
-        color: var(--colors-accent);
+        color: var(--colors-text);
         font-weight: 600;
         letter-spacing: 0.2px;
     }
 
-    /* Ticket-Style Voucher Cards */
+    /* Ticket-Style Voucher Cards (Glassmorphism) */
     .voucher-card {
-        background: linear-gradient(145deg, rgba(71, 73, 115, 0.22) 0%, rgba(22, 27, 51, 0.85) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.22) !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.65) !important;
         border-radius: 20px !important;
+        box-shadow: 0 8px 24px -2px rgba(28, 26, 24, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(24px) saturate(190%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
         position: relative;
         overflow: hidden;
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -57,8 +62,9 @@
 
     .voucher-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(241, 218, 196, 0.45) !important;
-        box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), 0 0 20px -6px rgba(241, 218, 196, 0.2) !important;
+        background: rgba(255, 255, 255, 0.58) !important;
+        border-color: rgba(26, 26, 28, 0.25) !important;
+        box-shadow: 0 14px 32px -4px rgba(28, 26, 24, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
     }
 
     .voucher-discount-pill {
@@ -69,8 +75,8 @@
     }
 
     .voucher-code-box {
-        background: rgba(13, 12, 29, 0.8);
-        border: 1px dashed rgba(241, 218, 196, 0.4);
+        background: var(--colors-card-alt);
+        border: 1px dashed var(--colors-hairline);
         border-radius: 10px;
         padding: 6px 12px;
         display: flex;
@@ -80,9 +86,9 @@
     }
 
     .btn-copy-code {
-        background: rgba(241, 218, 196, 0.15);
-        border: 1px solid var(--colors-accent);
-        color: var(--colors-accent);
+        background: #FFFFFF;
+        border: 1px solid var(--colors-hairline);
+        color: var(--colors-text);
         font-size: 0.78rem;
         font-weight: 700;
         padding: 4px 10px;
@@ -98,12 +104,13 @@
 
     /* Product Cards in Promo Grid */
     .promo-product-card {
-        background: linear-gradient(150deg, rgba(71, 73, 115, 0.2) 0%, rgba(22, 27, 51, 0.78) 100%) !important;
-        border: 1px solid rgba(166, 156, 172, 0.22) !important;
+        background: #FFFFFF !important;
+        border: 1px solid var(--colors-hairline) !important;
         border-radius: 18px !important;
+        backdrop-filter: blur(8px);
         padding: 14px !important;
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45) !important;
+        box-shadow: 0 4px 18px -2px rgba(28, 26, 24, 0.05) !important;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -112,13 +119,13 @@
 
     .promo-product-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(241, 218, 196, 0.45) !important;
-        box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.65), 0 0 20px -4px rgba(241, 218, 196, 0.15) !important;
+        border-color: #D8D2C4 !important;
+        box-shadow: 0 10px 24px -4px rgba(28, 26, 24, 0.1) !important;
     }
 
     .product-visual-box {
-        background: radial-gradient(circle at 50% 30%, rgba(71, 73, 115, 0.35) 0%, rgba(13, 12, 29, 0.85) 100%);
-        border: 1px solid rgba(166, 156, 172, 0.16);
+        background: var(--colors-card-alt);
+        border: 1px solid var(--colors-hairline);
         border-radius: 14px;
         height: 140px;
         display: flex;
@@ -132,13 +139,13 @@
         position: absolute;
         top: 8px;
         left: 8px;
-        background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
         color: #FFFFFF;
         font-size: 0.72rem;
         font-weight: 800;
         padding: 3px 8px;
         border-radius: 6px;
-        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+        box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
     }
 
     /* Category Filter Pills */
@@ -151,23 +158,23 @@
         font-weight: 600;
         text-decoration: none;
         color: var(--colors-muted);
-        background: rgba(71, 73, 115, 0.18);
-        border: 1px solid rgba(166, 156, 172, 0.2);
+        background: #FFFFFF;
+        border: 1px solid var(--colors-hairline);
         transition: all 0.2s ease;
         white-space: nowrap;
     }
 
     .promo-cat-pill:hover {
-        color: #FFFFFF;
-        border-color: var(--colors-accent);
-        background: rgba(71, 73, 115, 0.35);
+        color: var(--colors-text);
+        border-color: var(--colors-hairline);
+        background: var(--colors-card-alt);
     }
 
     .promo-cat-pill.active {
-        background: var(--colors-accent);
-        color: var(--colors-accent-text);
-        border-color: var(--colors-accent);
-        box-shadow: 0 4px 14px rgba(241, 218, 196, 0.3);
+        background: #1A1A1C;
+        color: #FFFFFF;
+        border-color: #1A1A1C;
+        box-shadow: 0 2px 8px rgba(26, 26, 28, 0.2);
     }
 
     /* Copy Toast */
@@ -175,12 +182,12 @@
         position: fixed;
         bottom: 30px;
         right: 30px;
-        background: rgba(22, 27, 51, 0.95);
-        border: 1px solid var(--colors-accent);
-        color: #FFFFFF;
+        background: #FFFFFF;
+        border: 1px solid var(--colors-hairline);
+        color: var(--colors-text);
         border-radius: 14px;
         padding: 12px 20px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 8px 24px rgba(28, 26, 24, 0.15);
         backdrop-filter: blur(12px);
         z-index: 9999;
         display: none;
@@ -217,9 +224,9 @@
                     {{ $primaryBanner->description ?? 'Gunakan kode voucher saat checkout untuk menikmati potongan harga langsung dan diskon ongkos kirim seluruh Indonesia.' }}
                 </p>
                 <div class="d-flex align-items-center gap-1.5 pt-1">
-                    <span style="width: 26px; height: 5px; border-radius: 4px; background: var(--colors-accent); display: inline-block; box-shadow: 0 0 10px rgba(241, 218, 196, 0.4);"></span>
-                    <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(166, 156, 172, 0.35); display: inline-block;"></span>
-                    <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(166, 156, 172, 0.35); display: inline-block;"></span>
+                    <span style="width: 26px; height: 5px; border-radius: 4px; background: var(--colors-accent); display: inline-block; box-shadow: 0 0 10px rgba(10, 132, 255, 0.3);"></span>
+                    <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(142, 142, 147, 0.35); display: inline-block;"></span>
+                    <span style="width: 18px; height: 5px; border-radius: 4px; background: rgba(142, 142, 147, 0.35); display: inline-block;"></span>
                 </div>
             </div>
             <div class="col-12 col-md-4 col-lg-4 text-md-end">
@@ -241,7 +248,7 @@
                     Klik tombol salin pada kode voucher dan terapkan saat melakukan checkout belanja Anda.
                 </p>
             </div>
-            <span class="badge" style="background: rgba(241, 218, 196, 0.15); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.3);">
+            <span class="badge" style="background: var(--colors-card-alt); color: var(--colors-accent); border: 1px solid var(--colors-hairline);">
                 {{ count($vouchers) }} Voucher Aktif
             </span>
         </div>
@@ -252,7 +259,7 @@
                     <div class="card p-3 p-xl-4 voucher-card h-100">
                         <div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="badge" style="background: rgba(71, 73, 115, 0.4); color: var(--colors-accent); border: 1px solid rgba(241, 218, 196, 0.25); font-size: 0.72rem;">
+                                <span class="badge" style="background: var(--colors-card-alt); color: var(--colors-accent); border: 1px solid var(--colors-hairline); font-size: 0.72rem;">
                                     {{ $voucher['badge'] }}
                                 </span>
                                 <small class="text-secondary" style="font-size: 0.72rem;">
@@ -270,7 +277,7 @@
                             </p>
                         </div>
 
-                        <div class="pt-2 border-top" style="border-color: rgba(166, 156, 172, 0.15) !important;">
+                        <div class="pt-2 border-top" style="border-color: var(--colors-hairline) !important;">
                             <div class="d-flex align-items-center justify-content-between mb-2 small text-secondary" style="font-size: 0.75rem;">
                                 <span>Min. Belanja:</span>
                                 <span class="text-white fw-bold">Rp {{ number_format($voucher['min_spend'], 0, ',', '.') }}</span>
@@ -339,12 +346,18 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card promo-product-card">
                         <div>
-                            <div class="product-visual-box">
+                            <div class="product-visual-box overflow-hidden">
                                 <span class="badge-discount-tag">-15%</span>
-                                <i class="bi {{ $iconClass }} text-white" style="font-size: 3.5rem; opacity: 0.9;"></i>
+                                @if ($product->image && file_exists(public_path($product->image)))
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover">
+                                @elseif ($product->image_url)
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover">
+                                @else
+                                    <i class="bi {{ $iconClass }}" style="font-size: 3.5rem; color: #1A1A1C; opacity: 0.85;"></i>
+                                @endif
                             </div>
 
-                            <span class="badge bg-light text-white small mb-1" style="font-size: 0.72rem;">
+                            <span class="badge font-monospace small mb-1" style="background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: var(--colors-muted); font-size: 0.72rem;">
                                 {{ $product->category->name ?? 'Hardware' }}
                             </span>
 
@@ -362,13 +375,27 @@
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between pt-2 border-top" style="border-color: rgba(166, 156, 172, 0.15) !important;">
+                        <div class="d-flex align-items-center justify-content-between pt-2 border-top" style="border-color: var(--colors-hairline) !important;">
                             <span class="text-secondary small" style="font-size: 0.72rem;">
                                 Stok: <strong class="text-white">{{ $product->stock }}</strong>
                             </span>
-                            <a href="{{ route('customer.catalog.show', $product) }}" class="btn btn-sm btn-primary px-3 py-1 fw-bold" style="font-size: 0.8rem; border-radius: 8px;">
-                                Beli
-                            </a>
+                            <div class="d-flex align-items-center gap-1.5">
+                                <form action="{{ route('customer.cart.add') }}" method="POST" class="d-inline m-0">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" 
+                                            class="btn btn-sm d-inline-flex align-items-center justify-content-center p-0" 
+                                            style="height: 30px; width: 32px; background: var(--colors-card-alt); border: 1px solid var(--colors-hairline); color: #1A1A1C; border-radius: 8px;"
+                                            title="Tambah ke Keranjang"
+                                            {{ $product->stock <= 0 ? 'disabled' : '' }}>
+                                        <i class="bi bi-cart-plus"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ route('customer.catalog.show', $product) }}" class="btn btn-sm btn-primary px-3 py-1 fw-bold" style="font-size: 0.8rem; border-radius: 8px; height: 30px; display: inline-flex; align-items: center;">
+                                    Beli
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,7 +416,7 @@
     </div>
 
     <!-- 4. Section: Panduan Cara Menggunakan Voucher -->
-    <div class="card p-4 mb-4" style="background: linear-gradient(160deg, rgba(22, 27, 51, 0.95) 0%, rgba(13, 12, 29, 0.95) 100%); border-radius: 20px;">
+    <div class="card p-4 mb-4" style="background: var(--colors-primary); border: 1px solid var(--colors-hairline); border-radius: 20px;">
         <h5 class="fw-bold text-white mb-3">
             <i class="bi bi-info-circle me-2" style="color: var(--colors-accent);"></i>Cara Menggunakan Kupon Diskon
         </h5>

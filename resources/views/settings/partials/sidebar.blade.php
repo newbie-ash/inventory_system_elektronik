@@ -1,13 +1,13 @@
 <div class="card glass-card p-4 text-center">
     <!-- Avatar Photo & Change Photo Button -->
     <div class="position-relative d-inline-block mx-auto mb-2">
-        <div class="rounded-circle overflow-hidden mx-auto d-flex align-items-center justify-content-center shadow-lg" 
-             style="width: 105px; height: 105px; background: linear-gradient(135deg, var(--colors-accent) 0%, rgba(71, 73, 115, 0.9) 100%); border: 3px solid rgba(241, 218, 196, 0.45); box-shadow: 0 0 24px rgba(241, 218, 196, 0.25);">
+        <div class="rounded-circle overflow-hidden mx-auto d-flex align-items-center justify-content-center shadow-sm" 
+             style="width: 105px; height: 105px; background: var(--colors-card-alt); border: 2px solid var(--colors-hairline);">
             @if($profile->avatar && file_exists(public_path($profile->avatar)))
                 <img src="{{ asset($profile->avatar) }}" id="avatarPreview" alt="{{ $user->name }}" class="w-100 h-100 object-fit-cover">
             @else
                 <img src="" id="avatarPreview" alt="{{ $user->name }}" class="w-100 h-100 object-fit-cover d-none">
-                <span id="avatarPlaceholder" class="display-6 fw-bold" style="color: var(--colors-accent-text);">
+                <span id="avatarPlaceholder" class="display-6 fw-bold" style="color: #1A1A1C;">
                     {{ strtoupper(substr($user->name, 0, 1)) }}
                 </span>
             @endif
@@ -15,11 +15,15 @@
     </div>
 
     @if(request()->routeIs('customer.settings*'))
-        <div class="mb-3">
+        <div class="mb-2">
             <label for="avatarInput" class="btn btn-glass-outline btn-sm font-monospace px-3 py-1.5 d-inline-flex align-items-center gap-1.5" style="cursor: pointer; border-radius: 20px;">
-                <i class="bi bi-camera"></i> <span>Ganti Foto</span>
+                <i class="bi bi-camera"></i> <span>Ganti & Edit Foto</span>
             </label>
-            <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/*" onchange="previewAvatarImage(this)">
+            <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/jpeg,image/png,image/jpg,image/webp" onchange="handleAvatarSelected(this)">
+            <input type="hidden" name="avatar_cropped" id="avatarCroppedInput">
+        </div>
+        <div id="avatarStatusBadge" class="small text-warning font-monospace mb-2 d-none">
+            <i class="bi bi-check-circle-fill me-1 text-success"></i> Foto telah dicocokkan
         </div>
     @else
         <div class="mb-3">
