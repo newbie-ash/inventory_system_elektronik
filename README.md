@@ -29,7 +29,7 @@ Sistem ini dirancang untuk mengatasi permasalahan pencatatan manual pada usaha d
 
 ```bash
 # 1. Kloning repositori project
-git clone <repository-url>
+git clone (https://github.com/newbie-ash/inventory_system_elektronik.git)
 cd "inventory system fikri"
 
 # 2. Pasang dependensi backend PHP via Composer
@@ -297,26 +297,3 @@ Sesuai ruang lingkup slide panduan UTS, sistem ini memiliki batasan yang memang 
 1. **Multi-Warehouse Fisik Tunggal**: Pengelolaan stok diasumsikan berada pada satu gudang pusat distribusi utama.
 2. **Payment Gateway Mode Sandbox**: Pembayaran online menggunakan kredensial lingkungan pengujian resmi Midtrans Sandbox tanpa memproses pemotongan saldo perbankan riil.
 3. **Akuntansi Lanjutan**: Sistem mencatat laba kotor (*Gross Margin*) dan omzet penjualan, namun belum mencakup modul akuntansi pembukuan jurnal umum ganda (*Double-Entry Bookkeeping*) atau perhitungan depresiasi aset tetap.
-
----
-
-## 12. Panduan Wawancara Kepemilikan Kode (*Code Ownership Interview*)
-
-Sebagai persiapan sesi wawancara langsung bersama dosen penilai (Slide 24), berikut panduan teknis jawaban pertanyaan inti:
-
-1. **Mengapa Sale memiliki relasi `hasMany` ke SaleItem?**
-   - *Jawaban*: Sebuah transaksi penjualan dapat memuat lebih dari satu jenis produk dengan jumlah dan harga satuan masing-masing. Relasi `hasMany` merepresentasikan kardinalitas *1:N* dengan `sale_id` sebagai *foreign key* pada tabel `sale_items`.
-2. **Di mana sistem memastikan stok tidak menjadi negatif?**
-   - *Jawaban*: Pada [`SaleController.php` baris 108](app/Http/Controllers/SaleController.php#L108) dan [`OrderController.php` baris 139](app/Http/Controllers/Customer/OrderController.php#L139), sebelum `decrement`, sistem mengecek `if ($product->stock < $qty)` lalu melempar `ValidationException`.
-3. **Mengapa total penjualan dihitung di server?**
-   - *Jawaban*: Nilai harga dari *browser* mudah dimanipulasi melalui *Inspect Element*. Server mengambil harga resmi langsung dari database (`$product->selling_price`) dan menghitung `subtotal = price * qty` secara independen.
-4. **Apa risiko jika pengurangan stok dilakukan di luar `DB::transaction`?**
-   - *Jawaban*: Risiko inkonsistensi data (*partial update*). Jika item kedua gagal disimpan akibat kendala jaringan atau kesalahan database, stok item pertama sudah terlanjur berkurang tanpa ada rekam nota transaksi.
-5. **Bagaimana mencegah Staff mengakses fungsi Admin melalui URL langsung?**
-   - *Jawaban*: Menerapkan middleware server-side [`RoleMiddleware`](app/Http/Middleware/RoleMiddleware.php) (`role:admin`) pada grup rute di [`routes/web.php`](routes/web.php#L141). Jika Staff mengetik rute Admin secara manual, server langsung menolak dengan status HTTP 403 Forbidden.
-6. **Apa yang terjadi jika dua penjualan memproses stok produk yang sama hampir bersamaan?**
-   - *Jawaban*: Sistem memanfaatkan *Pessimistic Locking* `Product::lockForUpdate()->findOrFail($productId)`. Transaksi kedua harus menunggu transaksi pertama selesai (*commit*), sehingga kuantitas stok yang dibaca selalu merupakan kondisi terkini dan *overselling* dicegah.
-7. **Tunjukkan validasi SKU unik dan jelaskan peran constraint database:**
-   - *Jawaban*: Validasi `'sku' => ['required', 'unique:products,sku']` di [`ProductController.php`](app/Http/Controllers/ProductController.php) bertugas memberikan pesan galat yang ramah kepada pengguna, sedangkan `$table->string('sku')->unique()` pada berkas migrasi bertindak sebagai pertahanan tingkat basis data (*database-level integrity*).
-8. **Ubah aturan minimum stock dan tunjukkan dampaknya:**
-   - *Jawaban*: Kolom `min_stock` pada produk menentukan ambang batas aman. Ketika `stock <= min_stock`, produk tersebut secara otomatis masuk ke dalam daftar **Stok Kritis** (`/products/low-stock`) dan memicu lencana peringatan *Restock Alert* pada dashboard.
